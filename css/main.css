@@ -1,0 +1,59 @@
+body {
+	font: 90%/1.5em Arial, Helvetica, sans-serif;
+}
+
+#masthead {
+	width:900px;
+	height:40px;
+	background-color:#dedede;
+	padding:10px;
+}
+
+#leftnav {
+	width:200px;
+	float:left;
+	background-color: #efefef;
+	padding-left: 6px;
+	margin-right:10px;
+}
+
+#content {
+	float:left;
+	width:700px;
+}
+
+.success {
+	padding: 10px;
+	border: 1px solid #009933;
+	background-color: #66ff99;
+}
+
+.error {
+	padding: 10px;
+	border: 1px solid #ff0000;
+	background-color: #ff6666;
+}
+
+.info {
+	padding: 10px;
+	border: 1px solid #3366ff;
+	background-color: #99ccff;
+}
+
+.errorinput {
+	background-color:#ff6666;
+}
+
+.tracktitle {
+	color: #ffffff;
+	text-transform: uppercase; 
+}
+
+a:link, a:visited, a:active {
+	color: #335fb0;
+	text-decoration:none;
+}
+
+a:hover {
+	text-decoration:underline;
+}

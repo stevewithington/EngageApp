@@ -1,0 +1,11 @@
+
+<p></p><html><title>BlueDragon: CFML RunTime Error</title><body><style><!--
+TD {font-family :  Verdana, Geneva, Arial, Helvetica, sans-serif; font-size : 11px; } //--></style><table width='100%' border='1' cellspacing='0' cellpadding='5' bgcolor='white'><tr bgcolor='red'><td colspan='2' align='left'><font size='+1' color='yellow'><b>CFML Runtime Error</b></font></td></tr><tr><td colspan=2><b>request._MachIIThreadingAdapter[6CB57CCB03A356A41A9D3237EA19CC8E] doesn't exist.</b></td></tr><tr><td width='1%' nowrap>Request<td>index.cfm</td></tr><tr><td width='1%' valign='top' nowrap>File Trace<td>/home/mwoodward/apache-tomcat-6.0.26/webapps/engage/MachII/util/threading/ThreadingAdapterBD.cfc</td></tr></table><p><table width='100%' border='0' cellspacing='1' cellpadding='5' bgcolor='f4f4f4'><tr bgcolor='e0e0e0'><td width='1%' nowrap>Type</td><td>Application</td></tr><tr bgcolor='e0e0e0'><td width='1%' valign='top' nowrap>Detail</td><td>Error at line 1, column 53</td></tr><tr bgcolor='e0e0e0'><td width='1%' valign='top' nowrap>Tag Context</td><td>CFTRY (/home/mwoodward/apache-tomcat-6.0.26/webapps/engage/MachII/util/threading/ThreadingAdapterBD.cfc, Line=93, Column=4)<br/>|<br/>+-- CFSET (/home/mwoodward/apache-tomcat-6.0.26/webapps/engage/MachII/util/threading/ThreadingAdapterBD.cfc, Line=94, Column=5)</td></tr><TR BGCOLOR='E0E0E0'><TD WIDTH='1%' VALIGN='TOP' NOWRAP>Source</TD><TD><PRE>91:     &lt;!--- Run the thread and catch any errors for later ---&gt;
+92:     &lt;cfthread action=&quot;run&quot; name=&quot;#threadId#&quot; threadId=&quot;#threadId#&quot;&gt;
+93:       &lt;cftry&gt;
+<font color='red'>94:         &lt;cfset thread.collection = request._MachIIThreadingAdapter[threadId] /&gt;</font>
+95: </PRE>^ Snippet from underlying CFML source</TD></TR></table><br/>
+
+
+
+<P></BODY></HTML>

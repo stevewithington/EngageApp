@@ -1,0 +1,6 @@
+
+try{console.log('init console... done');}catch(e){console={log:function(){}};}
+var ConfigHandler=Class.create();ConfigHandler.prototype={updater:null,reloadAllChangedComponentsUrl:'',refreshAllChangedComponents:'',initialize:function(_reloadAllChangedComponentsUrl,_refreshAllChangedComponentsUrl){this.reloadAllChangedComponentsUrl=_reloadAllChangedComponentsUrl;this.refreshAllChangedComponentsUrl=_refreshAllChangedComponentsUrl;},periodicUpdateChangedComponents:function(){var currentValue=$('reloadAllChangedComponentsValue').value;console.log(currentValue);if(this.updater!=null){this.updater.stop();}
+if(currentValue!=0){this.updater=new Ajax.PeriodicalUpdater('changedComponents',this.reloadAllChangedComponentsUrl,{frequency:currentValue,decay:1});}else{if(this.updater!=null){this.updater.stop();}}},updateChangedComponents:function(){if(this.updater!=null){this.updater.stop();}
+new Ajax.Updater('changedComponents',this.refreshAllChangedComponentsUrl,{});this.periodicUpdateChangedComponents();},reloadAllChangedComponents:function(){if(this.updater!=null){this.updater.stop();}
+new Ajax.Updater('changedComponents',this.reloadAllChangedComponentsUrl,{});this.periodicUpdateChangedComponents();}}

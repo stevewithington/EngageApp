@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mach-ii PUBLIC "-//Mach-II//DTD Mach-II Configuration 1.9.0//EN"
+	"http://www.mach-ii.com/dtds/mach-ii_1_9_0.dtd" >
+
+<mach-ii version="1.9">
+	<!-- INCLUDES -->
+	<includes>
+		<include file="./mach-ii_coldspringProperty.xml" />
+		<include file="./properties.xml" />
+	</includes>
+
+	<!-- MODULES -->
+	<modules>
+		<module name="dashboard" file="/MachIIDashboard/config/mach-ii_dashboard.xml">
+			<mach-ii>
+				<properties>
+					<property name="password" value="admin" />
+				</properties>
+			</mach-ii>
+		</module>
+	</modules>
+		
+	<!-- PROPERTIES -->
+	<properties>
+		<property name="applicationRoot" value="/" />
+		<property name="defaultEvent" value="admin.home" />
+		<property name="eventParameter" value="event" />
+		<property name="parameterPrecedence" value="form" />
+		<property name="maxEvents" value="10" />
+		<property name="exceptionEvent" value="exception" />
+		
+		<!-- CACHING RELATED -->
+		<!-- this will create an unnamed cache that caches data for 1 hour in the application scope -->
+		<!-- <property name="caching" type="MachII.caching.CachingProperty" /> -->
+		
+		<!-- LOGGING RELATED -->
+		<!-- this will log to the screen -->
+		<!-- <property name="logging" type="MachII.logging.LoggingProperty" /> -->
+	</properties>
+
+	<!-- LISTENERS -->
+	<listeners>
+		<listener name="eventListener" type="org.opencfsummit.engage.listeners.EventListener" />
+		<listener name="proposalListener" type="org.opencfsummit.engage.listeners.ProposalListener" />
+		<listener name="roomListener" type="org.opencfsummit.engage.listeners.RoomListener" />
+		<listener name="sessionListener" type="org.opencfsummit.engage.listeners.SessionListener" />
+		<listener name="sessionTypeListener" type="org.opencfsummit.engage.listeners.SessionTypeListener" />
+		<listener name="scheduleItemListener" type="org.opencfsummit.engage.listeners.ScheduleItemListener" />
+		<listener name="trackListener" type="org.opencfsummit.engage.listeners.TrackListener" />
+		<listener name="userListener" type="org.opencfsummit.engage.listeners.UserListener" />
+	</listeners>
+	
+	<!-- PLUGINS -->
+	<plugins>
+		<plugin name="eventIDPlugin" type="org.opencfsummit.engage.plugins.EventIDPlugin" />
+	</plugins>
+	
+	<!-- EVENT-HANDLERS -->
+	<event-handlers>
+		<event-handler event="admin.home" access="public">
+			<view-page name="admin.home" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+
+		<!-- comment management -->
+		
+		
+		<!-- event management -->
+		<event-handler event="admin.events" access="public">
+			<call-method bean="eventService" method="getEvents" resultArg="events" />
+			<view-page name="admin.events" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.event" access="public">
+			<call-method bean="eventService" method="getEvent" args="${event.eventID}" resultArg="theEvent" />
+			<call-method bean="eventService" method="getEvents" resultArg="events" />
+			<call-method bean="eventService" method="getParentEvent" args="${event.eventID}" resultArg="parentEvent" />
+			<call-method bean="eventService" method="getChildEvents" args="${event.eventID}" resultArg="childEvents" />
+			<view-page name="admin.event" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.eventForm" access="public">
+			<event-arg name="includejQuery" value="true" />
+			<event-arg name="includeCKEditor" value="true" />
+			<call-method bean="eventService" method="getEvent" args="${event.eventID}" resultArg="theEvent" overwrite="false" />
+			<call-method bean="eventService" method="getEvents" resultArg="events" />
+			<call-method bean="eventService" method="getChildEvents" args="${event.eventID}" resultArg="childEvents" />
+			<view-page name="admin.eventForm" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.processEventForm" access="public">
+			<event-mapping event="success" mapping="admin.events" />
+			<event-mapping event="fail" mapping="admin.eventForm" />
+			<event-bean name="theEvent" type="org.opencfsummit.engage.event.Event">
+				<field name="startDate" ignore="true" />
+				<field name="endDate" ignore="true" />
+				<field name="proposalDeadline" ignore="true" />
+			</event-bean>
+			<notify listener="eventListener" method="processEventForm" />
+		</event-handler>
+		
+		<event-handler event="admin.deleteEvent" access="public">
+			<event-mapping event="success" mapping="admin.events" />
+			<event-mapping event="fail" mapping="admin.events" />
+			<event-bean name="theEvent" type="org.opencfsummit.engage.event.Event" />
+			<notify listener="eventListener" method="deleteEvent" />
+		</event-handler>
+		
+		<!-- proposal management -->
+		<event-handler event="admin.proposals" access="public">
+			<event-arg name="includejQuery" value="true" />
+			<event-arg name="includeTableSorter" value="true" />
+			<call-method bean="proposalService" method="getProposals" args="${event.eventID}" resultArg="proposals" />
+			<view-page name="admin.proposals" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.proposal" access="public">
+			<call-method bean="proposalService" method="getProposal" args="${event.proposalID}" resultArg="proposal" />
+			<call-method bean="proposalService" method="getProposalStatuses" resultArg="proposalStatuses" />
+			<call-method bean="proposalService" method="getProposalComments" args="${event.proposalID}" resultArg="proposalComments" />
+			<view-page name="admin.proposal" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.proposalForm" access="public">
+			<event-arg name="includeCKEditor" value="true" />
+			<call-method bean="proposalService" method="getProposal" args="${event.proposalID:0}" resultArg="proposal" overwrite="false" />
+			<call-method bean="proposalService" method="getProposalStatuses" resultArg="proposalStatuses" />
+			<call-method bean="sessionTypeService" method="getSessionTypes" args="${event.eventID}" resultArg="sessionTypes" />
+			<call-method bean="trackService" method="getTracks" args="${event.eventID}" resultArg="tracks" />
+			<view-page name="admin.proposalForm" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.processProposalForm" access="public">
+			<event-mapping event="success" mapping="admin.proposals" />
+			<event-mapping event="fail" mapping="admin.proposalForm" />
+			<event-bean name="proposal" type="org.opencfsummit.engage.proposal.Proposal">
+				<field name="agreedToTerms" ignore="true" />
+			</event-bean>>
+			<notify listener="proposalListener" method="processProposalForm" />
+		</event-handler>
+		
+		<event-handler event="admin.deleteProposal" access="public">
+			<event-mapping event="success" mapping="admin.proposals" />
+			<event-mapping event="fail" mapping="admin.proposals" />
+			<event-bean name="proposal" type="org.opencfsummit.engage.proposal.Proposal" />
+			<notify listener="proposalListener" method="deleteProposal" />
+		</event-handler>
+		
+		<event-handler event="admin.updateProposalStatus" access="public">
+			<event-mapping event="success" mapping="admin.proposal" />
+			<event-mapping event="fail" mapping="admin.proposal" />
+			<notify listener="proposalListener" method="updateProposalStatus" />
+		</event-handler>
+		
+		<!-- room management -->
+		<event-handler event="admin.rooms" access="public">
+			<call-method bean="roomService" method="getRooms" args="${event.eventID}" resultArg="rooms" />
+			<view-page name="admin.rooms" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.room" access="public">
+			<call-method bean="roomService" method="getRoom" args="${event.roomID}" resultArg="room" />
+			<view-page name="admin.room" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.roomForm" access="public">
+			<event-arg name="includeCKEditor" value="true" />
+			<call-method bean="roomService" method="getRoom" args="${event.roomID:0}" resultArg="room" overwrite="false" />
+			<view-page name="admin.roomForm" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.processRoomForm" access="public">
+			<event-mapping event="success" mapping="admin.rooms" />
+			<event-mapping event="fail" mapping="admin.roomForm" />
+			<event-bean name="room" type="org.opencfsummit.engage.room.Room" />
+			<notify listener="roomListener" method="processRoomForm" />
+		</event-handler>
+		
+		<event-handler event="admin.deleteRoom" access="public">
+			<event-mapping event="success" mapping="admin.rooms" />
+			<event-mapping event="fail" mapping="admin.rooms" />
+			<event-bean name="room" type="org.opencfsummit.engage.room.Room" />
+			<notify listener="roomListener" method="deleteRoom" />
+		</event-handler>
+		
+		<!-- schedule item management -->
+		<event-hander event="admin.scheduleItems" access="public">
+			<call-method bean="scheduleItemService" method="getScheduleItems" args="${event.eventID}" resultArg="scheduleItems" />
+			<view-page name="admin.scheduleItems" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-hander>
+		
+		<event-handler event="admin.scheduleItem" access="public">
+			<call-method bean="scheduleItemService" method="getScheduleItem" args="${event.scheduleItemID}" resultArg="scheduleItem" />
+			<view-page name="admin.scheduleItem" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.scheduleItemForm" access="public">
+			<event-arg name="includejQuery" value="true" />
+			<event-arg name="includeCKEditor" value="true" />
+			<call-method bean="roomService" method="getRooms" args="${event.eventID}" resultArg="rooms" />
+			<call-method bean="scheduleItemService" method="getScheduleItem" args="${event.scheduleItemID:0}" resultArg="scheduleItem" 
+						overwrite="false" />
+			<view-page name="admin.scheduleItemForm" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.processScheduleItemForm" access="public">
+			<event-mapping event="success" mapping="admin.scheduleItems" />
+			<event-mapping event="fail" mapping="admin.scheduleItemForm" />
+			<event-bean name="scheduleItem" type="org.opencfsummit.engage.scheduleitem.ScheduleItem">
+				<field name="startDate" ignore="true" />
+			</event-bean>
+			<notify listener="scheduleItemListener" method="processScheduleItemForm" />
+		</event-handler>
+		
+		<event-handler event="admin.deleteScheduleItem" access="public">
+			<event-mapping event="success" mapping="admin.scheduleItems" />
+			<event-mapping event="fail" mapping="admin.scheduleItems" />
+			<event-bean name="scheduleItem" type="org.opencfsummit.engage.scheduleitem.ScheduleItem" />
+			<notify listener="scheduleItemListener" method="deleteScheduleItem" />
+		</event-handler>
+		
+		<!-- session management -->
+		<event-handler event="admin.sessions" access="public">
+			<event-arg name="includejQuery" value="true" />
+			<event-arg name="includeTableSorter" value="true" />
+			<call-method bean="sessionService" method="getSessions" args="${event.eventID}" resultArg="sessions" />
+			<view-page name="admin.sessions" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.session" access="public">
+			<call-method bean="sessionService" method="getSession" args="${event.sessionID}" resultArg="theSession" />
+			<view-page name="admin.session" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<!-- <event-handler event="admin.sessionForm" access="public">
+			<event-arg name="includejQuery" value="true" />
+			<call-method bean="sessionService" method="getSession" args="${event.sessionID:0}" resultArg="theSession" overwrite="false" />
+			<call-method bean="eventService" method="getEvent" args="${event.eventID}" resultArg="theEvent" />
+			<call-method bean="proposalService" method="getProposals" args="${event.eventID}" resultArg="proposals" />
+			<call-method bean="proposalService" method="getProposalStatuses" resultArg="proposalStatuses" />
+			<call-method bean="roomService" method="getRooms" args="${event.eventID}" resultArg="rooms" />
+			<view-page name="admin.sessionForm" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler> -->
+		
+		<event-handler event="admin.sessionForm" access="public">
+			<event-arg name="includejQuery" value="true" />
+			<call-method bean="sessionService" method="getSession" args="${event.sessionID:0}" resultArg="theSession" overwrite="false" />
+			<call-method bean="proposalService" method="getProposals" args="${event.eventID}" resultArg="proposals" />
+			<call-method bean="proposalService" method="getProposalStatuses" resultArg="proposalStatuses" />
+			<call-method bean="roomService" method="getRooms" args="${event.eventID}" resultArg="rooms" />
+			<view-page name="admin.sessionForm" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.processSessionForm" access="public">
+			<event-mapping event="success" mapping="admin.sessions" />
+			<event-mapping event="fail" mapping="admin.sessionForm" />
+			<event-bean name="theSession" type="org.opencfsummit.engage.session.Session">
+				<field name="sessionTime" ignore="true" />
+			</event-bean>
+			<notify listener="sessionListener" method="processSessionForm" />
+		</event-handler>
+		
+		<event-handler event="admin.deleteSession" access="public">
+			<event-mapping event="success" mapping="admin.sessions" />
+			<event-mapping event="fail" mapping="admin.sessions" />
+			<event-bean name="theSession" type="org.opencfsummit.engage.session.Session" />
+			<notify listener="sessionListener" method="deleteSession" />
+		</event-handler>
+		
+		<!-- session type management -->
+		<event-handler event="admin.sessionTypes" access="public">
+			<call-method bean="sessionTypeService" method="getSessionTypes" args="${event.eventID}" resultArg="sessionTypes" />
+			<view-page name="admin.sessionTypes" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.sessionType" access="public">
+			<call-method bean="sessionTypeService" method="getSessionType" args="${event.sessionTypeID}" resultArg="sessionType" />
+			<view-page name="admin.sessionType" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.sessionTypeForm" access="public">
+			<event-arg name="includeCKEditor" value="true" />
+			<call-method bean="sessionTypeService" method="getSessionType" args="${event.sessionTypeID:0}" resultArg="sessionType" 
+						overwrite="false" />
+			<view-page name="admin.sessionTypeForm" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.processSessionTypeForm" access="public">
+			<event-mapping event="success" mapping="admin.sessionTypes" />
+			<event-mapping event="fail" mapping="admin.sessionTypeForm" />
+			<event-bean name="sessionType" type="org.opencfsummit.engage.sessiontype.SessionType" />
+			<notify listener="sessionTypeListener" method="processSessionTypeForm" />
+		</event-handler>
+		
+		<event-handler event="admin.deleteSessionType" access="public">
+			<event-mapping event="success" mapping="admin.sessionTypes" />
+			<event-mapping event="fail" mapping="admin.sessionTypes" />
+			<event-bean name="sessionType" type="org.opencfsummit.engage.sessiontype.SessionType" />
+			<notify listener="sessionTypeListener" method="deleteSessionType" />
+		</event-handler>
+
+		<!-- snippet management -->
+		
+		
+		<!-- track management -->
+		<event-handler event="admin.tracks" access="public">
+			<call-method bean="eventService" method="getTracksText" args="${event.eventID}" resultArg="tracksText" />
+			<call-method bean="trackService" method="getTracks" args="${event.eventID}" resultArg="tracks" />
+			<view-page name="admin.tracks" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.track" access="public">
+			<call-method bean="trackService" method="getTrack" args="${event.trackID}" resultArg="track" />
+			<view-page name="admin.track" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.trackForm" access="public">
+			<event-arg name="includeCKEditor" value="true" />
+			<event-arg name="includeColorPicker" value="true" />
+			<call-method bean="trackService" method="getTrack" args="${event.trackID:0}" resultArg="track" overwrite="false" />
+			<view-page name="admin.trackForm" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="admin.processTrackForm" access="public">
+			<event-mapping event="success" mapping="admin.tracks" />
+			<event-mapping event="fail" mapping="admin.trackForm" />
+			<event-bean name="track" type="org.opencfsummit.engage.track.Track" />
+			<notify listener="trackListener" method="processTrackForm" />
+		</event-handler>
+		
+		<event-handler event="admin.deleteTrack" access="public">
+			<event-mapping event="success" mapping="admin.tracks" />
+			<event-mapping event="fail" mapping="admin.tracks" />
+			<event-bean name="track" type="org.opencfsummit.engage.track.Track" />
+			<notify listener="trackListener" method="deleteTrack" />
+		</event-handler>
+		
+		<!-- user management -->
+		<event-handler event="admin.users" access="public">
+			<call-method bean="userService" method="getUsers" resultArg="users" />
+			<view-page name="admin.users" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<!-- exception -->
+		<event-handler event="exception" access="private">
+			<view-page name="exception" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+	</event-handlers>
+	
+	<!-- SUBROUTINES -->
+	<subroutines>
+		<subroutine name="template.main">
+			<view-page name="templates.main" />
+		</subroutine>
+	</subroutines>
+	
+	<!-- PAGE-VIEWS -->
+	<page-views>
+		<view-loader type="MachII.framework.viewLoaders.PatternViewLoader">
+			<parameter name="pattern" value="/views/**/*.cfm" />
+		</view-loader>
+	</page-views>
+	
+</mach-ii>
