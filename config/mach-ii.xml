@@ -44,6 +44,7 @@
 		<listener name="eventListener" type="org.opencfsummit.engage.listeners.EventListener" />
 		<listener name="proposalListener" type="org.opencfsummit.engage.listeners.ProposalListener" />
 		<listener name="roomListener" type="org.opencfsummit.engage.listeners.RoomListener" />
+		<listener name="securityListener" type="org.opencfsummit.engage.listeners.SecurityListener" />
 		<listener name="sessionListener" type="org.opencfsummit.engage.listeners.SessionListener" />
 		<listener name="sessionTypeListener" type="org.opencfsummit.engage.listeners.SessionTypeListener" />
 		<listener name="scheduleItemListener" type="org.opencfsummit.engage.listeners.ScheduleItemListener" />

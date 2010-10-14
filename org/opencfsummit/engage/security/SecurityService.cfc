@@ -14,6 +14,6 @@
 		<cfreturn variables.securityGateway />
 	</cffunction>
 	
-	
+	<cffunction name="authenticateUser" access="public" output="false" returntype="">	
 
 </cfcomponent>
