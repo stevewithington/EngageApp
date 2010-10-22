@@ -76,12 +76,6 @@ Date Format:
  	</cffunction>
 
 	<!---
-	PUBLIC FUNCTIONS
-	--->
-	<cffunction name="validate" access="public" returntype="errorHandler" output="false">
-	</cffunction>
-
-	<!---
 	ACCESSORS
 	--->
 	<cffunction name="setUserID" access="public" returntype="void" output="false">
@@ -194,6 +188,29 @@ Date Format:
 	</cffunction>
 	<cffunction name="getIsActive" access="public" returntype="boolean" output="false">
 		<cfreturn variables.instance.isActive />
+	</cffunction>
+
+	<cffunction name="validate" access="public" returntype="struct" output="false">
+		<cfset var errors = StructNew() />
+		
+		<cfif trim(getEmail()) eq "" 
+				or not IsValid('email', getEmail())>
+			<cfset errors.email = "A valid email is required" />
+		</cfif>
+		
+		<cfif Len(Trim(getEmail())) gt 255>
+			<cfset errors.email = "Email is limited to 255 characters" />
+		</cfif>
+		
+		<cfif Len(Trim(getFirstName())) gt 100>
+			<cfset errors.firstName = "First name is limited to 100 characters" />
+		</cfif>
+		
+		<cfif Len(Trim(getLastName())) gt 100>
+			<cfset errors.lastName = "Last name is limited to 100 characters" />
+		</cfif>
+		
+		<cfreturn errors />
 	</cffunction>
 
 	<!---

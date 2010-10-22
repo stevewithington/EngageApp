@@ -38,7 +38,7 @@
 			<ul>
 				<li><a href="#BuildUrl('user.favorites')#">My Favorites</a></li>
 				<li><a href="#BuildUrl('user.proposals')#">My Proposals</a></li>
-				<li><a href="#BuildUrl('user.proposalForm')#">Submit a Proposal</a></li>
+				<li><a href="#BuildUrl('proposalForm')#">Submit a Proposal</a></li>
 			</ul>
 			
 			<p><strong>Administer</strong></p>

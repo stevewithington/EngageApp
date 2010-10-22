@@ -57,7 +57,7 @@
 				<cfset arguments.user.init(getUser.user_id, getUser.email, getUser.password, getUser.password_salt, 
 											getUser.first_name, getUser.last_name, getUser.oauth_provider, 
 											getUser.oauth_uid, getUser.is_admin, getUser.dt_created, dtUpdated, 
-											getUser.created_by, updatedBy, active) />
+											getUser.created_by, updatedBy, getUser.active) />
 			</cfif>
 		</cfif>
 	</cffunction>
@@ -66,6 +66,7 @@
 		<cfargument name="user" type="User" required="true" />
 		
 		<cfset var saveUser = 0 />
+		<cfset var uuid = CreateUUID() />
 		
 		<cfif arguments.user.getUserID() eq 0>
 			<cfquery name="saveUser" datasource="#getDSN()#">
@@ -74,13 +75,19 @@
 					oauth_provider, oauth_uid, is_admin, dt_created,  
 					created_by, active
 				) VALUES (
-					<cfqueryparam value="#arguments.user.getEmail()#" cfsqltype="cf_sql_" />, 
-					<cfqueryparam value="#arguments.user.getPassword()#" cfsqltype="cf_sql_" />, 
-					<cfqueryparam value="#CreateUUID()#" cfsqltype="cf_sql_char" maxlength="35" />, 
-					<cfqueryparam value="#arguments.user.getFirstName()#" cfsqltype="cf_sql_varchar" maxlength="100" />, 
-					<cfqueryparam value="#arguments.user.getLastName()#" cfsqltype="cf_sql_varchar" maxlength="100" />, 
-					<cfqueryparam value="#arguments.user.getOauthProvider()#" cfsqltype="cf_sql_varchar" maxlength="10" />, 
-					<cfqueryparam value="#arguments.user.getOauthUID()#" cfsqltype="cf_sql_longvarchar" />, 
+					<cfqueryparam value="#arguments.user.getEmail()#" cfsqltype="cf_sql_varchar" />, 
+					<cfqueryparam value="#Hash(arguments.user.getPassword() & uuid, 'SHA-256')#" 
+									cfsqltype="cf_sql_char" maxlength="64" 
+									null="#Not Len(arguments.user.getPassword())#" />, 
+					<cfqueryparam value="#uuid#" cfsqltype="cf_sql_char" maxlength="35" />, 
+					<cfqueryparam value="#arguments.user.getFirstName()#" cfsqltype="cf_sql_varchar" 
+									maxlength="100" null="#Not Len(arguments.user.getFirstName())#" />, 
+					<cfqueryparam value="#arguments.user.getLastName()#" cfsqltype="cf_sql_varchar" 
+									maxlength="100" null="#Not Len(arguments.user.getLastName())#" />, 
+					<cfqueryparam value="#arguments.user.getOauthProvider()#" cfsqltype="cf_sql_varchar" 
+									maxlength="10" null="#Not Len(arguments.user.getOauthProvider())#" />, 
+					<cfqueryparam value="#arguments.user.getOauthUID()#" cfsqltype="cf_sql_longvarchar" 
+									null="#Not Len(arguments.user.getOauthUID())#" />, 
 					<cfqueryparam value="#arguments.user.getIsAdmin()#" cfsqltype="cf_sql_tinyint" />, 
 					<cfqueryparam value="#Now()#" cfsqltype="cf_sql_timestamp" />, 
 					<cfqueryparam value="#arguments.user.getCreatedBy()#" cfsqltype="cf_sql_integer" />, 
@@ -90,8 +97,27 @@
 		<cfelse>
 			<cfquery name="saveUser" datasource="#getDSN()#">
 				UPDATE 	user 
-				SET 	
-				WHERE 	user_id = <cfqueryparam value="#arguments.user.getUserID()#" cfsqltype="cf_sql_integer" />
+				SET 	email = <cfqueryparam value="#arguments.user.getEmail()#" cfsqltype="cf_sql_varchar" 
+											maxlength="255" />, 
+					<cfif arguments.user.getPassword() neq "">
+						password = <cfqueryparam value="#Hash(arguments.user.getPassword() & uuid, 'SHA-256')#" 
+												cfsqltype="cf_sql_char" maxlength="64" />, 
+						password_salt = <cfqueryparam value="#uuid#" cfsqltype="cf_sql_char" maxlength="35" />, 
+					</cfif>
+						first_name = <cfqueryparam value="#arguments.user.getFirstName()#" cfsqltype="cf_sql_varchar" 
+											maxlength="100" null="#Not Len(arguments.user.getFirstName())#" />, 					
+						last_name = <cfqueryparam value="#arguments.user.getLastName()#" cfsqltype="cf_sql_varchar" 
+												maxlength="100" null="#Not Len(arguments.user.getLastName())#" />,
+						oauth_provider = <cfqueryparam value="#arguments.user.getOauthProvider()#" cfsqltype="cf_sql_varchar" 
+													maxlength="10" null="#Not Len(arguments.user.getOauthProvider())#" />, 
+						oauth_uid = <cfqueryparam value="#arguments.user.getOauthUID()#" cfsqltype="cf_sql_longvarchar" 
+													null="#Not Len(arguments.user.getOauthUID())#" />, 
+						is_admin = <cfqueryparam value="#arguments.user.getIsAdmin()#" cfsqltype="cf_sql_tinyint" />, 
+						dt_updated = <cfqueryparam value="#Now()#" cfsqltype="cf_sql_timestamp" />, 
+						updated_by = <cfqueryparam value="#arguments.user.getUpdatedBy()#" cfsqltype="cf_sql_integer" />, 
+						active = <cfqueryparam value="#arguments.user.getIsActive()#" cfsqltype="cf_sql_tinyint" /> 
+				WHERE 	user_id = <cfqueryparam value="#arguments.user.getUserID()#" 
+											cfsqltype="cf_sql_integer" />
 			</cfquery>
 		</cfif>
 	</cffunction>

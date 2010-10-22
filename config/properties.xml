@@ -6,5 +6,13 @@
 	<properties>
 		<!-- datasource -->
 		<property name="dsn" value="engage" />
+		<!-- social media app ids -->
+		<property name="facebookKeys">
+			<struct>
+				<key name="applicationID" value="126467240741315" />
+				<key name="apiKey" value="28d966399093b81a06f213b62377cbbc" />
+				<key name="applicationSecret" value="80a269261d633367e10d8a91aae5e207" />
+			</struct>
+		</property>
 	</properties>
 </mach-ii>

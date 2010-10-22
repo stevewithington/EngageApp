@@ -14,6 +14,11 @@
 		<cfreturn variables.securityGateway />
 	</cffunction>
 	
-	<cffunction name="authenticateUser" access="public" output="false" returntype="">	
-
+	<cffunction name="authenticateUser" access="public" output="false" returntype="numeric">
+		<cfargument name="email" type="string" required="true" />
+		<cfargument name="password" type="string" required="true" />
+		
+		<cfreturn getSecurityGateway().authenticateUser(arguments.email, 
+														arguments.password) />
+	</cffunction>
 </cfcomponent>

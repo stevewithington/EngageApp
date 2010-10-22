@@ -32,5 +32,11 @@
 		
 		<cfreturn user />
 	</cffunction>
+	
+	<cffunction name="saveUser" access="public" output="false" returntype="void">
+		<cfargument name="user" type="User" required="true" />
+		
+		<cfset getUserGateway().save(arguments.user) />
+	</cffunction>
 
 </cfcomponent>

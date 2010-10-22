@@ -39,7 +39,7 @@
 	</tr>
 	<tr>
 		<td align="right">Title</td>
-		<td><form:input path="title" size="70" maxlength="255" /></td>
+		<td><form:input path="title" size="60" maxlength="255" /></td>
 	</tr>
 	<tr>
 		<td align="right">Session Type</td>
@@ -78,7 +78,7 @@
 	<tr>
 		<td align="right">Tags</td>
 		<td>
-			<form:input path="tags" size="70" /><br />
+			<form:input path="tags" size="60" /><br />
 			<span style="font-size:9px;">(comma separated)</span>
 		</td>
 	</tr>

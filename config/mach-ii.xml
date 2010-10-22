@@ -63,6 +63,22 @@
 			<view-page name="admin.home" contentArg="content" />
 			<execute subroutine="template.main" />
 		</event-handler>
+		
+		<event-handler event="home" access="public">
+			<view-page name="home" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<!-- login -->
+		<event-handler event="login" access="public">
+			<view-page name="login" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="processLoginForm" access="public">
+			<event-mapping event="fail" mapping="login" />
+			<notify listener="securityListener" method="processLoginForm" />
+		</event-handler>
 
 		<!-- comment management -->
 		
@@ -128,7 +144,7 @@
 			<execute subroutine="template.main" />
 		</event-handler>
 		
-		<event-handler event="admin.proposalForm" access="public">
+		<event-handler event="proposalForm" access="public">
 			<event-arg name="includeCKEditor" value="true" />
 			<call-method bean="proposalService" method="getProposal" args="${event.proposalID:0}" resultArg="proposal" overwrite="false" />
 			<call-method bean="proposalService" method="getProposalStatuses" resultArg="proposalStatuses" />
@@ -138,7 +154,7 @@
 			<execute subroutine="template.main" />
 		</event-handler>
 		
-		<event-handler event="admin.processProposalForm" access="public">
+		<event-handler event="processProposalForm" access="public">
 			<event-mapping event="success" mapping="admin.proposals" />
 			<event-mapping event="fail" mapping="admin.proposalForm" />
 			<event-bean name="proposal" type="org.opencfsummit.engage.proposal.Proposal">
@@ -361,9 +377,27 @@
 		
 		<!-- user management -->
 		<event-handler event="admin.users" access="public">
+			<event-arg name="includejQuery" value="true" />
+			<event-arg name="includeTableSorter" value="true" />
 			<call-method bean="userService" method="getUsers" resultArg="users" />
 			<view-page name="admin.users" contentArg="content" />
 			<execute subroutine="template.main" />
+		</event-handler>
+
+		<event-handler event="userForm" access="public">
+			<call-method bean="userService" method="getUser" args="${event.userID:0}" resultArg="user" overwrite="false" />
+			<view-page name="userForm" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="processUserForm" access="public">
+			<event-mapping event="success" mapping="home" />
+			<event-mapping event="fail" mapping="userForm" />
+			<event-bean name="user" type="org.opencfsummit.engage.user.User">
+				<field name="isAdmin" ignore="true" />
+				<field name="isActive" ignore="true" />
+			</event-bean>>
+			<notify listener="userListener" method="processUserForm" />
 		</event-handler>
 		
 		<!-- exception -->

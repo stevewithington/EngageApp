@@ -14,8 +14,24 @@
 		<cfset var errors = StructNew() />
 		<cfset var message = StructNew() />
 		<cfset var uploadResults = 0 />
+
+		<cfif arguments.event.getArg("isAdmin") eq "">
+			<cfset user.setIsAdmin(false) />
+		<cfelse>
+			<cfset user.setIsAdmin(true) />
+		</cfif>
+		
+		<cfif arguments.event.getArg("isActive") eq "">
+			<cfset user.setIsActive(false) />
+		<cfelse>
+			<cfset user.setIsActive(true) />
+		</cfif>
 		
 		<cfset errors = user.validate() />
+		
+		<cfif user.getPassword() neq arguments.event.getArg('confirmPassword')>
+			<cfset errors.password = "The two passwords entered do not match" />
+		</cfif>
 		
 		<cfset message.text = "The user was saved." />
 		<cfset message.class = "success" />
