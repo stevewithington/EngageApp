@@ -14,5 +14,10 @@
 				<key name="applicationSecret" value="80a269261d633367e10d8a91aae5e207" />
 			</struct>
 		</property>
+		<property name="twitterKeys">
+			<struct>
+				<key name="apiKey" value="eaqzhqgCW94zX5GeKrUiQ" />
+			</struct>
+		</property>
 	</properties>
 </mach-ii>

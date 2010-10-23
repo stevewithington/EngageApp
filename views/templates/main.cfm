@@ -1,12 +1,16 @@
+<cfsilent>
+	<cfparam name="loggedIn" default="false" type="boolean" />
+</cfsilent>
 <cfoutput>
 <html>
 	<head>
 		<title>OpenCF Summit - "Engage"</title>
 		<link type="text/css" href="css/main.css"  rel="stylesheet" media="screen" />
-	<cfif event.getArg("includejQuery", false)>
-		<link type="text/css" href="css/smoothness/jquery-ui-1.8.5.custom.css" rel="stylesheet" />
+		<script src="http://platform.twitter.com/anywhere.js?id=#getProperty('twitterKeys').apiKey#&v=1" type="text/javascript"></script>
 		<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+		<link type="text/css" href="css/smoothness/jquery-ui-1.8.5.custom.css" rel="stylesheet" />
 		<script type="text/javascript" src="js/jquery-ui-1.8.5.custom.min.js"></script>
+	<cfif event.getArg("includeTimePicker", false)>
 		<script type="text/javascript" src="js/timepicker.mod.js"></script>
 	</cfif>
 	<cfif event.getArg("includeTableSorter", false)>
@@ -31,8 +35,36 @@
 		</div>
 		
 		<div id="leftnav">
-			<p>Welcome User!<br />
-			<span style="font-size:10px;"><a href="#BuildUrl('user.profile')#">Edit profile</a> | <a href="#BuildUrl('logout')#">Logout</a></span></p>
+			<cfif StructKeyExists(cookie, "twitter_anywhere_identity")>
+				<cfset loggedIn = true />
+				<script type="text/javascript">
+					twttr.anywhere(function (T) {
+						var currentUser,
+								screenName,
+								profileImage,
+								profileImageTag;
+				
+						if (T.isConnected()) {
+							currentUser = T.currentUser;
+							screenName = currentUser.data('screen_name');
+							profileImage = currentUser.data('profile_image_url');
+							profileImageTag = "<img src='" + profileImage + "'/>";
+							$('##userinfo').append('<br />' + profileImageTag + '<br />Welcome ' + screenName + '!<br /><span id="signout" style="font-size:10px;"><a href="">Logout of Twitter</a></span>');
+							$("##signout").bind("click", function () {
+								twttr.anywhere.signOut();
+							});
+						} else {
+							T("##userinfo").connectButton();
+						};
+					});
+				</script>
+			<cfelseif StructKeyExists(cookie, "fbs_#getProperty('facebookKeys').applicationID#")>
+				<cfset loggedIn = true />
+			</cfif>
+			
+			<cfif loggedIn>
+				<span id="userinfo"></span>
+			</cfif>
 			
 			<p><strong><a href="#BuildUrl('proposals')#">Proposals</a></strong></p>
 			<ul>
@@ -63,6 +95,13 @@
 				<li><a href="#BuildUrl('admin.comments')#">Comments</a></li>
 			</ul>
 		</div>
+		
+	<!--- if a user is logged in, show the user bar --->
+	
+	<cfif loggedIn>
+		<div id="userBar">
+		</div>
+	</cfif>
 		
 		<div id="content">
 			#event.getArg('content')#

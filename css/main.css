@@ -22,6 +22,14 @@ body {
 	width:700px;
 }
 
+#userBar {
+	float:left;
+	width:700px;
+	height:60px;
+	margin-top:10px;
+	border-bottom: 2px solid #cccccc;
+}
+
 .success {
 	padding: 10px;
 	border: 1px solid #009933;

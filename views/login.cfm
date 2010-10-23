@@ -17,27 +17,7 @@
 	</div>
 </cfif>
 
-<form:form actionEvent="processLoginForm">
-<table width="100%" border="0">
-	<tr>
-		<td align="right">Email</td>
-		<td><form:input id="email" name="email" size="60" maxlength="255" /></td>
-	</tr>
-	<tr>
-		<td align="right">Password</td>
-		<td><form:password id="password" name="password" size="20" /></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td><form:button id="submit" name="submit" value="Login" /></td>
-	</tr>
-</table>
-</form:form>
-
-<p>
-	<strong>Need an account?</strong><br />
-	Log in with Facebook, Google, Twitter, or create a new account.
-</p>
+<h4>Log in to OpenCF Summit using your Facebook, Twitter, or Google account!</h4>
 
 <table border="0">
 	<tr>
@@ -59,14 +39,53 @@
 					}());
 			</script>
 		</td>
+		<td>
+			<span id="twitterLogin"></span>
+			<script type="text/javascript">
+				twttr.anywhere(function (T) {
+					T("##twitterLogin").connectButton();
+				});
+			</script>
+		</td>
 		<td>Google</td>
-		<td>Twitter</td>
-		<td><a href="#BuildUrl('userForm')#">Create account</a></td>
 	</tr>
 </table>
 
-<cfset cookieVal = cookie["fbs_#getProperty('facebookKeys').applicationID#"] />
-<cfdump var="#cookieVal#" />
+<cfdump var="#cookie#" />
+
+<!---
+<h4>Create an Account on OpenCF Summit</h4>
+
+<p>
+	We strongly encourage you to use your Facebook, Twitter, or 
+	Google account to interact with OpenCF Summit, but if you 
+	prefer you may 
+	<a href="#BuildUrl('userForm')#">create a local account on OpenCF Summit</a>.
+</p>
+
+<h4>Log in With Your OpenCF Summit Account</h4>
+<form:form actionEvent="processLoginForm">
+<table width="100%" border="0">
+	<tr>
+		<td align="right">Email</td>
+		<td><form:input id="email" name="email" size="60" maxlength="255" /></td>
+	</tr>
+	<tr>
+		<td align="right">Password</td>
+		<td><form:password id="password" name="password" size="20" /></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td><form:button id="submit" name="submit" value="Login" /></td>
+	</tr>
+</table>
+</form:form>
+--->
+
+<cfif StructKeyExists(cookie, "fbs_#getProperty('facebookKeys').applicationID#")>
+	<cfset cookieVal = cookie["fbs_#getProperty('facebookKeys').applicationID#"] />
+	<cfdump var="#cookieVal#" />
+</cfif>
 </cfoutput>
 
 <!---

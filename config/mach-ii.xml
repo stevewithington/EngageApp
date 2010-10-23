@@ -100,7 +100,7 @@
 		</event-handler>
 		
 		<event-handler event="admin.eventForm" access="public">
-			<event-arg name="includejQuery" value="true" />
+			<event-arg name="includeTimePicker" value="true" />
 			<event-arg name="includeCKEditor" value="true" />
 			<call-method bean="eventService" method="getEvent" args="${event.eventID}" resultArg="theEvent" overwrite="false" />
 			<call-method bean="eventService" method="getEvents" resultArg="events" />
@@ -129,7 +129,6 @@
 		
 		<!-- proposal management -->
 		<event-handler event="admin.proposals" access="public">
-			<event-arg name="includejQuery" value="true" />
 			<event-arg name="includeTableSorter" value="true" />
 			<call-method bean="proposalService" method="getProposals" args="${event.eventID}" resultArg="proposals" />
 			<view-page name="admin.proposals" contentArg="content" />
@@ -224,7 +223,7 @@
 		</event-handler>
 		
 		<event-handler event="admin.scheduleItemForm" access="public">
-			<event-arg name="includejQuery" value="true" />
+			<event-arg name="includeTimePicker" value="true" />
 			<event-arg name="includeCKEditor" value="true" />
 			<call-method bean="roomService" method="getRooms" args="${event.eventID}" resultArg="rooms" />
 			<call-method bean="scheduleItemService" method="getScheduleItem" args="${event.scheduleItemID:0}" resultArg="scheduleItem" 
@@ -251,7 +250,6 @@
 		
 		<!-- session management -->
 		<event-handler event="admin.sessions" access="public">
-			<event-arg name="includejQuery" value="true" />
 			<event-arg name="includeTableSorter" value="true" />
 			<call-method bean="sessionService" method="getSessions" args="${event.eventID}" resultArg="sessions" />
 			<view-page name="admin.sessions" contentArg="content" />
@@ -276,7 +274,7 @@
 		</event-handler> -->
 		
 		<event-handler event="admin.sessionForm" access="public">
-			<event-arg name="includejQuery" value="true" />
+			<event-arg name="includeTimePicker" value="true" />
 			<call-method bean="sessionService" method="getSession" args="${event.sessionID:0}" resultArg="theSession" overwrite="false" />
 			<call-method bean="proposalService" method="getProposals" args="${event.eventID}" resultArg="proposals" />
 			<call-method bean="proposalService" method="getProposalStatuses" resultArg="proposalStatuses" />
@@ -377,7 +375,6 @@
 		
 		<!-- user management -->
 		<event-handler event="admin.users" access="public">
-			<event-arg name="includejQuery" value="true" />
 			<event-arg name="includeTableSorter" value="true" />
 			<call-method bean="userService" method="getUsers" resultArg="users" />
 			<view-page name="admin.users" contentArg="content" />
