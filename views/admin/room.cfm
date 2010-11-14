@@ -17,9 +17,9 @@
 				<p>#room.getDescription()#</p>
 				
 				<p>
-					<a href="#BuildUrl('admin.roomForm', 'roomID=#room.getRoomID()#')#"><img src="images/icons/page_edit.png" width="16" height="16" border="0" alt="Edit Room" title="Edit Room"></a>&nbsp;
+					<a href="#BuildUrl('admin.roomForm', 'roomID=#room.getRoomID()#')#"><img src="/images/icons/page_edit.png" width="16" height="16" border="0" alt="Edit Room" title="Edit Room"></a>&nbsp;
 					<a href="#BuildUrl('admin.roomForm', 'roomID=#room.getRoomID()#')#">Edit</a>&nbsp;
-					<a href="#BuildUrl('admin.deleteRoom', 'roomID=#room.getRoomID()#')#"><img src="images/icons/delete.png" width="16" height="16" border="0" alt="Destroy Room" title="Destroy Room"></a>&nbsp;
+					<a href="#BuildUrl('admin.deleteRoom', 'roomID=#room.getRoomID()#')#"><img src="/images/icons/delete.png" width="16" height="16" border="0" alt="Destroy Room" title="Destroy Room"></a>&nbsp;
 					<a href="#BuildUrl('admin.deleteRoom', 'roomID=#room.getRoomID()#')#">Destroy</a>
 				</p>
 			</td>

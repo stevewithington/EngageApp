@@ -16,29 +16,69 @@
 	
 	<cffunction name="getProposals" access="public" output="false" returntype="query">
 		<cfargument name="eventID" type="numeric" required="true" />
+		<cfargument name="userID" type="numeric" required="false" default="0" />
+		<cfargument name="proposalIDs" type="string" required="false" default="" />
 		
 		<cfset var proposals = 0 />
 		
 		<cfquery name="proposals" datasource="#getDSN()#">
-			SELECT 	p.proposal_id, p.event_id, p.track_id, p.session_type_id, p.status_id, p.title, p.excerpt, 
-					p.description, p.note_to_organizers, p.agreed_to_terms, p.dt_created, 
-					p.dt_updated, p.created_by, p.updated_by, p.active, 
+			SELECT 	p.proposal_id, p.event_id, p.user_id, p.track_id, p.session_type_id, p.skill_level_id, p.status_id, 
+					p.contact_email, p.title, p.excerpt, p.description, p.note_to_organizers, p.agreed_to_terms, 
+					p.dt_created, p.dt_updated, p.created_by, p.updated_by, p.active, 
+					IFNULL(pv.votes, 0) AS votes, 
+					u.name AS speaker_name, u.oauth_profile_link, 
 					t.title AS track_title, t.color AS track_color, 
-					st.title AS session_type, s.status 
+					st.title AS session_type, 
+					sl.skill_level, 
+					s.status 
 			FROM 	proposal p 
+			LEFT JOIN (
+				SELECT proposal_id, COUNT(*) AS votes 
+				FROM proposal_vote 
+				GROUP BY proposal_id 
+			) pv 
+				ON p.proposal_id = pv.proposal_id 
+			INNER JOIN user u 
+				ON p.user_id = u.user_id 
 			LEFT OUTER JOIN track t 
 				ON p.track_id = t.track_id 
 			INNER JOIN session_type st 
 				ON p.session_type_id = st.session_type_id 
+			LEFT OUTER JOIN skill_level sl 
+				ON p.skill_level_id = sl.skill_level_id 
 			INNER JOIN proposal_status s 
 				ON p.status_id = s.status_id 
 			WHERE 	p.event_id = <cfqueryparam value="#arguments.eventID#" cfsqltype="cf_sql_integer" /> 
+			<cfif arguments.userID != 0>
+				AND p.user_id = <cfqueryparam value="#arguments.userID#" cfsqltype="cf_sql_integer" /> 
+			</cfif>
+			<cfif arguments.proposalIDs != "">
+				AND p.proposal_id IN (<cfqueryparam value="#proposalIDs#" type="cf_sql_integer" list="true" />)
+			</cfif>
 			ORDER BY p.dt_created DESC
 		</cfquery>
 		
 		<cfreturn proposals />
 	</cffunction>
 	
+	<cffunction name="getProposalFavorites" access="public" output="false" returntype="query">
+		<cfargument name="eventID" type="numeric" required="true" />
+		<cfargument name="userID" type="numeric" required="true" />
+		
+		<cfset var getProposalIDs = 0 />
+		<cfset var proposalIDs = "" />
+		
+		<cfquery name="getProposalIDs" datasource="#getDSN()#">
+			SELECT 	proposal_id 
+			FROM 	proposal_vote 
+			WHERE 	user_id = <cfqueryparam value="#arguments.userID#" type="cf_sql_integer" />
+		</cfquery>
+		
+		<cfset proposalIDs = QueryColumnList(getProposalIDs, "proposal_id") />
+		
+		<cfreturn getProposals(eventID = arguments.eventID, proposalIDs = QueryColumnList(getProposalIDs, "proposal_id")) />
+	</cffunction>
+
 	<cffunction name="getComments" access="public" output="false" returntype="query">
 		<cfargument name="proposalID" type="numeric" required="true" />
 		
@@ -54,6 +94,33 @@
 		</cfquery>
 		
 		<cfreturn comments />
+	</cffunction>
+	
+	<cffunction name="addVote" access="public" output="false" returntype="void">
+		<cfargument name="proposalID" type="numeric" required="true" />
+		<cfargument name="userID" type="numeric" required="true" />
+		
+		<cfset var addVote = 0 />
+		
+		<cfquery name="addVote" datasource="#getDSN()#">
+			INSERT INTO proposal_vote (proposal_id, user_id) 
+			VALUES (<cfqueryparam value="#arguments.proposalID#" cfsqltype="cf_sql_integer" />, 
+					<cfqueryparam value="#arguments.userID#" cfsqltype="cf_sql_integer" />)
+		</cfquery>
+	</cffunction>
+	
+	<cffunction name="getUserVotes" access="public" output="false" returntype="query">
+		<cfargument name="userID" type="numeric" required="true" />
+		
+		<cfset var votes = 0 />
+		
+		<cfquery name="votes" datasource="#getDSN()#">
+			SELECT proposal_id 
+			FROM proposal_vote 
+			WHERE user_id = <cfqueryparam value="#arguments.userID#" cfsqltype="cf_sql_integer" />
+		</cfquery>
+		
+		<cfreturn votes />
 	</cffunction>
 	
 	<cffunction name="getProposalStatuses" access="public" output="false" returntype="query">
@@ -80,6 +147,20 @@
 		</cfquery>
 	</cffunction>
 	
+	<cffunction name="getProposalUserID" access="public" output="false" returntype="numeric">
+		<cfargument name="proposalID" type="numeric" required="true" />
+		
+		<cfset var getUserID = 0 />
+		
+		<cfquery name="getUserID" datasource="#getDSN()#">
+			SELECT 	user_id 
+			FROM 	proposal 
+			WHERE 	proposal_id = <cfqueryparam value="#arguments.proposalID#" cfsqltype="cf_sql_integer" />
+		</cfquery>
+		
+		<cfreturn getUserID.user_id />
+	</cffunction>
+	
 	<!--- CRUD --->
 	<cffunction name="fetch" access="public" output="false" returntype="void">
 		<cfargument name="proposal" type="Proposal" required="true" />
@@ -89,22 +170,37 @@
 		<cfset var tags = "" />
 		<cfset var dtUpdated = CreateDateTime(1900,1,1,0,0,0) />
 		<cfset var updatedBy = 0 />
+		<cfset var skillLevelID = 0 />
 		
 		<cfif arguments.proposal.getProposalID() neq 0>
 			<cfquery name="getProposal" datasource="#getDSN()#">
-				SELECT 	p.proposal_id, p.event_id, p.track_id, p.session_type_id, p.status_id, p.title, p.excerpt, 
-						p.description, p.note_to_organizers, p.agreed_to_terms, p.dt_created, 
-						p.dt_updated, p.created_by, p.updated_by, p.active, 
+				SELECT 	p.proposal_id, p.event_id, p.user_id, p.track_id, p.session_type_id, p.skill_level_id, p.status_id, 
+						p.contact_email, p.title, p.excerpt, p.description, p.note_to_organizers, p.agreed_to_terms, 
+						p.dt_created, p.dt_updated, p.created_by, p.updated_by, p.active, 
+						IFNULL(pv.votes, 0) AS votes, 
+						u.name AS speaker_name, 
 						t.title AS track_title, t.color AS track_color, 
-						st.title AS session_type, s.status 
+						st.title AS session_type, 
+						sl.skill_level, 
+						s.status 
 				FROM 	proposal p 
+				LEFT JOIN (
+					SELECT proposal_id, COUNT(*) AS votes 
+					FROM proposal_vote 
+					GROUP BY proposal_id 
+				) pv 
+					ON p.proposal_id = pv.proposal_id 
+				INNER JOIN user u 
+					ON p.user_id = u.user_id 
 				LEFT OUTER JOIN track t 
 					ON p.track_id = t.track_id 
 				INNER JOIN session_type st 
 					ON p.session_type_id = st.session_type_id 
+				LEFT OUTER JOIN skill_level sl 
+					ON p.skill_level_id = sl.skill_level_id 
 				INNER JOIN proposal_status s 
 					ON p.status_id = s.status_id 
-				WHERE 	proposal_id = <cfqueryparam value="#arguments.proposal.getProposalID()#" cfsqltype="cf_sql_integer" />
+				WHERE 	p.proposal_id = <cfqueryparam value="#arguments.proposal.getProposalID()#" cfsqltype="cf_sql_integer" />
 			</cfquery>
 			
 			<cfquery name="getTags" datasource="#getDSN()#">
@@ -126,13 +222,21 @@
 					<cfset updatedBy = getProposal.updated_by />
 				</cfif>
 				
-				<cfset arguments.proposal.init(getProposal.proposal_id, getProposal.event_id, getProposal.track_id, 
+				<cfif getProposal.skill_level_id neq "">
+					<cfset skillLevelID = getProposal.skill_level_id />
+				</cfif>
+				
+				<cfset arguments.proposal.init(getProposal.proposal_id, getProposal.event_id, getProposal.user_id, 
+												getProposal.speaker_name, getProposal.track_id, 
 												getProposal.track_title, getProposal.track_color, 
 												getProposal.session_type_id, getProposal.session_type, 
-												getProposal.status_id, getProposal.status, ArrayNew(1), getProposal.title, 
-												getProposal.excerpt, getProposal.description, tags, getProposal.note_to_organizers, 
-												getProposal.agreed_to_terms, getProposal.dt_created, dtUpdated, 
-												getProposal.created_by, updatedBy, getProposal.active) />
+												skillLevelID, getProposal.skill_level, 
+												getProposal.status_id, getProposal.status, getProposal.contact_email, 
+												getProposal.title, getProposal.excerpt, getProposal.description, 
+												tags, getProposal.votes, 
+												getProposal.note_to_organizers, getProposal.agreed_to_terms, 
+												getProposal.dt_created, dtUpdated, getProposal.created_by, updatedBy, 
+												getProposal.active) />
 			</cfif>
 		</cfif>
 	</cffunction>
@@ -154,14 +258,17 @@
 			<cftransaction>
 				<cfquery name="saveProposal" datasource="#getDSN()#">
 					INSERT INTO proposal (
-						event_id, track_id, session_type_id, status_id, title, excerpt, description, 
-						note_to_organizers, agreed_to_terms, dt_created, created_by, 
-						active
+						event_id, user_id, track_id, session_type_id, skill_level_id, status_id, contact_email, title, excerpt, 
+						description, note_to_organizers, agreed_to_terms, dt_created, created_by, active
 					) VALUES (
 						<cfqueryparam value="#arguments.proposal.getEventID()#" cfsqltype="cf_sql_integer" />, 
+						<cfqueryparam value="#arguments.proposal.getUserID()#" cfsqltype="cf_sql_integer" />, 
 						<cfqueryparam value="#arguments.proposal.getTrackID()#" cfsqltype="cf_sql_integer" />, 
 						<cfqueryparam value="#arguments.proposal.getSessionTypeID()#" cfsqltype="cf_sql_integer" />, 
+						<cfqueryparam value="#arguments.proposal.getSkillLevelID()#" cfsqltype="cf_sql_tinyint" 
+										null="#Not arguments.proposal.getSkillLevelID()#" />, 
 						<cfqueryparam value="#arguments.proposal.getStatusID()#" cfsqltype="cf_sql_integer" />, 
+						<cfqueryparam value="#arguments.proposal.getContactEmail()#" cfsqltype="cf_sql_varchar" maxlength="255" />, 
 						<cfqueryparam value="#arguments.proposal.getTitle()#" cfsqltype="cf_sql_varchar" maxlength="255" />, 
 						<cfqueryparam value="#arguments.proposal.getExcerpt()#" cfsqltype="cf_sql_varchar" maxlength="1000" 
 										null="#Not Len(Trim(arguments.proposal.getExcerpt()))#" />, 
@@ -174,19 +281,21 @@
 						<cfqueryparam value="#arguments.proposal.getIsActive()#" cfsqltype="cf_sql_tinyint" />
 					)
 				</cfquery>
+
+				<cfquery name="getNewID" datasource="#getDSN()#">
+					SELECT last_insert_id() AS new_id
+				</cfquery>
+				
+				<cfset proposal.setProposalID(getNewID.new_id) />
 				
 				<cfif arguments.proposal.getTags() neq "">
-					<cfquery name="getNewID" datasource="#getDSN()#">
-						SELECT last_insert_id() AS new_id
-					</cfquery>
-					
 					<cfloop list="#arguments.proposal.getTags()#" index="tag" delimiters=",">
 						<cfquery name="saveTags" datasource="#getDSN()#">
 							INSERT INTO proposal_tag (
 								proposal_id, tag
 							) VALUES (
 								<cfqueryparam value="#getNewID.new_id#" cfsqltype="cf_sql_integer" />, 
-								<cfqueryparam value="#tag#" cfsqltype="cf_sql_varchar" maxlength="255" />
+								<cfqueryparam value="#Trim(tag)#" cfsqltype="cf_sql_varchar" maxlength="255" />
 							)
 						</cfquery>
 					</cfloop>
@@ -197,9 +306,13 @@
 				<cfquery name="saveProposal" datasource="#getDSN()#">
 					UPDATE 	proposal 
 					SET 	event_id = <cfqueryparam value="#arguments.proposal.getEventID()#" cfsqltype="cf_sql_integer" />, 
+							user_id = <cfqueryparam value="#arguments.proposal.getUserID()#" cfsqltype="cf_sql_integer" />, 
 							track_id = <cfqueryparam value="#arguments.proposal.getTrackID()#" cfsqltype="cf_sql_integer" />, 
 							session_type_id = <cfqueryparam value="#arguments.proposal.getSessionTypeID()#" cfsqltype="cf_sql_integer" />, 
+							skill_level_id = <cfqueryparam value="#arguments.proposal.getSkillLevelID()#" cfsqltype="cf_sql_tinyint" 
+															null="#Not arguments.proposal.getSkillLevelID()#" />, 
 							status_id = <cfqueryparam value="#arguments.proposal.getStatusID()#" cfsqltype="cf_sql_integer" />, 
+							contact_email = <cfqueryparam value="#arguments.proposal.getContactEmail()#" cfsqltype="cf_sql_varchar" maxlength="255" />, 
 							title = <cfqueryparam value="#arguments.proposal.getTitle()#" cfsqltype="cf_sql_varchar" maxlength="255" />, 
 							excerpt = <cfqueryparam value="#arguments.proposal.getExcerpt()#" cfsqltype="cf_sql_varchar" maxlength="1000" 
 													null="#Not Len(Trim(arguments.proposal.getExcerpt()))#" />, 
@@ -225,7 +338,7 @@
 								proposal_id, tag
 							) VALUES (
 								<cfqueryparam value="#arguments.proposal.getProposalID()#" cfsqltype="cf_sql_integer" />, 
-								<cfqueryparam value="#tag#" cfsqltype="cf_sql_varchar" maxlength="255" />
+								<cfqueryparam value="#Trim(tag)#" cfsqltype="cf_sql_varchar" maxlength="255" />
 							)
 						</cfquery>
 					</cfloop>
@@ -240,7 +353,7 @@
 		<cfset var deleteProposal = 0 />
 		<cfset var deleteTags = 0 />
 		<cfset var deleteComments = 0 />
-		<cfset var deleteSpeakers = 0 />
+		<cfset var deleteVotes = 0 />
 		
 		<cftransaction>
 			<cfquery name="deleteProposal" datasource="#getDSN()#">
@@ -254,12 +367,13 @@
 			</cfquery>
 			
 			<cfquery name="deleteComments" datasource="#getDSN()#">
-				DELETE FROM proposal_comment 
-				WHERE proposal_id = <cfqueryparam value="#arguments.proposal.getProposalID()#" cfsqltype="cf_sql_integer" />
+				DELETE FROM comment 
+				WHERE item_id = <cfqueryparam value="#arguments.proposal.getProposalID()#" cfsqltype="cf_sql_integer" /> 
+				AND item_type = <cfqueryparam value="Proposal" cfsqltype="cf_sql_varchar" maxlength="20" />
 			</cfquery>
 			
-			<cfquery name="deleteSpeakers" datasource="#getDSN()#">
-				DELETE FROM proposal_speaker 
+			<cfquery name="deleteVotes" datasource="#getDSN()#">
+				DELETE FROM proposal_vote 
 				WHERE proposal_id = <cfqueryparam value="#arguments.proposal.getProposalID()#" cfsqltype="cf_sql_integer" />
 			</cfquery>
 		</cftransaction>

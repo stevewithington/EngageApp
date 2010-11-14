@@ -31,7 +31,7 @@
 </cfif>
 
 <p>
-	<a href="#BuildUrl('admin.roomForm')#"><img src="images/icons/add.png" border="0" width="16" height="16" alt="Add Room" title="Add Room" /></a>&nbsp;
+	<a href="#BuildUrl('admin.roomForm')#"><img src="/images/icons/add.png" border="0" width="16" height="16" alt="Add Room" title="Add Room" /></a>&nbsp;
 	<a href="#BuildUrl('admin.roomForm')#">Add Room</a>
 </p>
 </cfoutput>

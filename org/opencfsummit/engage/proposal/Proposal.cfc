@@ -12,18 +12,23 @@ Create cfproperties: false
 Bean Template:
 	proposalID numeric 0
 	eventID numeric 0
+	userID numeric 0
+	speakerName string
 	trackID numeric 0
 	trackTitle string 
 	trackColor string
 	sessionTypeID numeric 0
 	sessionType string
+	skillLevelID numeric 0
+	skillLevel string
 	statusID numeric 0
 	status string 
-	speakers array #ArrayNew(1)#
+	contactEmail string
 	title string 
 	excerpt string 
 	description string 
 	tags string 
+	votes numeric 0
 	noteToOrganizers string 
 	agreedToTerms boolean false
 	dtCreated date #CreateDateTime(1900,1,1,0,0,0)#
@@ -50,18 +55,23 @@ Date Format:
 	<cffunction name="init" access="public" returntype="Proposal" output="false">
 		<cfargument name="proposalID" type="numeric" required="false" default="0" />
 		<cfargument name="eventID" type="numeric" required="false" default="0" />
+		<cfargument name="userID" type="numeric" required="false" default="0" />
+		<cfargument name="speakerName" type="string" required="false" default="" />
 		<cfargument name="trackID" type="numeric" required="false" default="0" />
 		<cfargument name="trackTitle" type="string" required="false" default="" />
 		<cfargument name="trackColor" type="string" required="false" default="" />
 		<cfargument name="sessionTypeID" type="numeric" required="false" default="0" />
 		<cfargument name="sessionType" type="string" required="false" default="" />
+		<cfargument name="skillLevelID" type="numeric" required="false" default="0" />
+		<cfargument name="skillLevel" type="string" required="false" default="" />
 		<cfargument name="statusID" type="numeric" required="false" default="0" />
 		<cfargument name="status" type="string" required="false" default="" />
-		<cfargument name="speakers" type="array" required="false" default="#ArrayNew(1)#" />
+		<cfargument name="contactEmail" type="string" required="false" default="" />
 		<cfargument name="title" type="string" required="false" default="" />
 		<cfargument name="excerpt" type="string" required="false" default="" />
 		<cfargument name="description" type="string" required="false" default="" />
 		<cfargument name="tags" type="string" required="false" default="" />
+		<cfargument name="votes" type="numeric" required="false" default="0" />
 		<cfargument name="noteToOrganizers" type="string" required="false" default="" />
 		<cfargument name="agreedToTerms" type="boolean" required="false" default="false" />
 		<cfargument name="dtCreated" type="date" required="false" default="#CreateDateTime(1900,1,1,0,0,0)#" />
@@ -73,18 +83,23 @@ Date Format:
 		<!--- run setters --->
 		<cfset setProposalID(arguments.proposalID) />
 		<cfset setEventID(arguments.eventID) />
+		<cfset setUserID(arguments.userID) />
+		<cfset setSpeakerName(arguments.speakerName) />
 		<cfset setTrackID(arguments.trackID) />
 		<cfset setTrackTitle(arguments.trackTitle) />
 		<cfset setTrackColor(arguments.trackColor) />
 		<cfset setSessionTypeID(arguments.sessionTypeID) />
 		<cfset setSessionType(arguments.sessionType) />
+		<cfset setSkillLevelID(arguments.skillLevelID) />
+		<cfset setSkillLevel(arguments.skillLevel) />
 		<cfset setStatusID(arguments.statusID) />
 		<cfset setStatus(arguments.status) />
-		<cfset setSpeakers(arguments.speakers) />
+		<cfset setContactEmail(arguments.contactEmail) />
 		<cfset setTitle(arguments.title) />
 		<cfset setExcerpt(arguments.excerpt) />
 		<cfset setDescription(arguments.description) />
 		<cfset setTags(arguments.tags) />
+		<cfset setVotes(arguments.votes) />
 		<cfset setNoteToOrganizers(arguments.noteToOrganizers) />
 		<cfset setAgreedToTerms(arguments.agreedToTerms) />
 		<cfset setDtCreated(arguments.dtCreated) />
@@ -113,6 +128,22 @@ Date Format:
 	</cffunction>
 	<cffunction name="getEventID" access="public" returntype="numeric" output="false">
 		<cfreturn variables.instance.eventID />
+	</cffunction>
+
+	<cffunction name="setUserID" access="public" returntype="void" output="false">
+		<cfargument name="userID" type="numeric" required="true" />
+		<cfset variables.instance.userID = arguments.userID />
+	</cffunction>
+	<cffunction name="getUserID" access="public" returntype="numeric" output="false">
+		<cfreturn variables.instance.userID />
+	</cffunction>
+
+	<cffunction name="setSpeakerName" access="public" returntype="void" output="false">
+		<cfargument name="speakerName" type="string" required="true" />
+		<cfset variables.instance.speakerName = arguments.speakerName />
+	</cffunction>
+	<cffunction name="getSpeakerName" access="public" returntype="string" output="false">
+		<cfreturn variables.instance.speakerName />
 	</cffunction>
 
 	<cffunction name="setTrackID" access="public" returntype="void" output="false">
@@ -155,6 +186,22 @@ Date Format:
 		<cfreturn variables.instance.sessionType />
 	</cffunction>
 
+	<cffunction name="setSkillLevelID" access="public" returntype="void" output="false">
+		<cfargument name="skillLevelID" type="numeric" required="true" />
+		<cfset variables.instance.skillLevelID = arguments.skillLevelID />
+	</cffunction>
+	<cffunction name="getSkillLevelID" access="public" returntype="numeric" output="false">
+		<cfreturn variables.instance.skillLevelID />
+	</cffunction>
+
+	<cffunction name="setSkillLevel" access="public" returntype="void" output="false">
+		<cfargument name="skillLevel" type="string" required="true" />
+		<cfset variables.instance.skillLevel = trim(arguments.skillLevel) />
+	</cffunction>
+	<cffunction name="getSkillLevel" access="public" returntype="string" output="false">
+		<cfreturn variables.instance.skillLevel />
+	</cffunction>
+
 	<cffunction name="setStatusID" access="public" returntype="void" output="false">
 		<cfargument name="statusID" type="numeric" required="true" />
 		<cfset variables.instance.statusID = arguments.statusID />
@@ -171,12 +218,12 @@ Date Format:
 		<cfreturn variables.instance.status />
 	</cffunction>
 
-	<cffunction name="setSpeakers" access="public" returntype="void" output="false">
-		<cfargument name="speakers" type="array" required="true" />
-		<cfset variables.instance.speakers = arguments.speakers />
+	<cffunction name="setContactEmail" access="public" returntype="void" output="false">
+		<cfargument name="contactEmail" type="string" required="true" />
+		<cfset variables.instance.contactEmail = trim(arguments.contactEmail) />
 	</cffunction>
-	<cffunction name="getSpeakers" access="public" returntype="array" output="false">
-		<cfreturn variables.instance.speakers />
+	<cffunction name="getContactEmail" access="public" returntype="string" output="false">
+		<cfreturn variables.instance.contactEmail />
 	</cffunction>
 
 	<cffunction name="setTitle" access="public" returntype="void" output="false">
@@ -209,6 +256,14 @@ Date Format:
 	</cffunction>
 	<cffunction name="getTags" access="public" returntype="string" output="false">
 		<cfreturn variables.instance.tags />
+	</cffunction>
+
+	<cffunction name="setVotes" access="public" returntype="void" output="false">
+		<cfargument name="votes" type="numeric" required="true" />
+		<cfset variables.instance.votes = arguments.votes />
+	</cffunction>
+	<cffunction name="getVotes" access="public" returntype="numeric" output="false">
+		<cfreturn variables.instance.votes />
 	</cffunction>
 
 	<cffunction name="setNoteToOrganizers" access="public" returntype="void" output="false">
@@ -270,12 +325,20 @@ Date Format:
 	<cffunction name="validate" access="public" returntype="struct" output="false">
 		<cfset var errors = StructNew() />
 		
+		<cfif getUserID() eq 0>
+			<cfset errors.userID = "A speaker is required" />
+		</cfif>
+		
 		<cfif getTrackID() eq 0>
 			<cfset errors.trackID = "Track is required" />
 		</cfif>
 		
 		<cfif getSessionTypeID() eq 0>
 			<cfset errors.sessionTypeID = "Session type is required" />
+		</cfif>
+		
+		<cfif Trim(getContactEmail()) eq "" or Not IsValid('email', getContactEmail())>
+			<cfset errors.contactEmail = "A valid contact email is required" />
 		</cfif>
 		
 		<cfif Trim(getTitle()) eq "">

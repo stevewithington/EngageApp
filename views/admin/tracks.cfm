@@ -34,11 +34,11 @@
 					<table>
 						<tr>
 							<td>
-								<a href="#BuildUrl('admin.trackForm', 'trackID=#tracks.track_id#')#"><img src="images/icons/page_edit.png" width="16" height="16" border="0" alt="Edit Track" title="Edit Track"></a>&nbsp;
+								<a href="#BuildUrl('admin.trackForm', 'trackID=#tracks.track_id#')#"><img src="/images/icons/page_edit.png" width="16" height="16" border="0" alt="Edit Track" title="Edit Track"></a>&nbsp;
 								<a href="#BuildUrl('admin.trackForm', 'trackID=#tracks.track_id#')#">Edit</a>
 							</td>
 							<td>
-								<a href="#BuildUrl('admin.deleteTrack', 'trackID=#tracks.track_id#')#"><img src="images/icons/delete.png" width="16" height="16" border="0" alt="Destroy Track" title="Destroy Track"></a>&nbsp;
+								<a href="#BuildUrl('admin.deleteTrack', 'trackID=#tracks.track_id#')#"><img src="/images/icons/delete.png" width="16" height="16" border="0" alt="Destroy Track" title="Destroy Track"></a>&nbsp;
 								<a href="#BuildUrl('admin.deleteTrack', 'trackID=#tracks.track_id#')#">Destroy</a>
 							</td>
 						</tr>
@@ -51,7 +51,7 @@
 </cfif>
 
 <p>
-	<a href="#BuildUrl('admin.trackForm')#"><img src="images/icons/add.png" border="0" width="16" height="16" alt="Add Track" title="Add Track" /></a>&nbsp;
+	<a href="#BuildUrl('admin.trackForm')#"><img src="/images/icons/add.png" border="0" width="16" height="16" alt="Add Track" title="Add Track" /></a>&nbsp;
 	<a href="#BuildUrl('admin.trackForm')#">Add Track</a>
 </p>
 </cfoutput>

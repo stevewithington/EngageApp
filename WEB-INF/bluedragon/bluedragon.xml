@@ -7,20 +7,28 @@
     <whitespacecomp>false</whitespacecomp>
     <nativelibdir>/WEB-INF/bin</nativelibdir>
     <missingtemplatehandler></missingtemplatehandler>
-    <lastfile>/home/mwoodward/apache-tomcat-6.0.26/webapps/opencfsummitware/WEB-INF/bluedragon/bluedragon.xml.bak.1</lastfile>
+    <lastfile>/home/mwoodward/tomcat/webapps/opencfsummitware/WEB-INF/bluedragon/bluedragon.xml.bak.1</lastfile>
     <errorhandler></errorhandler>
     <password>admin</password>
     <tempdirectory>/WEB-INF/bluedragon/work/temp</tempdirectory>
     <buffersize>0</buffersize>
     <deniedips></deniedips>
     <allowedips></allowedips>
-    <lastupdated>13/Oct/2010 16:53.50</lastupdated>
+    <lastupdated>13/Nov/2010 08:57.35</lastupdated>
     <defaultcharset>utf-8</defaultcharset>
   </system>
   <file>
     <maxfiles>1000</maxfiles>
     <trustcache>false</trustcache>
   </file>
+  <cfcollection>
+    <collection name=".svn">
+      <name>.svn</name>
+      <storebody>false</storebody>
+      <path>/home/mwoodward/apache-tomcat-7.0.4/webapps/opencfsummitware/WEB-INF/bluedragon/work/cfcollection</path>
+      <language>English</language>
+    </collection>
+  </cfcollection>
   <javacustomtags>
     <classes>/WEB-INF/classes</classes>
     <mapping name="cfx_javabluedragonhello">

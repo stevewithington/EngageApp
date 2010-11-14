@@ -44,6 +44,12 @@
 		<cfreturn getEventGateway().getTracksText(arguments.eventID) />
 	</cffunction>
 	
+	<cffunction name="getEventName" access="public" output="false" returntype="string">
+		<cfargument name="eventID" type="string" required="true" />
+		
+		<cfreturn getEventGateway().getEventName(arguments.eventID) />
+	</cffunction>
+	
 	<cffunction name="getEvent" access="public" output="false" returntype="Event">
 		<cfargument name="eventID" type="numeric" required="false" default="0" />
 		

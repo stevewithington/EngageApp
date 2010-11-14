@@ -17,7 +17,7 @@
 	</div>
 </cfif>
 
-<h4>Log in to OpenCF Summit using your Facebook, Twitter, or Google account!</h4>
+<h4>Log in to OpenCF Summit using your Facebook or Twitter account!</h4>
 
 <table border="0">
 	<tr>
@@ -27,68 +27,36 @@
 			<script>
 				window.fbAsyncInit = function() {
 					FB.init({appId: '#getProperty('facebookKeys').applicationID#', 
-										status: true, cookie: true, xfbml: true});
-			  };
-			  (function() {
-			  	var e = document.createElement('script');
-			    e.type = 'text/javascript';
-			    e.src = document.location.protocol + 
-			    	'//connect.facebook.net/en_US/all.js';
-			    e.async = true;
-			     document.getElementById('fb-root').appendChild(e);
-					}());
+								status: true, cookie: true, xfbml: true});
+					FB.Event.subscribe('auth.sessionChange', function(response) {
+						if (response.session) {
+							// user logged in
+							window.location.replace('/index.cfm/postLogin');
+						} else {
+							// user logged out
+							window.location.replace('/index.cfm/login');
+						}
+					});
+				<cfif event.getArg("facebookLogout", false)>
+					FB.logout(function(response) {});
+				</cfif>
+				};
+			  	(function() {
+					var e = document.createElement('script');
+					e.type = 'text/javascript';
+					e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+					e.async = true;
+					document.getElementById('fb-root').appendChild(e);
+				}());
 			</script>
 		</td>
 		<td>
-			<span id="twitterLogin"></span>
-			<script type="text/javascript">
-				twttr.anywhere(function (T) {
-					T("##twitterLogin").connectButton();
-				});
-			</script>
+			<cfif !StructKeyExists(session, "user") || session.user.getOauthProvider() != "Twitter">
+				<a href="#BuildUrl('postLogin', 'loginMethod=Twitter')#"><img src="/images/twitter_login.png" width="146" height="23" border="0" alt="Login With Twitter" title="Login With Twitter" /></a>
+			<cfelse>
+				<a href="#BuildUrl('logout')#"><img src="/images/twitter_logout.png" width="136" height="23" border="0" alt="Logout From Twitter" title="Logout From Twitter" /></a>
+			</cfif>
 		</td>
-		<td>Google</td>
 	</tr>
 </table>
-
-<cfdump var="#cookie#" />
-
-<!---
-<h4>Create an Account on OpenCF Summit</h4>
-
-<p>
-	We strongly encourage you to use your Facebook, Twitter, or 
-	Google account to interact with OpenCF Summit, but if you 
-	prefer you may 
-	<a href="#BuildUrl('userForm')#">create a local account on OpenCF Summit</a>.
-</p>
-
-<h4>Log in With Your OpenCF Summit Account</h4>
-<form:form actionEvent="processLoginForm">
-<table width="100%" border="0">
-	<tr>
-		<td align="right">Email</td>
-		<td><form:input id="email" name="email" size="60" maxlength="255" /></td>
-	</tr>
-	<tr>
-		<td align="right">Password</td>
-		<td><form:password id="password" name="password" size="20" /></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td><form:button id="submit" name="submit" value="Login" /></td>
-	</tr>
-</table>
-</form:form>
---->
-
-<cfif StructKeyExists(cookie, "fbs_#getProperty('facebookKeys').applicationID#")>
-	<cfset cookieVal = cookie["fbs_#getProperty('facebookKeys').applicationID#"] />
-	<cfdump var="#cookieVal#" />
-</cfif>
 </cfoutput>
-
-<!---
-URL TO GET USER PROFILE INFO:
-https://graph.facebook.com/me?access_token={access token from cookie}
---->

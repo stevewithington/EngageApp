@@ -20,15 +20,19 @@
 			</mach-ii>
 		</module>
 	</modules>
-		
+	
 	<!-- PROPERTIES -->
 	<properties>
 		<property name="applicationRoot" value="/" />
-		<property name="defaultEvent" value="admin.home" />
+		<property name="defaultEvent" value="login" />
 		<property name="eventParameter" value="event" />
 		<property name="parameterPrecedence" value="form" />
 		<property name="maxEvents" value="10" />
 		<property name="exceptionEvent" value="exception" />
+		<property name="urlParseSES" value="true" />
+		<property name="urlDelimiters" value="/|/|/" />
+		<property name="urlBase" value="/index.cfm" />
+		<property name="urlExcludeEventParameter" value="true" />
 		
 		<!-- CACHING RELATED -->
 		<!-- this will create an unnamed cache that caches data for 1 hour in the application scope -->
@@ -41,20 +45,28 @@
 
 	<!-- LISTENERS -->
 	<listeners>
+		<listener name="commentListener" type="org.opencfsummit.engage.listeners.CommentListener" />
+		<listener name="categoryListener" type="org.opencfsummit.engage.listeners.CategoryListener" />
 		<listener name="eventListener" type="org.opencfsummit.engage.listeners.EventListener" />
 		<listener name="proposalListener" type="org.opencfsummit.engage.listeners.ProposalListener" />
 		<listener name="roomListener" type="org.opencfsummit.engage.listeners.RoomListener" />
-		<listener name="securityListener" type="org.opencfsummit.engage.listeners.SecurityListener" />
 		<listener name="sessionListener" type="org.opencfsummit.engage.listeners.SessionListener" />
 		<listener name="sessionTypeListener" type="org.opencfsummit.engage.listeners.SessionTypeListener" />
 		<listener name="scheduleItemListener" type="org.opencfsummit.engage.listeners.ScheduleItemListener" />
+		<listener name="topicSuggestionListener" type="org.opencfsummit.engage.listeners.TopicSuggestionListener" />
 		<listener name="trackListener" type="org.opencfsummit.engage.listeners.TrackListener" />
 		<listener name="userListener" type="org.opencfsummit.engage.listeners.UserListener" />
 	</listeners>
+
+	<!-- EVENT-FILTERS -->
+	<event-filters>
+		<event-filter name="proposalFormFilter" type="org.opencfsummit.engage.filters.ProposalFormFilter" />
+	</event-filters>
 	
 	<!-- PLUGINS -->
 	<plugins>
 		<plugin name="eventIDPlugin" type="org.opencfsummit.engage.plugins.EventIDPlugin" />
+		<plugin name="userPlugin" type="org.opencfsummit.engage.plugins.UserPlugin" />
 	</plugins>
 	
 	<!-- EVENT-HANDLERS -->
@@ -64,24 +76,40 @@
 			<execute subroutine="template.main" />
 		</event-handler>
 		
-		<event-handler event="home" access="public">
-			<view-page name="home" contentArg="content" />
-			<execute subroutine="template.main" />
-		</event-handler>
-		
 		<!-- login -->
 		<event-handler event="login" access="public">
 			<view-page name="login" contentArg="content" />
 			<execute subroutine="template.main" />
 		</event-handler>
 		
-		<event-handler event="processLoginForm" access="public">
-			<event-mapping event="fail" mapping="login" />
-			<notify listener="securityListener" method="processLoginForm" />
+		<event-handler event="postLogin" access="public">
+			<notify listener="userListener" method="login" />
 		</event-handler>
-
-		<!-- comment management -->
 		
+		<event-handler event="twitterLoginCallback" access="public">
+			<notify listener="userListener" method="twitterLoginCallback" />
+		</event-handler>
+		
+		<event-handler event="logout" access="public">
+			<notify listener="userListener" method="logout" />
+		</event-handler>
+		
+		<!-- public user events -->
+		<event-handler event="main" access="public">
+			<view-page name="main" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<!-- comment management -->
+		<event-handler event="processCommentForm" access="public">
+			<event-bean name="comment" type="org.opencfsummit.engage.comment.Comment" />
+			<notify listener="commentListener" method="processCommentForm" />
+		</event-handler>
+		
+		<event-handler event="deleteComment" access="public">
+			<event-bean name="comment" type="org.opencfsummit.engage.comment.Comment" />
+			<notify listener="commentListener" method="deleteComment" />
+		</event-handler>
 		
 		<!-- event management -->
 		<event-handler event="admin.events" access="public">
@@ -128,38 +156,65 @@
 		</event-handler>
 		
 		<!-- proposal management -->
-		<event-handler event="admin.proposals" access="public">
-			<event-arg name="includeTableSorter" value="true" />
-			<call-method bean="proposalService" method="getProposals" args="${event.eventID}" resultArg="proposals" />
-			<view-page name="admin.proposals" contentArg="content" />
-			<execute subroutine="template.main" />
-		</event-handler>
-		
-		<event-handler event="admin.proposal" access="public">
-			<call-method bean="proposalService" method="getProposal" args="${event.proposalID}" resultArg="proposal" />
-			<call-method bean="proposalService" method="getProposalStatuses" resultArg="proposalStatuses" />
-			<call-method bean="proposalService" method="getProposalComments" args="${event.proposalID}" resultArg="proposalComments" />
-			<view-page name="admin.proposal" contentArg="content" />
-			<execute subroutine="template.main" />
-		</event-handler>
-		
 		<event-handler event="proposalForm" access="public">
+			<filter name="proposalFormFilter" />
 			<event-arg name="includeCKEditor" value="true" />
 			<call-method bean="proposalService" method="getProposal" args="${event.proposalID:0}" resultArg="proposal" overwrite="false" />
 			<call-method bean="proposalService" method="getProposalStatuses" resultArg="proposalStatuses" />
 			<call-method bean="sessionTypeService" method="getSessionTypes" args="${event.eventID}" resultArg="sessionTypes" />
+			<call-method bean="lookupService" method="getSkillLevels" resultArg="skillLevels" />
 			<call-method bean="trackService" method="getTracks" args="${event.eventID}" resultArg="tracks" />
-			<view-page name="admin.proposalForm" contentArg="content" />
+			<view-page name="proposalForm" contentArg="content" />
 			<execute subroutine="template.main" />
 		</event-handler>
 		
 		<event-handler event="processProposalForm" access="public">
-			<event-mapping event="success" mapping="admin.proposals" />
-			<event-mapping event="fail" mapping="admin.proposalForm" />
+			<event-mapping event="success" mapping="proposalSubmissionConfirmation" />
+			<event-mapping event="fail" mapping="proposalForm" />
 			<event-bean name="proposal" type="org.opencfsummit.engage.proposal.Proposal">
 				<field name="agreedToTerms" ignore="true" />
-			</event-bean>>
+			</event-bean>
 			<notify listener="proposalListener" method="processProposalForm" />
+		</event-handler>
+		
+		<event-handler event="proposalSubmissionConfirmation" access="public">
+			<call-method bean="eventService" method="getEvent" args="${event.eventID}" resultArg="theEvent" />
+			<view-page name="proposalSubmissionConfirmation" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="proposals" access="public">
+			<event-arg name="includeTableSorter" value="true" />
+			<notify listener="proposalListener" method="getProposals" resultArg="proposals" />
+			<notify listener="proposalListener" method="getUserVotes" resultArg="userVotes" />
+			<view-page name="proposals" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="voteForProposal" access="public">
+			<event-mapping event="success" mapping="proposals" />
+			<event-mapping event="fail" mapping="proposals" />
+			<notify listener="proposalListener" method="voteForProposal" />
+		</event-handler>
+		
+		<event-handler event="proposal" access="public">
+			<event-arg name="includeCKEditor" value="true" />
+			<notify listener="commentListener" method="getComments" resultArg="comments" />
+			<call-method bean="commentService" method="getComment" args="${event.commentID:0}" resultArg="comment" overwrite="false" />
+			<call-method bean="proposalService" method="getProposal" args="${event.proposalID}" resultArg="proposal" />
+			<notify listener="proposalListener" method="getUserVotes" resultArg="userVotes" />
+			<call-method bean="proposalService" method="getProposalStatuses" resultArg="proposalStatuses" />
+			<view-page name="commentForm" contentArg="commentForm" />
+			<view-page name="proposal" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="proposalFavorites" access="public">
+			<event-arg name="includeTableSorter" value="true" />
+			<notify listener="proposalListener" method="getProposalFavorites" resultArg="proposals" />
+			<notify listener="proposalListener" method="getUserVotes" resultArg="userVotes" />
+			<view-page name="proposals" contentArg="content" />
+			<execute subroutine="template.main" />
 		</event-handler>
 		
 		<event-handler event="admin.deleteProposal" access="public">
@@ -262,17 +317,6 @@
 			<execute subroutine="template.main" />
 		</event-handler>
 		
-		<!-- <event-handler event="admin.sessionForm" access="public">
-			<event-arg name="includejQuery" value="true" />
-			<call-method bean="sessionService" method="getSession" args="${event.sessionID:0}" resultArg="theSession" overwrite="false" />
-			<call-method bean="eventService" method="getEvent" args="${event.eventID}" resultArg="theEvent" />
-			<call-method bean="proposalService" method="getProposals" args="${event.eventID}" resultArg="proposals" />
-			<call-method bean="proposalService" method="getProposalStatuses" resultArg="proposalStatuses" />
-			<call-method bean="roomService" method="getRooms" args="${event.eventID}" resultArg="rooms" />
-			<view-page name="admin.sessionForm" contentArg="content" />
-			<execute subroutine="template.main" />
-		</event-handler> -->
-		
 		<event-handler event="admin.sessionForm" access="public">
 			<event-arg name="includeTimePicker" value="true" />
 			<call-method bean="sessionService" method="getSession" args="${event.sessionID:0}" resultArg="theSession" overwrite="false" />
@@ -334,8 +378,61 @@
 			<notify listener="sessionTypeListener" method="deleteSessionType" />
 		</event-handler>
 
-		<!-- snippet management -->
+		<!-- topic suggestion management -->
+		<event-handler event="topicSuggestions" access="public">
+			<event-arg name="includeTableSorter" value="true" />
+			<call-method bean="topicSuggestionService" method="getTopicSuggestions" args="${event.eventID}" resultArg="topicSuggestions" />
+			<notify listener="topicSuggestionListener" method="getUserVotes" resultArg="userVotes" />
+			<view-page name="topicSuggestions" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
 		
+		<event-handler event="topicSuggestion" access="public">
+			<event-arg name="includeCKEditor" value="true" />
+			<notify listener="commentListener" method="getComments" resultArg="comments" />
+			<call-method bean="commentService" method="getComment" args="${event.commentID:0}" resultArg="comment" overwrite="false" />
+			<call-method bean="topicSuggestionService" method="getTopicSuggestion" args="${event.topicSuggestionID}" resultArg="topicSuggestion" />
+			<notify listener="topicSuggestionListener" method="getUserVotes" resultArg="userVotes" />
+			<view-page name="commentForm" contentArg="commentForm" />
+			<view-page name="topicSuggestion" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="voteForTopicSuggestion" access="public">
+			<event-mapping event="success" mapping="topicSuggestions" />
+			<event-mapping event="fail" mapping="topicSuggestions" />
+			<notify listener="topicSuggestionListener" method="voteForTopicSuggestion" />
+		</event-handler>
+		
+		<event-handler event="topicSuggestionFavorites" access="public">
+			<event-arg name="includeTableSorter" value="true" />
+			<notify listener="topicSuggestionListener" method="getTopicSuggestionFavorites" resultArg="topicSuggestions" />
+			<view-page name="topicSuggestionFavorites" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+
+		<event-handler event="topicSuggestionForm" access="public">
+			<event-arg name="includeCKEditor" value="true" />
+			<call-method bean="topicSuggestionService" method="getTopicSuggestion" args="${event.topicSuggestionID:0}" 
+							resultArg="topicSuggestion" overwrite="false" />
+			<!-- <call-method bean="categoryService" method="getCategories" args="${event.eventID}" resultArg="categories" /> -->
+			<view-page name="topicSuggestionForm" contentArg="content" />
+			<execute subroutine="template.main" />
+		</event-handler>
+		
+		<event-handler event="processTopicSuggestionForm" access="public">
+			<event-mapping event="success" mapping="topicSuggestions" />
+			<event-mapping event="fail" mapping="topicSuggestionForm" />
+			<event-bean name="topicSuggestion" type="org.opencfsummit.engage.topicsuggestion.TopicSuggestion" />
+			<notify listener="topicSuggestionListener" method="processTopicSuggestionForm" />
+		</event-handler>
+		
+		<event-hander event="deleteTopicSuggestion" access="public">
+			<event-mapping event="success" mapping="topicSuggestions" />
+			<event-mapping event="fail" mapping="topicSuggestions" />
+			<event-bean name="topicSuggestion" type="org.opencfsummit.engage.topicsuggestion.TopicSuggestion" />
+			<notify listener="topicSuggestionListener" method="deleteTopicSuggestion" />
+		</event-hander>
 		
 		<!-- track management -->
 		<event-handler event="admin.tracks" access="public">

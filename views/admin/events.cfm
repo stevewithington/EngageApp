@@ -41,19 +41,19 @@
 					</cfif>
 				</td>
 				<td>
-					<a href="#BuildUrl('admin.event', 'eventID=#events.event_id#')#"><img src="images/icons/page.png" width="16" height="16" border="0" alt="Show Event" title="Show Event"></a>&nbsp;
+					<a href="#BuildUrl('admin.event', 'eventID=#events.event_id#')#"><img src="/images/icons/page.png" width="16" height="16" border="0" alt="Show Event" title="Show Event"></a>&nbsp;
 					<a href="#BuildUrl('admin.event', 'eventID=#events.event_id#')#">Show</a>
 				</td>
 				<td>
-					<a href="#BuildUrl('admin.proposals', 'eventID=#events.event_id#')#"><img src="images/icons/page_white_stack.png" width="16" height="16" border="0" alt="Event Proposals" title="Event Proposals"></a>&nbsp;
+					<a href="#BuildUrl('admin.proposals', 'eventID=#events.event_id#')#"><img src="/images/icons/page_white_stack.png" width="16" height="16" border="0" alt="Event Proposals" title="Event Proposals"></a>&nbsp;
 					<a href="#BuildUrl('admin.proposals', 'eventID=#events.event_id#')#">Proposals</a>
 				</td>
 				<td>
-					<a href="#BuildUrl('admin.eventForm', 'eventID=#events.event_id#')#"><img src="images/icons/page_edit.png" width="16" height="16" border="0" alt="Edit Event" title="Edit Event"></a>&nbsp;
+					<a href="#BuildUrl('admin.eventForm', 'eventID=#events.event_id#')#"><img src="/images/icons/page_edit.png" width="16" height="16" border="0" alt="Edit Event" title="Edit Event"></a>&nbsp;
 					<a href="#BuildUrl('admin.eventForm', 'eventID=#events.event_id#')#">Edit</a>
 				</td>
 				<td>
-					<a href="#BuildUrl('admin.deleteEvent', 'eventID=#events.event_id#')#"><img src="images/icons/delete.png" width="16" height="16" border="0" alt="Destroy Event" title="Destroy Event"></a>&nbsp;
+					<a href="#BuildUrl('admin.deleteEvent', 'eventID=#events.event_id#')#"><img src="/images/icons/delete.png" width="16" height="16" border="0" alt="Destroy Event" title="Destroy Event"></a>&nbsp;
 					<a href="#BuildUrl('admin.deleteEvent', 'eventID=#events.event_id#')#">Destroy</a>
 				</td>
 			</tr>
@@ -63,7 +63,7 @@
 </cfif>
 
 <p>
-	<a href="#BuildUrl('admin.eventForm')#"><img src="images/icons/add.png" border="0" width="16" height="16" alt="Add Event" title="Add Event" /></a>&nbsp;
+	<a href="#BuildUrl('admin.eventForm')#"><img src="/images/icons/add.png" border="0" width="16" height="16" alt="Add Event" title="Add Event" /></a>&nbsp;
 	<a href="#BuildUrl('admin.eventForm')#">Add Event</a>
 </p>
 </cfoutput>

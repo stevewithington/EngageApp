@@ -22,15 +22,17 @@
 		<cfreturn getUserGateway().getUsers() />
 	</cffunction>
 	
-	<cffunction name="getUser" access="public" output="false" returntype="User">
-		<cfargument name="userID" type="numeric" required="false" default="0" />
+	<cffunction name="userExists" access="public" output="false" returntype="boolean">
+		<cfargument name="oauthUID" type="string" required="true" />
+		<cfargument name="oauthProvider" type="string" required="true" />
 		
-		<cfset var user = getUserBean() />
-		
-		<cfset user.setUserID(arguments.userID) />
-		<cfset getUserGateway().fetch(user) />
-		
-		<cfreturn user />
+		<cfreturn getUserGateway().userExists(arguments.oauthUID, arguments.oauthProvider) />
+	</cffunction>
+	
+	<cffunction name="getUser" access="public" output="false" returntype="void">
+		<cfargument name="user" type="User" required="true" />
+
+		<cfset getUserGateway().fetch(arguments.user) />
 	</cffunction>
 	
 	<cffunction name="saveUser" access="public" output="false" returntype="void">

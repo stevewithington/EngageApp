@@ -30,6 +30,10 @@ body {
 	border-bottom: 2px solid #cccccc;
 }
 
+.smaller {
+	font: 80%/1.25em Arial, Helvetica, sans-serif;
+}
+
 .success {
 	padding: 10px;
 	border: 1px solid #009933;

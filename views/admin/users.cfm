@@ -24,8 +24,7 @@
 		<thead>
 			<tr>
 				<th>Email</th>
-				<th>Last Name</th>
-				<th>First Name</th>
+				<th>Name</th>
 				<th>OAuth Provider</th>
 				<th>Admin</th>
 				<th>Active</th>
@@ -35,27 +34,22 @@
 		<cfloop query="users">
 			<tr>
 				<td>
-					<a href="#BuildUrl('userForm', 'userID=#users.user_id#')#">#users.email#</a>
+					<cfif users.email neq "">
+						<a href="#BuildUrl('userForm', 'userID=#users.user_id#')#">#users.email#</a>
+					<cfelse>
+						<a href="#BuildUrl('userForm', 'userID=#users.user_id#')#">(twitter user)</a>
+					</cfif>
 				</td>
-				<td>#users.last_name#</td>
-				<td>#users.first_name#</td>
+				<td>#users.name#</td>
 				<td>
 					<cfswitch expression="#LCase(users.oauth_provider)#">
 						<cfcase value="facebook">
-							<img src="images/facebook_icon_small.jpg" width="16" height="16" alt="Facebook" title="Facebook" />
-						</cfcase>
-						
-						<cfcase value="google">
-							<img src="images/google_account_icon.jpg" width="16" height="16" alt="Google" title="Google" />
+							<img src="/images/facebook_icon_small.jpg" width="16" height="16" alt="Facebook" title="Facebook" />
 						</cfcase>
 						
 						<cfcase value="twitter">
-							<img src="images/twitter_logo_small.png" width="16" height="16" alt="Twitter" title="Twitter" />
+							<img src="/images/twitter_logo_small.png" width="16" height="16" alt="Twitter" title="Twitter" />
 						</cfcase>
-						
-						<cfdefaultcase>
-							<em>none (local account)</em>
-						</cfdefaultcase>
 					</cfswitch>
 				</td>
 				<td>#YesNoFormat(users.is_admin)#</td>
@@ -65,9 +59,4 @@
 		</tbody>
 	</table>
 </cfif>
-
-<p>
-	<a href="#BuildUrl('userForm')#"><img src="images/icons/add.png" border="0" width="16" height="16" alt="Add User" title="Add User" /></a>&nbsp;
-	<a href="#BuildUrl('userForm')#">Add User</a>
-</p>
 </cfoutput>

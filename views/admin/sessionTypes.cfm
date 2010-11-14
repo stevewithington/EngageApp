@@ -33,11 +33,11 @@
 					<table>
 						<tr>
 							<td>
-								<a href="#BuildUrl('admin.sessionTypeForm', 'sessionTypeID=#sessionTypes.session_type_id#')#"><img src="images/icons/page_edit.png" width="16" height="16" border="0" alt="Edit Session Type" title="Edit Session Type"></a>&nbsp;
+								<a href="#BuildUrl('admin.sessionTypeForm', 'sessionTypeID=#sessionTypes.session_type_id#')#"><img src="/images/icons/page_edit.png" width="16" height="16" border="0" alt="Edit Session Type" title="Edit Session Type"></a>&nbsp;
 								<a href="#BuildUrl('admin.sessionTypeForm', 'sessionTypeID=#sessionTypes.session_type_id#')#">Edit</a>
 							</td>
 							<td>
-								<a href="#BuildUrl('admin.deleteSessionType', 'sessionTypeID=#sessionTypes.session_type_id#')#"><img src="images/icons/delete.png" width="16" height="16" border="0" alt="Destroy Session Type" title="Destroy Session Type"></a>&nbsp;
+								<a href="#BuildUrl('admin.deleteSessionType', 'sessionTypeID=#sessionTypes.session_type_id#')#"><img src="/images/icons/delete.png" width="16" height="16" border="0" alt="Destroy Session Type" title="Destroy Session Type"></a>&nbsp;
 								<a href="#BuildUrl('admin.deleteSessionType', 'sessionTypeID=#sessionTypes.session_type_id#')#">Destroy</a>
 							</td>
 						</tr>
@@ -50,7 +50,7 @@
 </cfif>
 
 <p>
-	<a href="#BuildUrl('admin.sessionTypeForm')#"><img src="images/icons/add.png" border="0" width="16" height="16" alt="Add Session Type" title="Add Session Type" /></a>&nbsp;
+	<a href="#BuildUrl('admin.sessionTypeForm')#"><img src="/images/icons/add.png" border="0" width="16" height="16" alt="Add Session Type" title="Add Session Type" /></a>&nbsp;
 	<a href="#BuildUrl('admin.sessionTypeForm')#">Add Session Type</a>
 </p>
 </cfoutput>

@@ -12,17 +12,14 @@ Create cfproperties: false
 Bean Template:
 	userID numeric 0
 	email string 
-	password string 
-	passwordSalt string 
-	firstName string
-	lastName string
+	name string
 	oauthProvider string 
 	oauthUID string 
+	oauthProfileLink string
+	userInfo struct #StructNew()#
+	isRegistered boolean false
 	isAdmin boolean false
 	dtCreated date #CreateDateTime(1900,1,1,0,0,0)#
-	dtUpdated date #CreateDateTime(1900,1,1,0,0,0)#
-	createdBy numeric 0
-	updatedBy numeric 0
 	isActive boolean false
 Create getMemento method: false
 Create setMemento method: false
@@ -43,33 +40,27 @@ Date Format:
 	<cffunction name="init" access="public" returntype="User" output="false">
 		<cfargument name="userID" type="numeric" required="false" default="0" />
 		<cfargument name="email" type="string" required="false" default="" />
-		<cfargument name="password" type="string" required="false" default="" />
-		<cfargument name="passwordSalt" type="string" required="false" default="" />
-		<cfargument name="firstName" type="string" required="false" default="" />
-		<cfargument name="lastName" type="string" required="false" default="" />
+		<cfargument name="name" type="string" required="false" default="" />
 		<cfargument name="oauthProvider" type="string" required="false" default="" />
 		<cfargument name="oauthUID" type="string" required="false" default="" />
+		<cfargument name="oauthProfileLink" type="string" required="false" default="" />
+		<cfargument name="userInfo" type="struct" required="false" default="#StructNew()#" />
+		<cfargument name="isRegistered" type="boolean" required="false" default="false" />
 		<cfargument name="isAdmin" type="boolean" required="false" default="false" />
 		<cfargument name="dtCreated" type="date" required="false" default="#CreateDateTime(1900,1,1,0,0,0)#" />
-		<cfargument name="dtUpdated" type="date" required="false" default="#CreateDateTime(1900,1,1,0,0,0)#" />
-		<cfargument name="createdBy" type="numeric" required="false" default="0" />
-		<cfargument name="updatedBy" type="numeric" required="false" default="0" />
 		<cfargument name="isActive" type="boolean" required="false" default="false" />
 
 		<!--- run setters --->
 		<cfset setUserID(arguments.userID) />
 		<cfset setEmail(arguments.email) />
-		<cfset setPassword(arguments.password) />
-		<cfset setPasswordSalt(arguments.passwordSalt) />
-		<cfset setFirstName(arguments.firstName) />
-		<cfset setLastName(arguments.lastName) />
+		<cfset setName(arguments.name) />
 		<cfset setOauthProvider(arguments.oauthProvider) />
 		<cfset setOauthUID(arguments.oauthUID) />
+		<cfset setOauthProfileLink(arguments.oauthProfileLink) />
+		<cfset setUserInfo(arguments.userInfo) />
+		<cfset setIsRegistered(arguments.isRegistered) />
 		<cfset setIsAdmin(arguments.isAdmin) />
 		<cfset setDtCreated(arguments.dtCreated) />
-		<cfset setDtUpdated(arguments.dtUpdated) />
-		<cfset setCreatedBy(arguments.createdBy) />
-		<cfset setUpdatedBy(arguments.updatedBy) />
 		<cfset setIsActive(arguments.isActive) />
 
 		<cfreturn this />
@@ -94,36 +85,12 @@ Date Format:
 		<cfreturn variables.instance.email />
 	</cffunction>
 
-	<cffunction name="setPassword" access="public" returntype="void" output="false">
-		<cfargument name="password" type="string" required="true" />
-		<cfset variables.instance.password = trim(arguments.password) />
+	<cffunction name="setName" access="public" returntype="void" output="false">
+		<cfargument name="name" type="string" required="true" />
+		<cfset variables.instance.name = trim(arguments.name) />
 	</cffunction>
-	<cffunction name="getPassword" access="public" returntype="string" output="false">
-		<cfreturn variables.instance.password />
-	</cffunction>
-
-	<cffunction name="setPasswordSalt" access="public" returntype="void" output="false">
-		<cfargument name="passwordSalt" type="string" required="true" />
-		<cfset variables.instance.passwordSalt = trim(arguments.passwordSalt) />
-	</cffunction>
-	<cffunction name="getPasswordSalt" access="public" returntype="string" output="false">
-		<cfreturn variables.instance.passwordSalt />
-	</cffunction>
-
-	<cffunction name="setFirstName" access="public" returntype="void" output="false">
-		<cfargument name="firstName" type="string" required="true" />
-		<cfset variables.instance.firstName = trim(arguments.firstName) />
-	</cffunction>
-	<cffunction name="getFirstName" access="public" returntype="string" output="false">
-		<cfreturn variables.instance.firstName />
-	</cffunction>
-
-	<cffunction name="setLastName" access="public" returntype="void" output="false">
-		<cfargument name="lastName" type="string" required="true" />
-		<cfset variables.instance.lastName = trim(arguments.lastName) />
-	</cffunction>
-	<cffunction name="getLastName" access="public" returntype="string" output="false">
-		<cfreturn variables.instance.lastName />
+	<cffunction name="getName" access="public" returntype="string" output="false">
+		<cfreturn variables.instance.name />
 	</cffunction>
 
 	<cffunction name="setOauthProvider" access="public" returntype="void" output="false">
@@ -142,6 +109,30 @@ Date Format:
 		<cfreturn variables.instance.oauthUID />
 	</cffunction>
 
+	<cffunction name="setOauthProfileLink" access="public" returntype="void" output="false">
+		<cfargument name="oauthProfileLink" type="string" required="true" />
+		<cfset variables.instance.oauthProfileLink = trim(arguments.oauthProfileLink) />
+	</cffunction>
+	<cffunction name="getOauthProfileLink" access="public" returntype="string" output="false">
+		<cfreturn variables.instance.oauthProfileLink />
+	</cffunction>
+
+	<cffunction name="setUserInfo" access="public" returntype="void" output="false">
+		<cfargument name="userInfo" type="struct" required="true" />
+		<cfset variables.instance.userInfo = arguments.userInfo />
+	</cffunction>
+	<cffunction name="getUserInfo" access="public" returntype="struct" output="false">
+		<cfreturn variables.instance.userInfo />
+	</cffunction>
+
+	<cffunction name="setIsRegistered" access="public" returntype="void" output="false">
+		<cfargument name="isRegistered" type="boolean" required="true" />
+		<cfset variables.instance.isRegistered = arguments.isRegistered />
+	</cffunction>
+	<cffunction name="getIsRegistered" access="public" returntype="boolean" output="false">
+		<cfreturn variables.instance.isRegistered />
+	</cffunction>
+
 	<cffunction name="setIsAdmin" access="public" returntype="void" output="false">
 		<cfargument name="isAdmin" type="boolean" required="true" />
 		<cfset variables.instance.isAdmin = arguments.isAdmin />
@@ -158,30 +149,6 @@ Date Format:
 		<cfreturn variables.instance.dtCreated />
 	</cffunction>
 
-	<cffunction name="setDtUpdated" access="public" returntype="void" output="false">
-		<cfargument name="dtUpdated" type="date" required="true" />
-		<cfset variables.instance.dtUpdated = arguments.dtUpdated />
-	</cffunction>
-	<cffunction name="getDtUpdated" access="public" returntype="date" output="false">
-		<cfreturn variables.instance.dtUpdated />
-	</cffunction>
-
-	<cffunction name="setCreatedBy" access="public" returntype="void" output="false">
-		<cfargument name="createdBy" type="numeric" required="true" />
-		<cfset variables.instance.createdBy = arguments.createdBy />
-	</cffunction>
-	<cffunction name="getCreatedBy" access="public" returntype="numeric" output="false">
-		<cfreturn variables.instance.createdBy />
-	</cffunction>
-
-	<cffunction name="setUpdatedBy" access="public" returntype="void" output="false">
-		<cfargument name="updatedBy" type="numeric" required="true" />
-		<cfset variables.instance.updatedBy = arguments.updatedBy />
-	</cffunction>
-	<cffunction name="getUpdatedBy" access="public" returntype="numeric" output="false">
-		<cfreturn variables.instance.updatedBy />
-	</cffunction>
-
 	<cffunction name="setIsActive" access="public" returntype="void" output="false">
 		<cfargument name="isActive" type="boolean" required="true" />
 		<cfset variables.instance.isActive = arguments.isActive />
@@ -193,21 +160,16 @@ Date Format:
 	<cffunction name="validate" access="public" returntype="struct" output="false">
 		<cfset var errors = StructNew() />
 		
-		<cfif trim(getEmail()) eq "" 
-				or not IsValid('email', getEmail())>
-			<cfset errors.email = "A valid email is required" />
+		<cfif Len(Trim(getOauthProvider())) eq 0>
+			<cfset errors.oauthProvider = "An OAuth provider is required" />
 		</cfif>
 		
-		<cfif Len(Trim(getEmail())) gt 255>
-			<cfset errors.email = "Email is limited to 255 characters" />
+		<cfif Len(Trim(getOauthUID)) eq 0>
+			<cfset errors.oauthUID = "An OAuth UID is required" />
 		</cfif>
 		
-		<cfif Len(Trim(getFirstName())) gt 100>
-			<cfset errors.firstName = "First name is limited to 100 characters" />
-		</cfif>
-		
-		<cfif Len(Trim(getLastName())) gt 100>
-			<cfset errors.lastName = "Last name is limited to 100 characters" />
+		<cfif Len(Trim(getOauthProfileLink)) eq 0>
+			<cfset errors.oauthProfileLink = "An OAuth Profile Link is required" />
 		</cfif>
 		
 		<cfreturn errors />

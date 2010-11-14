@@ -14,7 +14,7 @@
 <p>#theSession.getProposal().getDescription()#</p>
 
 <p>
-	<a href=""><img src="images/icons/arrow_turn_left.png" border="0" width="16" height="16" alt="Sessions" title="Sessions" /></a>&nbsp;
+	<a href=""><img src="/images/icons/arrow_turn_left.png" border="0" width="16" height="16" alt="Sessions" title="Sessions" /></a>&nbsp;
 	<a href="">Back to list of sessions</a>
 </p>
 
@@ -44,7 +44,7 @@
 	</tr>
 	<tr>
 		<td>
-			<a href="#BuildUrl('sessionNotes', 'sessionID=#theSession.getSessionID()#')#"><img src="images/icons/page_white_text.png" border="0" width="16" height="16" alt="Session Notes" title="Session Notes" /></a>&nbsp;
+			<a href="#BuildUrl('sessionNotes', 'sessionID=#theSession.getSessionID()#')#"><img src="/images/icons/page_white_text.png" border="0" width="16" height="16" alt="Session Notes" title="Session Notes" /></a>&nbsp;
 			<a href="#BuildUrl('sessionNotes', 'sessionID=#theSession.getSessionID()#')#">Session notes</a>
 		</td>
 	</tr>

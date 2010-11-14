@@ -6,17 +6,27 @@
 	<properties>
 		<!-- datasource -->
 		<property name="dsn" value="engage" />
+		<!-- site URL -->
+		<property name="siteURL" value="http://engage.local" />
+		<!-- public events -->
+		<property name="publicEvents" value="login,postLogin,twitterLoginCallback,main,logout,proposals,proposal,topicSuggestions,topicSuggestion,bugs" />
 		<!-- social media app ids -->
 		<property name="facebookKeys">
 			<struct>
-				<key name="applicationID" value="126467240741315" />
-				<key name="apiKey" value="28d966399093b81a06f213b62377cbbc" />
-				<key name="applicationSecret" value="80a269261d633367e10d8a91aae5e207" />
+				<key name="applicationID" value="" />
+				<key name="apiKey" value="" />
+				<key name="applicationSecret" value="" />
 			</struct>
 		</property>
 		<property name="twitterKeys">
 			<struct>
-				<key name="apiKey" value="eaqzhqgCW94zX5GeKrUiQ" />
+				<key name="apiKey" value="" />
+				<key name="consumerKey" value="" />
+				<key name="consumerSecret" value="" />
+				<key name="requestTokenURL" value="https://api.twitter.com/oauth/request_token" />
+				<key name="accessTokenURL" value="https://api.twitter.com/oauth/access_token" />
+				<key name="authorizeURL" value="https://api.twitter.com/oauth/authorize" />
+				<key name="oauthCallbackURL" value="http://engage.local/index.cfm?event=twitterLoginCallback" />
 			</struct>
 		</property>
 	</properties>

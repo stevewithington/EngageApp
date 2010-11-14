@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <beans>
+	<!-- CATEGORY -->
+	<bean id="categoryGateway" class="org.opencfsummit.engage.category.CategoryGateway">
+		<property name="dsn"><value>${dsn}</value></property>
+	</bean>
+	
+	<bean id="categoryService" class="org.opencfsummit.engage.category.CategoryService">
+		<property name="categoryGateway"><ref bean="categoryGateway" /></property>
+	</bean>
+	
+	<!-- COMMENT -->
+	<bean id="commentGateway" class="org.opencfsummit.engage.comment.CommentGateway">
+		<property name="dsn"><value>${dsn}</value></property>
+	</bean>
+	
+	<bean id="commentService" class="org.opencfsummit.engage.comment.CommentService">
+		<property name="commentGateway"><ref bean="commentGateway" /></property>
+	</bean>
+	
 	<!-- EVENT -->
 	<bean id="eventGateway" class="org.opencfsummit.engage.event.EventGateway">
 		<property name="dsn"><value>${dsn}</value></property>
@@ -8,6 +26,15 @@
 	
 	<bean id="eventService" class="org.opencfsummit.engage.event.EventService">
 		<property name="eventGateway"><ref bean="eventGateway" /></property>
+	</bean>
+	
+	<!-- LOOKUP -->
+	<bean id="lookupGateway" class="org.opencfsummit.engage.lookup.LookupGateway">
+		<property name="dsn"><value>${dsn}</value></property>
+	</bean>
+	
+	<bean id="lookupService" class="org.opencfsummit.engage.lookup.LookupService">
+		<property name="lookupGateway"><ref bean="lookupGateway" /></property>
 	</bean>
 	
 	<!-- PROPOSAL -->
@@ -63,6 +90,15 @@
 	
 	<bean id="sessionTypeService" class="org.opencfsummit.engage.sessiontype.SessionTypeService">
 		<property name="sessionTypeGateway"><ref bean="sessionTypeGateway" /></property>
+	</bean>
+	
+	<!-- TOPIC SUGGESTION -->
+	<bean id="topicSuggestionGateway" class="org.opencfsummit.engage.topicsuggestion.TopicSuggestionGateway">
+		<property name="dsn"><value>${dsn}</value></property>
+	</bean>
+	
+	<bean id="topicSuggestionService" class="org.opencfsummit.engage.topicsuggestion.TopicSuggestionService">
+		<property name="topicSuggestionGateway"><ref bean="topicSuggestionGateway" /></property>
 	</bean>
 	
 	<!-- TRACK -->

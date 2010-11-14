@@ -45,7 +45,7 @@
 </cfif>
 
 <p>
-	<a href="#BuildUrl('admin.sessionForm')#"><img src="images/icons/add.png" border="0" width="16" height="16" alt="Add Session" title="Add Session" /></a>&nbsp;
+	<a href="#BuildUrl('admin.sessionForm')#"><img src="/images/icons/add.png" border="0" width="16" height="16" alt="Add Session" title="Add Session" /></a>&nbsp;
 	<a href="#BuildUrl('admin.sessionForm')#">Add Session</a>
 </p>
 

@@ -33,11 +33,11 @@
 <table border="0">
 	<tr>
 		<td>
-			<a href="#BuildUrl('admin.scheduleItemForm', 'scheduleItemID=#scheduleItem.getScheduleItemID()#')#"><img src="images/icons/page_edit.png" width="16" height="16" border="0" alt="Edit Schedule Item" title="Edit Schedule Item"></a>&nbsp;
+			<a href="#BuildUrl('admin.scheduleItemForm', 'scheduleItemID=#scheduleItem.getScheduleItemID()#')#"><img src="/images/icons/page_edit.png" width="16" height="16" border="0" alt="Edit Schedule Item" title="Edit Schedule Item"></a>&nbsp;
 			<a href="#BuildUrl('admin.scheduleItemForm', 'scheduleItemID=#scheduleItem.getScheduleItemID()#')#">Edit</a>
 		</td>
 		<td>
-			<a href="#BuildUrl('admin.scheduleItemForm')#"><img src="images/icons/add.png" border="0" width="16" height="16" alt="Add Schedule Item" title="Add Schedule Item" /></a>&nbsp;
+			<a href="#BuildUrl('admin.scheduleItemForm')#"><img src="/images/icons/add.png" border="0" width="16" height="16" alt="Add Schedule Item" title="Add Schedule Item" /></a>&nbsp;
 			<a href="#BuildUrl('admin.scheduleIdescriptemForm')#">Add Schedule Item</a>
 		</td>
 	</tr>

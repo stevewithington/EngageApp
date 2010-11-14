@@ -94,6 +94,20 @@
 		<cfreturn eventID />
 	</cffunction>
 	
+	<cffunction name="getEventName" access="public" output="false" returntype="string">
+		<cfargument name="eventID" type="numeric" required="true" />
+		
+		<cfset var getName = 0 />
+		
+		<cfquery name="getName" datasource="#getDSN()#">
+			SELECT 	title 
+			FROM 	event 
+			WHERE 	event_id = <cfqueryparam value="#arguments.eventID#" cfsqltype="cf_sql_integer" />
+		</cfquery>
+		
+		<cfreturn getName.title />
+	</cffunction>
+	
 	<!--- CRUD --->
 	<cffunction name="fetch" access="public" output="false" returntype="void">
 		<cfargument name="theEvent" type="Event" required="true" />

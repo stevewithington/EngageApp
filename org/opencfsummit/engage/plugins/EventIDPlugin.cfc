@@ -20,7 +20,8 @@
 			<cfelseif StructKeyExists(session, "eventID")>
 				<cfset arguments.eventContext.getCurrentEvent().setArg("eventID", session.eventID) />
 			<cfelse>
-				<cfset arguments.eventContext.getCurrentEvent().setArg("eventID", 0) />
+				<cfset session.eventID = getEventService().getLatestEventID() />
+				<cfset arguments.eventContext.getCurrentEvent().setArg("eventID", session.eventID) />
 			</cfif>
 		</cfif>
 	</cffunction>

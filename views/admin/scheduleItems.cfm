@@ -35,11 +35,11 @@
 				</td>
 				<td>#scheduleItems.duration#</td>
 				<td>
-					<a href="#BuildUrl('admin.scheduleItemForm', 'scheduleItemID=#scheduleItems.schedule_item_id#')#"><img src="images/icons/page_edit.png" width="16" height="16" border="0" alt="Edit Schedule Item" title="Edit Schedule Item"></a>&nbsp;
+					<a href="#BuildUrl('admin.scheduleItemForm', 'scheduleItemID=#scheduleItems.schedule_item_id#')#"><img src="/images/icons/page_edit.png" width="16" height="16" border="0" alt="Edit Schedule Item" title="Edit Schedule Item"></a>&nbsp;
 					<a href="#BuildUrl('admin.scheduleItemForm', 'scheduleItemID=#scheduleItems.schedule_item_id#')#">Edit</a>
 				</td>
 				<td>
-					<a href="#BuildUrl('admin.deleteScheduleItem', 'scheduleItemID=#scheduleItems.schedule_item_id#')#"><img src="images/icons/delete.png" width="16" height="16" border="0" alt="Destroy Schedule Item" title="Destroy Schedule Item"></a>&nbsp;
+					<a href="#BuildUrl('admin.deleteScheduleItem', 'scheduleItemID=#scheduleItems.schedule_item_id#')#"><img src="/images/icons/delete.png" width="16" height="16" border="0" alt="Destroy Schedule Item" title="Destroy Schedule Item"></a>&nbsp;
 					<a href="#BuildUrl('admin.deleteScheduleItem', 'scheduleItemID=#scheduleItems.schedule_item_id#')#">Destroy</a>
 				</td>
 			</tr>
@@ -49,7 +49,7 @@
 </cfif>
 
 <p>
-	<a href="#BuildUrl('admin.scheduleItemForm')#"><img src="images/icons/add.png" border="0" width="16" height="16" alt="Add Schedule Item" title="Add Schedule Item" /></a>&nbsp;
+	<a href="#BuildUrl('admin.scheduleItemForm')#"><img src="/images/icons/add.png" border="0" width="16" height="16" alt="Add Schedule Item" title="Add Schedule Item" /></a>&nbsp;
 	<a href="#BuildUrl('admin.scheduleItemForm')#">Add Schedule Item</a>
 </p>
 </cfoutput>

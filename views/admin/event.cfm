@@ -80,15 +80,15 @@
 			<table border="0">
 				<tr>
 					<td>
-						<a href="#BuildUrl('admin.proposals', 'eventID=#theEvent.getEventID()#')#"><img src="images/icons/page_white_stack.png" border="0" width="16" height="16" alt="Proposals" title="Proposals" /></a>&nbsp;
+						<a href="#BuildUrl('admin.proposals', 'eventID=#theEvent.getEventID()#')#"><img src="/images/icons/page_white_stack.png" border="0" width="16" height="16" alt="Proposals" title="Proposals" /></a>&nbsp;
 						<a href="#BuildUrl('admin.proposals', 'eventID=#theEvent.getEventID()#')#">Proposals</a>
 					</td>
 					<td>
-						<a href="#BuildUrl('admin.eventForm', 'eventID=#theEvent.getEventID()#')#"><img src="images/icons/page_edit.png" border="0" width="16" height="16" alt="Edit Event" title="Edit Event" /></a>&nbsp;
+						<a href="#BuildUrl('admin.eventForm', 'eventID=#theEvent.getEventID()#')#"><img src="/images/icons/page_edit.png" border="0" width="16" height="16" alt="Edit Event" title="Edit Event" /></a>&nbsp;
 						<a href="#BuildUrl('admin.eventForm', 'eventID=#theEvent.getEventID()#')#">Edit</a>
 					</td>
 					<td>
-						<a href="#BuildUrl('admin.deleteEvent', 'eventID=#theEvent.getEventID()#')#"><img src="images/icons/delete.png" border="0" width="16" height="16" alt="Delete Event" title="Delete Event" /></a>&nbsp;
+						<a href="#BuildUrl('admin.deleteEvent', 'eventID=#theEvent.getEventID()#')#"><img src="/images/icons/delete.png" border="0" width="16" height="16" alt="Delete Event" title="Delete Event" /></a>&nbsp;
 						<a href="#BuildUrl('admin.deleteEvent', 'eventID=#theEvent.getEventID()#')#">Destroy</a>
 					</td>
 				</tr>
