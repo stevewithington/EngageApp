@@ -26,7 +26,7 @@
 <table width="100%" border="0">
 	<tr>
 		<td align="right">Topic</td>
-		<td><form:input path="topic" size="60" maxlength="500" /></td>
+		<td><form:input path="topic" size="50" maxlength="500" /></td>
 	</tr>
 	<tr>
 		<td colspan="2">Description</td>
@@ -45,7 +45,7 @@
 	</cfif>
 	<tr>
 		<td align="right">Suggested Speaker</td>
-		<td><form:input path="suggestedSpeaker" size="60" maxlength="500" /></td>
+		<td><form:input path="suggestedSpeaker" size="50" maxlength="500" /></td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>

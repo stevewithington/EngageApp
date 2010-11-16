@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- <cfsetting enablecfoutputonly="true" /> -->
 <!DOCTYPE mach-ii PUBLIC "-//Mach-II//DTD Mach-II Configuration 1.9.0//EN"
 	"http://www.mach-ii.com/dtds/mach-ii_1_9_0.dtd" >
 

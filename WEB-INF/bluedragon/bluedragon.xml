@@ -9,12 +9,12 @@
     <missingtemplatehandler></missingtemplatehandler>
     <lastfile>/home/mwoodward/tomcat/webapps/opencfsummitware/WEB-INF/bluedragon/bluedragon.xml.bak.1</lastfile>
     <errorhandler></errorhandler>
-    <password>admin</password>
+    <password>0p3ncF5vmm!7</password>
     <tempdirectory>/WEB-INF/bluedragon/work/temp</tempdirectory>
     <buffersize>0</buffersize>
     <deniedips></deniedips>
     <allowedips></allowedips>
-    <lastupdated>13/Nov/2010 08:57.35</lastupdated>
+    <lastupdated>14/Nov/2010 19:57.45</lastupdated>
     <defaultcharset>utf-8</defaultcharset>
   </system>
   <file>
@@ -149,7 +149,7 @@
   </cfquery>
   <openbdadminapi>
     <version>1.4</version>
-    <lastupdated>04/Oct/2010 15:29:21</lastupdated>
+    <lastupdated>14/Nov/2010 08:03:26</lastupdated>
   </openbdadminapi>
   <cfapplication>
     <enabled>true</enabled>

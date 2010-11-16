@@ -13,6 +13,8 @@
 	<cfset this.setDomainCookies = false />
 	<cfset this.sessionTimeOut = CreateTimeSpan(0,1,0,0) />
 	<cfset this.applicationTimeOut = CreateTimeSpan(1,0,0,0) />
+	
+	<cfset MACHII_CONFIG_PATH = ExpandPath('./config/mach-ii.xml.cfm') />
 
 	<!---
 		Most of the rest of the properties, methods, etc. have "intelligent defaults" 

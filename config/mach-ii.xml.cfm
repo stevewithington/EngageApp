@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!-- <cfsetting enablecfoutputonly="true" /> -->
 <!DOCTYPE mach-ii PUBLIC "-//Mach-II//DTD Mach-II Configuration 1.9.0//EN"
 	"http://www.mach-ii.com/dtds/mach-ii_1_9_0.dtd" >
 
 <mach-ii version="1.9">
 	<!-- INCLUDES -->
 	<includes>
-		<include file="./mach-ii_coldspringProperty.xml" />
-		<include file="./properties.xml" />
+		<include file="./mach-ii_coldspringProperty.xml.cfm" />
+		<include file="./properties.xml.cfm" />
 	</includes>
 
 	<!-- MODULES -->
@@ -24,7 +24,7 @@
 	<!-- PROPERTIES -->
 	<properties>
 		<property name="applicationRoot" value="/" />
-		<property name="defaultEvent" value="login" />
+		<property name="defaultEvent" value="main" />
 		<property name="eventParameter" value="event" />
 		<property name="parameterPrecedence" value="form" />
 		<property name="maxEvents" value="10" />
@@ -61,6 +61,7 @@
 	<!-- EVENT-FILTERS -->
 	<event-filters>
 		<event-filter name="proposalFormFilter" type="org.opencfsummit.engage.filters.ProposalFormFilter" />
+		<event-filter name="userFormFilter" type="org.opencfsummit.engage.filters.UserFormFilter" />
 	</event-filters>
 	
 	<!-- PLUGINS -->
@@ -169,6 +170,7 @@
 		</event-handler>
 		
 		<event-handler event="processProposalForm" access="public">
+			<filter name="proposalFormFilter" />
 			<event-mapping event="success" mapping="proposalSubmissionConfirmation" />
 			<event-mapping event="fail" mapping="proposalForm" />
 			<event-bean name="proposal" type="org.opencfsummit.engage.proposal.Proposal">
@@ -479,13 +481,15 @@
 		</event-handler>
 
 		<event-handler event="userForm" access="public">
+			<filter name="userFormFilter" />
 			<call-method bean="userService" method="getUser" args="${event.userID:0}" resultArg="user" overwrite="false" />
 			<view-page name="userForm" contentArg="content" />
 			<execute subroutine="template.main" />
 		</event-handler>
 		
 		<event-handler event="processUserForm" access="public">
-			<event-mapping event="success" mapping="home" />
+			<filter name="userFormFilter" />
+			<event-mapping event="success" mapping="admin.users" />
 			<event-mapping event="fail" mapping="userForm" />
 			<event-bean name="user" type="org.opencfsummit.engage.user.User">
 				<field name="isAdmin" ignore="true" />

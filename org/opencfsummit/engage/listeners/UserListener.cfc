@@ -59,7 +59,7 @@
 				if (!getUserService().userExists(userInfo.id, "Facebook")) {
 					getUserService().saveUser(user);
 				} else {
-					getUserService().getUser(user);
+					user = getUserService().getUser(oauthProvider = "Facebook", oauthUID = userInfo.id);
 				}
 				
 				user.setUserInfo(userInfo);
@@ -109,7 +109,7 @@
 			if (!getUserService().userExists(accessToken.getScreenName(), "Twitter")) {
 				getUserService().saveUser(user);
 			} else {
-				getUserService().getUser(user);
+				user = getUserService().getUser(oauthProvider = "Twitter", oauthUID = accessToken.getScreenName());
 			}
 			
 			getPageContext().getRequest().removeAttribute("requestToken");
@@ -119,6 +119,56 @@
 			session.user = user;
 						
 			redirectEvent('main');
+		</cfscript>
+	</cffunction>
+	
+	<cffunction name="processUserForm" access="public" output="false" returntype="void">
+		<cfargument name="event" type="MachII.framework.Event" required="true" />
+		
+		<cfscript>
+			var user = arguments.event.getArg("user");
+			var errors = StructNew();
+			var message = StructNew();
+			
+			if (user.getUserID() == 0) {
+				user.setCreatedBy(session.user.getUserID());
+			} else {
+				user.setUpdatedBy(session.user.getUserID());
+			}
+			
+			if (arguments.event.getArg("isAdmin", 0) == 1 && session.user.getIsAdmin()) {
+				user.setIsAdmin(true);
+			}
+			
+			if (arguments.event.getArg("isActive", 0) == 1 && session.user.getIsAdmin()) {
+				user.setIsActive(true);
+			}
+			
+			errors = user.validate();
+			
+			message.text = "The user was saved.";
+			message.class = "success";
+			
+			if (!StructIsEmpty(errors)) {
+				message.text = "Please correct the following errors:";
+				message.class = "error";
+				arguments.event.setArg("errors", errors);
+				arguments.event.setArg("message", message);
+				redirectEvent("fail", "", true);
+			} else {
+				try {
+					getUserService().saveUser(user);
+					arguments.event.setArg("message", message);
+					redirectEvent("success", "", true);
+				} catch (Any e) {
+					errors.systemError = e.Message & " - " & e.Detail;
+					message.text = "A system error occurred:";
+					message.class = "error";
+					arguments.event.setArg("errors", errors);
+					arguments.event.setArg("message", message);
+					redirectEvent("fail", "", true);
+				}
+			}
 		</cfscript>
 	</cffunction>
 	

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!-- <cfsetting enablecfoutputonly="true" /> -->
 <beans>
 	<!-- CATEGORY -->
 	<bean id="categoryGateway" class="org.opencfsummit.engage.category.CategoryGateway">

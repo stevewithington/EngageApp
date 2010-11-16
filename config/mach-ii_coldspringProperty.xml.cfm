@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!-- <cfsetting enablecfoutputonly="true" /> -->
 <!DOCTYPE mach-ii PUBLIC "-//Mach-II//DTD Mach-II Configuration 1.9.0//EN"
 	"http://www.mach-ii.com/dtds/mach-ii_1_9_0.dtd">
 
@@ -10,7 +10,7 @@
 				<!-- Name of a Mach-II property name that will hold a reference to the ColdSpring beanFactory Default: 'coldspring.beanfactory.root' -->
 				<parameter name="beanFactoryPropertyName" value="serviceFactory"/>
 				<!-- Takes the path to the ColdSpring config file (required) -->
-				<parameter name="configFile" value="config/coldspring.xml"/>
+				<parameter name="configFile" value="config/coldspring.xml.cfm"/>
 				<!-- Flag to indicate whether supplied config path is relative (mapped) or absolute	Default: FALSE (absolute path) -->				
 				<parameter name="configFilePathIsRelative" value="true"/>
 				<!-- Flag to indicate whether to resolve dependencies for listeners/filters/plugins Default: FALSE -->

@@ -1,7 +1,7 @@
 <cfsilent>
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
 	<cfset CopyToScope('${event.user}') />
-	<cfset oauthProviders = ['Facebook','Google','Twitter'] />
+	<cfset oauthProviders = ['Facebook','Twitter'] />
 </cfsilent>
 <cfoutput>
 <cfif user.getUserID() eq 0>
@@ -25,28 +25,11 @@
 <table border="0">
 	<tr>
 		<td>Email</td>
-		<td><form:input path="email" size="60" maxlength="255" /></td>
+		<td><form:input path="email" size="50" maxlength="255" /></td>
 	</tr>
 	<tr>
-		<td>Password</td>
-		<td>
-			<form:password name="password" id="password" size="20" /><br />
-			<span style="font-size:10px;font-style:italic">Leave password blank unless you wish to update</span>
-		</td>
-	</tr>
-	<tr>
-		<td>Confirm Password</td>
-		<td>
-			<form:password name="confirmPassword" id="confirmPassword" size="20" />
-		</td>
-	</tr>
-	<tr>
-		<td>First Name</td>
-		<td><form:input path="firstName" size="60" maxlength="255" /></td>
-	</tr>
-	<tr>
-		<td>Last Name</td>
-		<td><form:input path="lastName" size="60" maxlength="255" /></td>
+		<td>Name</td>
+		<td><form:input path="name" size="50" maxlength="255" /></td>
 	</tr>
 	<tr>
 		<td>OAuth Provider</td>
@@ -59,16 +42,22 @@
 	</tr>
 	<tr>
 		<td>OAuth User ID</td>
-		<td><form:input path="oauthUID" size="60" /></td>
+		<td><form:input path="oauthUID" size="50" /></td>
 	</tr>
 	<tr>
-		<td>Is Admin</td>
-		<td><form:checkbox path="isAdmin" value="1" /></td>
+		<td>OAuth Profile Link</td>
+		<td><form:input path="oauthProfileLink" size="50" /></td>
 	</tr>
-	<tr>
-		<td>Is Active</td>
-		<td><form:checkbox path="isActive" value="1" /></td>
-	</tr>
+	<cfif session.user.getIsAdmin()>
+		<tr>
+			<td>Is Admin</td>
+			<td><form:checkbox path="isAdmin" value="1" /></td>
+		</tr>
+		<tr>
+			<td>Is Active</td>
+			<td><form:checkbox path="isActive" value="1" /></td>
+		</tr>
+	</cfif>
 	<tr>
 		<td>&nbsp;</td>
 		<td><form:button name="submit" id="submit" value="Submit" /></td>

@@ -53,10 +53,12 @@
 		<cfargument name="user" type="User" required="true" />
 		
 		<cfset var getUser = 0 />
+		<cfset var dtUpdated = CreateDateTime(1900, 1, 1, 0, 0, 0) />
+		<cfset var updatedBy = 0 />
 
 		<cfquery name="getUser" datasource="#getDSN()#">
 			SELECT 	user_id, email, name, oauth_provider, oauth_uid, oauth_profile_link, 
-					is_registered, is_admin, dt_created, active 
+					is_registered, is_admin, dt_created, dt_updated, created_by, updated_by, active 
 			FROM 	user
 			<!--- assume we'll either have a user ID, or an oauth provider and uid ---> 
 			<cfif arguments.user.getUserID() neq 0>
@@ -68,10 +70,18 @@
 		</cfquery>
 		
 		<cfif getUser.RecordCount neq 0>
+			<cfif getUser.dt_updated != "">
+				<cfset dtUpdated = getUser.dt_updated />
+			</cfif>
+			
+			<cfif getUser.updated_by != "">
+				<cfset updatedBy = getUser.updated_by />
+			</cfif>
+			
 			<cfset arguments.user.init(getUser.user_id, getUser.email, getUser.name, 
 										getUser.oauth_provider, getUser.oauth_uid, getUser.oauth_profile_link, 
 										StructNew(), getUser.is_registered, getUser.is_admin, 
-										getUser.dt_created, getUser.active) />
+										getUser.dt_created, dtUpdated, getUser.created_by, updatedBy, getUser.active) />
 		</cfif>
 	</cffunction>
 	
@@ -88,7 +98,7 @@
 						email, name, 
 						oauth_provider, oauth_uid, oauth_profile_link, 
 						is_registered, is_admin, 
-						dt_created, active
+						dt_created, created_by, active
 					) VALUES (
 						<cfqueryparam value="#arguments.user.getEmail()#" cfsqltype="cf_sql_varchar" maxlength="255" 
 										null="#Not Len(arguments.user.getEmail())#" />, 
@@ -102,6 +112,7 @@
 						<cfqueryparam value="#arguments.user.getIsRegistered()#" cfsqltype="cf_sql_tinyint" />, 
 						<cfqueryparam value="#arguments.user.getIsAdmin()#" cfsqltype="cf_sql_tinyint" />, 
 						<cfqueryparam value="#Now()#" cfsqltype="cf_sql_timestamp" />, 
+						<cfqueryparam value="#arguments.user.getCreatedBy()#" cfsqltype="cf_sql_integer" />, 
 						<cfqueryparam value="#arguments.user.getIsActive()#" cfsqltype="cf_sql_tinyint" />
 					)
 				</cfquery>
@@ -128,6 +139,8 @@
 													null="#Not Len(arguments.user.getOauthUID())#" />, 
 						is_registered = <cfqueryparam value="#arguments.user.getIsRegistered()#" cfsqltype="cf_sql_tinyint" />, 
 						is_admin = <cfqueryparam value="#arguments.user.getIsAdmin()#" cfsqltype="cf_sql_tinyint" />, 
+						dt_updated = <cfqueryparam value="#Now()#" cfsqltype="cf_sql_timestamp" />, 
+						updated_by = <cfqueryparam value="#arguments.user.getUpdatedBy()#" cfsqltype="cf_sql_integer" />, 
 						active = <cfqueryparam value="#arguments.user.getIsActive()#" cfsqltype="cf_sql_tinyint" /> 
 				WHERE 	user_id = <cfqueryparam value="#arguments.user.getUserID()#" cfsqltype="cf_sql_integer" />
 			</cfquery>
@@ -138,11 +151,43 @@
 		<cfargument name="user" type="User" required="true" />
 		
 		<cfset var deleteUser = 0 />
+		<cfset var deleteComments = 0 />
+		<cfset var deleteProposals = 0 />
+		<cfset var deleteTopicSuggestions = 0 />
+		<cfset var deleteProposalVotes = 0 />
+		<cfset var deleteTopicSuggestionVotes = 0 />
 		
-		<cfquery name="deleteUser" datasource="#getDSN()#">
-			DELETE FROM user 
-			WHERE user_id = <cfqueryparam value="#arguments.user.getUserID()#" cfsqltype="cf_sql_integer" />
-		</cfquery>
+		<cftransaction>
+			<cfquery name="deleteUser" datasource="#getDSN()#">
+				DELETE FROM user 
+				WHERE user_id = <cfqueryparam value="#arguments.user.getUserID()#" cfsqltype="cf_sql_integer" />
+			</cfquery>
+			
+			<cfquery name="deleteComments" datasource="#getDSN()#">
+				DELETE FROM comment 
+				WHERE created_by = <cfqueryparam value="#arguments.user.getUserID()#" cfsqltype="cf_sql_integer" />
+			</cfquery>
+			
+			<cfquery name="deleteProposals" datasource="#getDSN()#">
+				DELETE FROM proposal 
+				WHERE user_id = <cfqueryparam value="#arguments.user.getUserID()#" cfsqltype="cf_sql_integer" />
+			</cfquery>
+			
+			<cfquery name="deleteTopicSuggestions" datasource="#getDSN()#">
+				DELETE FROM topic_suggestion 
+				WHERE created_by = <cfqueryparam value="#arguments.user.getUserID()#" cfsqltype="cf_sql_integer" />
+			</cfquery>
+			
+			<cfquery name="deleteProposalVotes" datasource="#getDSN()#">
+				DELETE FROM proposal_vote 
+				WHERE user_id = <cfqueryparam value="#arguments.user.getUserID()#" cfsqltype="cf_sql_integer" />
+			</cfquery>
+			
+			<cfquery name="deleteTopicSuggestionVotes" datasource="#getDSN()#">
+				DELETE FROM topic_suggestion_vote 
+				WHERE user_id = <cfqueryparam value="#arguments.user.getUserID()#" cfsqltype="cf_sql_integer" />
+			</cfquery>
+		</cftransaction>
 	</cffunction>
 
 </cfcomponent>

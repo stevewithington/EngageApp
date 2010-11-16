@@ -43,11 +43,11 @@
 	</cfif>
 	<tr>
 		<td align="right">Contact Email</td>
-		<td><form:input path="contactEmail" size="60" maxlength="255" /></td>
+		<td><form:input path="contactEmail" size="50" maxlength="255" /></td>
 	</tr>
 	<tr>
 		<td align="right">Title</td>
-		<td><form:input path="title" size="60" maxlength="255" /></td>
+		<td><form:input path="title" size="50" maxlength="255" /></td>
 	</tr>
 	<tr>
 		<td align="right">Session Type</td>
@@ -81,7 +81,7 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<form:textarea class="ckeditor" path="excerpt" cols="80" rows="10" />
+			<form:textarea class="ckeditor" path="excerpt" cols="40" rows="10" />
 		</td>
 	</tr>
 	<tr>
@@ -89,13 +89,13 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<form:textarea class="ckeditor" path="description" cols="80" rows="10" />
+			<form:textarea class="ckeditor" path="description" cols="40" rows="10" />
 		</td>
 	</tr>
 	<tr>
 		<td align="right" valign="top">Tags</td>
 		<td valign="top">
-			<form:input path="tags" size="60" /><br />
+			<form:input path="tags" size="50" /><br />
 			<span style="font-size:9px;">(comma separated)</span>
 		</td>
 	</tr>

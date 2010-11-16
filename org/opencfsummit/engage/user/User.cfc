@@ -20,6 +20,9 @@ Bean Template:
 	isRegistered boolean false
 	isAdmin boolean false
 	dtCreated date #CreateDateTime(1900,1,1,0,0,0)#
+	dtUpdated date #CreateDateTime(1900, 1, 1, 0, 0, 0)#
+	createdBy numeric 0
+	updatedBy numeric 0
 	isActive boolean false
 Create getMemento method: false
 Create setMemento method: false
@@ -48,6 +51,9 @@ Date Format:
 		<cfargument name="isRegistered" type="boolean" required="false" default="false" />
 		<cfargument name="isAdmin" type="boolean" required="false" default="false" />
 		<cfargument name="dtCreated" type="date" required="false" default="#CreateDateTime(1900,1,1,0,0,0)#" />
+		<cfargument name="dtUpdated" type="date" required="false" default="#CreateDateTime(1900,1,1,0,0,0)#" />
+		<cfargument name="createdBy" type="numeric" required="false" default="0" />
+		<cfargument name="updatedBy" type="numeric" required="false" default="0" />
 		<cfargument name="isActive" type="boolean" required="false" default="false" />
 
 		<!--- run setters --->
@@ -61,6 +67,9 @@ Date Format:
 		<cfset setIsRegistered(arguments.isRegistered) />
 		<cfset setIsAdmin(arguments.isAdmin) />
 		<cfset setDtCreated(arguments.dtCreated) />
+		<cfset setDtUpdated(arguments.dtUpdated) />
+		<cfset setCreatedBy(arguments.createdBy) />
+		<cfset setUpdatedBy(arguments.updatedBy) />
 		<cfset setIsActive(arguments.isActive) />
 
 		<cfreturn this />
@@ -147,6 +156,30 @@ Date Format:
 	</cffunction>
 	<cffunction name="getDtCreated" access="public" returntype="date" output="false">
 		<cfreturn variables.instance.dtCreated />
+	</cffunction>
+
+	<cffunction name="setDtUpdated" access="public" returntype="void" output="false">
+		<cfargument name="dtUpdated" type="date" required="true" />
+		<cfset variables.instance.dtUpdated = arguments.dtUpdated />
+	</cffunction>
+	<cffunction name="getDtUpdated" access="public" returntype="date" output="false">
+		<cfreturn variables.instance.dtUpdated />
+	</cffunction>
+
+	<cffunction name="setCreatedBy" access="public" returntype="void" output="false">
+		<cfargument name="createdBy" type="numeric" required="true" />
+		<cfset variables.instance.createdBy = arguments.createdBy />
+	</cffunction>
+	<cffunction name="getCreatedBy" access="public" returntype="numeric" output="false">
+		<cfreturn variables.instance.createdBy />
+	</cffunction>
+
+	<cffunction name="setUpdatedBy" access="public" returntype="void" output="false">
+		<cfargument name="updatedBy" type="numeric" required="true" />
+		<cfset variables.instance.updatedBy = arguments.updatedBy />
+	</cffunction>
+	<cffunction name="getUpdatedBy" access="public" returntype="numeric" output="false">
+		<cfreturn variables.instance.updatedBy />
 	</cffunction>
 
 	<cffunction name="setIsActive" access="public" returntype="void" output="false">
