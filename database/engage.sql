@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.41, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.1.49, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: engage
 -- ------------------------------------------------------
--- Server version	5.1.41-3ubuntu12.6
+-- Server version	5.1.49-1ubuntu8.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +14,73 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Current Database: `engage`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `engage` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+USE `engage`;
+
+--
+-- Table structure for table `category`
+--
+
+DROP TABLE IF EXISTS `category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `category` (
+  `category_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `event_id` int(10) unsigned NOT NULL,
+  `category` varchar(255) NOT NULL,
+  `dt_created` datetime NOT NULL,
+  `dt_updated` datetime DEFAULT NULL,
+  `created_by` int(10) unsigned NOT NULL,
+  `updated_by` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`category_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `category`
+--
+
+LOCK TABLES `category` WRITE;
+/*!40000 ALTER TABLE `category` DISABLE KEYS */;
+/*!40000 ALTER TABLE `category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `comment`
+--
+
+DROP TABLE IF EXISTS `comment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `comment` (
+  `comment_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `item_id` int(10) unsigned NOT NULL,
+  `item_type` varchar(20) NOT NULL,
+  `comment` text NOT NULL,
+  `dt_created` datetime NOT NULL,
+  `dt_updated` datetime DEFAULT NULL,
+  `created_by` int(10) unsigned NOT NULL,
+  `updated_by` int(10) unsigned DEFAULT NULL,
+  `active` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`comment_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `comment`
+--
+
+LOCK TABLES `comment` WRITE;
+/*!40000 ALTER TABLE `comment` DISABLE KEYS */;
+INSERT INTO `comment` VALUES (1,29,'Proposal','<p>\r\n	Test comment!</p>','2010-11-13 12:10:06',NULL,6,NULL,0),(2,8,'Topic Suggestion','<p>\r\n	Hi there--topic suggestion comment.</p>','2010-11-13 12:34:55',NULL,6,NULL,0),(3,29,'Proposal','<p>\r\n	Ohai I think you&#39;re full of it.</p>','2010-11-13 13:02:43',NULL,6,NULL,0),(4,29,'Proposal','<p>\r\n	Here&#39;s another comment.</p>','2010-11-13 13:04:13',NULL,6,NULL,0),(5,29,'Proposal','<p>\r\n	Test to see if stuff works now and stuff.</p>','2010-11-13 13:07:55',NULL,6,NULL,0),(6,29,'Proposal','<p>\r\n	test</p>','2010-11-13 13:08:47',NULL,6,NULL,0),(7,29,'Proposal','<p>\r\n	dsasadsa</p>','2010-11-13 13:11:10',NULL,6,NULL,0),(8,8,'Topic Suggestion','<p>\r\n	here&#39;s a comment!</p>','2010-11-13 13:11:31',NULL,6,NULL,0);
+/*!40000 ALTER TABLE `comment` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `event`
@@ -67,9 +134,12 @@ DROP TABLE IF EXISTS `proposal`;
 CREATE TABLE `proposal` (
   `proposal_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `event_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   `track_id` int(10) unsigned NOT NULL,
   `session_type_id` int(10) unsigned NOT NULL,
+  `skill_level_id` tinyint(3) unsigned DEFAULT NULL,
   `status_id` int(10) unsigned NOT NULL,
+  `contact_email` varchar(255) NOT NULL,
   `title` varchar(500) NOT NULL,
   `excerpt` varchar(1000) DEFAULT NULL,
   `description` text NOT NULL,
@@ -81,7 +151,7 @@ CREATE TABLE `proposal` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `active` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY (`proposal_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,7 +160,7 @@ CREATE TABLE `proposal` (
 
 LOCK TABLES `proposal` WRITE;
 /*!40000 ALTER TABLE `proposal` DISABLE KEYS */;
-INSERT INTO `proposal` VALUES (1,5,4,2,1,'First Proposal Test','<p>\r\n	This is the excerpt for my proposal.</p>','<p>\r\n	This is the description of my proposal.</p>','This is the note to the organizers.',1,'2010-10-10 10:15:09',NULL,0,NULL,0),(2,5,4,2,1,'Second Proposal Test','<p>\r\n	more stuff</p>','<p>\r\n	more stuff more</p>','note',1,'2010-10-10 10:23:15',NULL,0,NULL,0),(3,5,4,2,1,'Third Proposal Test','<p>\r\n	Another one!</p>','<p>\r\n	Third time is often the charm.</p>','Note!',1,'2010-10-10 10:24:57',NULL,0,NULL,0),(4,5,4,2,2,'Free Beats Prop Every Time','<p>\r\n	Judas</p>','<p>\r\n	Priest</p>',NULL,1,'2010-10-10 10:44:01',NULL,0,NULL,0),(6,5,5,2,1,'Test!','<p>\r\n	This is another test.</p>','<p>\r\n	Testing is fun.</p>',NULL,1,'2010-10-10 12:45:59','2010-10-11 18:24:33',0,0,0),(7,5,4,2,1,'Judas','<p>\r\n	Testes.</p>','<p>\r\n	123?</p>',NULL,1,'2010-10-10 12:51:54',NULL,0,NULL,0),(8,5,4,2,1,'Second Proposal Test','<p>\r\n	more stuff</p>','<p>\r\n	more stuff more</p>','note',1,'2010-10-10 13:18:40',NULL,0,NULL,0),(9,5,4,3,3,'Test with session type','<p>\r\n	excerpt</p>','<p>\r\n	description</p>',NULL,1,'2010-10-11 08:03:59',NULL,0,NULL,0);
+INSERT INTO `proposal` VALUES (20,7,6,6,5,1,1,'mpwoodward@gmail.com','fadasd','<p>\r\n	faaf</p>','<p>\r\n	sad</p>','<p>\r\n	ads</p>',1,'2010-11-11 10:21:54',NULL,6,NULL,0),(19,7,6,6,5,1,1,'mpwoodward@gmail.com','fadasd','<p>\r\n	faaf</p>','<p>\r\n	sad</p>','<p>\r\n	ads</p>',1,'2010-11-11 10:21:34',NULL,6,NULL,0),(18,7,6,6,5,1,1,'mpwoodward@gmail.com','fadasd','<p>\r\n	faaf</p>','<p>\r\n	sad</p>','<p>\r\n	ads</p>',1,'2010-11-11 10:18:54',NULL,6,NULL,0),(17,7,6,6,5,1,1,'mpwoodward@gmail.com','test','<p>\r\n	test</p>','<p>\r\n	test</p>','<p>\r\n	test</p>',1,'2010-11-11 10:16:08','2010-11-11 10:16:34',6,6,0),(16,7,6,6,5,1,1,'mpwoodward@gmail.com','test','<p>\r\n	test</p>','<p>\r\n	test</p>','<p>\r\n	test</p>',1,'2010-11-11 06:53:30',NULL,6,NULL,0),(15,7,6,6,5,1,1,'matt@mattwoodward.com','Test','<p>\r\n	Beginner level track about stuff</p>','<p>\r\n	It&#39;ll be cool and stuff</p>',NULL,1,'2010-11-11 06:49:00',NULL,6,NULL,0),(21,7,6,6,5,1,1,'mpwoodward@gmail.com','fadasd','<p>\r\n	faaf</p>','<p>\r\n	sad</p>','<p>\r\n	ads</p>',1,'2010-11-11 10:22:26',NULL,6,NULL,0),(22,7,6,6,5,1,1,'mpwoodward@gmail.com','fadasd','<p>\r\n	faaf</p>','<p>\r\n	sad</p>','<p>\r\n	ads</p>',1,'2010-11-11 10:31:31',NULL,6,NULL,0),(23,7,6,6,5,1,1,'mpwoodward@gmail.com','fadasd','<p>\r\n	faaf</p>','<p>\r\n	sad</p>','<p>\r\n	ads</p>',1,'2010-11-11 10:32:20',NULL,6,NULL,0),(24,7,6,6,5,1,1,'mpwoodward@gmail.com','fadasd','<p>\r\n	faaf</p>','<p>\r\n	sad</p>','<p>\r\n	ads</p>',1,'2010-11-11 10:33:04',NULL,6,NULL,0),(25,7,6,6,5,1,1,'mpwoodward@gmail.com','fadasd','<p>\r\n	faaf</p>','<p>\r\n	sad</p>','<p>\r\n	ads</p>',1,'2010-11-11 10:39:35',NULL,6,NULL,0),(26,7,6,6,7,1,1,'mpwoodward@gmail.com','pumpkin spice lattes rule','<p>\r\n	a description of why pumpkin spice lattes are so tasty</p>','<p>\r\n	aaa</p>','<p>\r\n	hell</p>',1,'2010-11-11 15:56:10',NULL,6,NULL,0),(27,7,6,6,5,1,1,'mpwoodward@gmail.com','das','<p>\r\n	ads</p>','<p>\r\n	dsa</p>','<p>\r\n	dsa</p>',1,'2010-11-11 16:05:25',NULL,6,NULL,0),(28,7,6,7,7,2,1,'mpwoodward@gmail.com','asdadas','<p>\r\n	asdasd</p>','<p>\r\n	asddsa</p>','<p>\r\n	asdasd</p>',1,'2010-11-13 10:01:00',NULL,6,NULL,0),(29,7,6,6,5,1,1,'mpwoodward@gmail.com','Test of RSS Fix','<p>\r\n	jaskljdsakl</p>','<p>\r\n	qsadjkadsjaskdl</p>','<p>\r\n	adssda</p>',1,'2010-11-13 10:03:07',NULL,6,NULL,0),(31,7,5,7,7,2,1,'matt@mattwoodward.com','Yet another test!','<p>\r\n	I love talking fast.</p>','<p>\r\n	Teaching people how to talk faster.</p>','<p>\r\n	Organizers, this will be the fastest presentation ever.</p>',1,'2010-11-14 13:37:43',NULL,5,NULL,0),(32,7,6,7,8,1,1,'mpwoodward@gmail.com','Cocoa the Dog is Grumbling for Her Dinner','<p>\r\n	My dog is hungry.</p>','<p>\r\n	She is really complaining!</p>','<p>\r\n	Hello organizers! Pick me!</p>',1,'2010-11-14 16:42:31',NULL,6,NULL,0);
 /*!40000 ALTER TABLE `proposal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,28 +192,6 @@ CREATE TABLE `proposal_comment` (
 LOCK TABLES `proposal_comment` WRITE;
 /*!40000 ALTER TABLE `proposal_comment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `proposal_comment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `proposal_speaker`
---
-
-DROP TABLE IF EXISTS `proposal_speaker`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `proposal_speaker` (
-  `proposal_id` int(10) unsigned NOT NULL,
-  `user_id` int(10) unsigned NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `proposal_speaker`
---
-
-LOCK TABLES `proposal_speaker` WRITE;
-/*!40000 ALTER TABLE `proposal_speaker` DISABLE KEYS */;
-/*!40000 ALTER TABLE `proposal_speaker` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -182,7 +230,7 @@ CREATE TABLE `proposal_tag` (
   `proposal_id` int(10) unsigned NOT NULL,
   `tag` varchar(255) NOT NULL,
   PRIMARY KEY (`tag_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=46 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,8 +239,32 @@ CREATE TABLE `proposal_tag` (
 
 LOCK TABLES `proposal_tag` WRITE;
 /*!40000 ALTER TABLE `proposal_tag` DISABLE KEYS */;
-INSERT INTO `proposal_tag` VALUES (1,1,'open source'),(2,1,'free software'),(3,1,'open bluedragon'),(4,1,'cfml'),(5,2,'openbd'),(6,2,'cfml'),(7,3,'openbd'),(8,3,'railo'),(9,3,'cfml'),(15,6,'cfml'),(14,6,'openbd'),(12,8,'openbd'),(13,8,'cfml');
+INSERT INTO `proposal_tag` VALUES (1,1,'open source'),(2,1,'free software'),(3,1,'open bluedragon'),(4,1,'cfml'),(5,2,'openbd'),(6,2,'cfml'),(7,3,'openbd'),(8,3,'railo'),(9,3,'cfml'),(15,6,'cfml'),(14,6,'openbd'),(12,8,'openbd'),(13,8,'cfml'),(16,10,'openbd'),(17,10,'cfml'),(18,11,'tag1'),(19,11,'tag2'),(20,11,'tag3'),(21,12,'hello'),(22,12,'\'there\''),(23,12,'\"foo\"'),(24,13,'test tag 1'),(25,13,' test tag 2'),(26,16,'test'),(28,17,'test'),(29,18,'asfd'),(30,19,'asfd'),(31,20,'asfd'),(32,21,'asfd'),(33,22,'asfd'),(34,23,'asfd'),(35,24,'asfd'),(36,25,'asfd'),(37,26,'coffee'),(38,26,'girlie drinks'),(39,27,'das'),(40,29,'qsaddsa'),(41,30,'tag1'),(42,30,'tag2'),(43,31,'fast'),(44,32,'dogs'),(45,32,'food');
 /*!40000 ALTER TABLE `proposal_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `proposal_vote`
+--
+
+DROP TABLE IF EXISTS `proposal_vote`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `proposal_vote` (
+  `proposal_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`proposal_id`,`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `proposal_vote`
+--
+
+LOCK TABLES `proposal_vote` WRITE;
+/*!40000 ALTER TABLE `proposal_vote` DISABLE KEYS */;
+INSERT INTO `proposal_vote` VALUES (19,6),(26,6),(29,2),(29,6),(31,5);
+/*!40000 ALTER TABLE `proposal_vote` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -316,7 +388,7 @@ CREATE TABLE `session_type` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `active` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY (`session_type_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -325,8 +397,110 @@ CREATE TABLE `session_type` (
 
 LOCK TABLES `session_type` WRITE;
 /*!40000 ALTER TABLE `session_type` DISABLE KEYS */;
-INSERT INTO `session_type` VALUES (2,5,'Session Type','<p>\r\n	This is a session type!</p>',90,'2010-10-08 15:11:30','2010-10-08 15:11:30',0,0,0),(3,5,'Another Session Type','<p>\r\n	Here is another session type.</p>',180,'2010-10-08 15:12:05','2010-10-08 15:12:05',0,0,0);
+INSERT INTO `session_type` VALUES (2,5,'Session Type','<p>\r\n	This is a session type!</p>',90,'2010-10-08 15:11:30','2010-10-08 15:11:30',0,0,0),(3,5,'Another Session Type','<p>\r\n	Here is another session type.</p>',180,'2010-10-08 15:12:05','2010-10-08 15:12:05',0,0,0),(4,7,'Regular Session','<p>\r\n	Regular conference session</p>',60,'2010-11-02 22:03:35',NULL,0,NULL,0),(5,7,'Hands-On Session','<p>\r\n	Longer session; participants expected to bring laptops</p>',90,'2010-11-02 22:04:20',NULL,0,NULL,0),(6,7,'Short Session','<p>\r\n	Shorter session</p>',30,'2010-11-02 22:04:43',NULL,0,NULL,0),(7,7,'Pecha Kucha / Lightning Talk','<p>\r\n	Session about 6 minutes 40 seconds in length</p>',7,'2010-11-02 22:05:27',NULL,0,NULL,0),(8,7,'Unconference','<p>\r\n	Session of indeterminate length; organization happens ad hoc on day 3 of the conference</p>',0,'2010-11-02 22:05:59',NULL,0,NULL,0);
 /*!40000 ALTER TABLE `session_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `skill_level`
+--
+
+DROP TABLE IF EXISTS `skill_level`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `skill_level` (
+  `skill_level_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `skill_level` varchar(255) NOT NULL,
+  `ordering` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`skill_level_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `skill_level`
+--
+
+LOCK TABLES `skill_level` WRITE;
+/*!40000 ALTER TABLE `skill_level` DISABLE KEYS */;
+INSERT INTO `skill_level` VALUES (1,'Beginner',1),(2,'Intermediate',2),(3,'Advanced',3),(4,'Expert',4);
+/*!40000 ALTER TABLE `skill_level` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `topic_suggestion`
+--
+
+DROP TABLE IF EXISTS `topic_suggestion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `topic_suggestion` (
+  `topic_suggestion_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `event_id` int(10) unsigned NOT NULL,
+  `topic` varchar(500) NOT NULL,
+  `description` text,
+  `suggested_speaker` varchar(500) DEFAULT NULL,
+  `dt_created` datetime NOT NULL,
+  `dt_updated` datetime DEFAULT NULL,
+  `created_by` int(10) unsigned NOT NULL,
+  `updated_by` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`topic_suggestion_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `topic_suggestion`
+--
+
+LOCK TABLES `topic_suggestion` WRITE;
+/*!40000 ALTER TABLE `topic_suggestion` DISABLE KEYS */;
+INSERT INTO `topic_suggestion` VALUES (4,7,'Once more, with feeling','<p>\r\n	Test</p>\r\n','The Dalai Lama','2010-11-11 07:12:42',NULL,6,NULL),(5,7,'Topic Suggestion','<p>\r\n	This topic is pretty nebulous</p>\r\n','Mahatma Ghandi','2010-11-11 16:00:12',NULL,6,NULL),(6,7,'asdsa','<p>\r\n	adsads</p>\r\n','adsads','2010-11-11 16:02:36',NULL,6,NULL),(8,7,'Let\'s make this a real topic title','<p>\r\n	Here is some &quot;real&quot; content</p>\r\n','free software,open source','2010-11-11 16:53:07','2010-11-13 19:07:46',6,0),(9,7,'dsadsa','<p>\r\n	asddsa</p>\r\n','adssda','2010-11-14 10:28:16',NULL,2,NULL),(10,7,'test!111','<p>\r\n	ZOMG!</p>\r\n','hello','2010-11-14 16:42:51',NULL,6,NULL);
+/*!40000 ALTER TABLE `topic_suggestion` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `topic_suggestion_category`
+--
+
+DROP TABLE IF EXISTS `topic_suggestion_category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `topic_suggestion_category` (
+  `topic_suggestion_id` int(10) unsigned NOT NULL,
+  `category_id` int(10) unsigned NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `topic_suggestion_category`
+--
+
+LOCK TABLES `topic_suggestion_category` WRITE;
+/*!40000 ALTER TABLE `topic_suggestion_category` DISABLE KEYS */;
+/*!40000 ALTER TABLE `topic_suggestion_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `topic_suggestion_vote`
+--
+
+DROP TABLE IF EXISTS `topic_suggestion_vote`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `topic_suggestion_vote` (
+  `topic_suggestion_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`topic_suggestion_id`,`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `topic_suggestion_vote`
+--
+
+LOCK TABLES `topic_suggestion_vote` WRITE;
+/*!40000 ALTER TABLE `topic_suggestion_vote` DISABLE KEYS */;
+INSERT INTO `topic_suggestion_vote` VALUES (4,6),(8,5);
+/*!40000 ALTER TABLE `topic_suggestion_vote` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -349,7 +523,7 @@ CREATE TABLE `track` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `active` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY (`track_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -358,7 +532,7 @@ CREATE TABLE `track` (
 
 LOCK TABLES `track` WRITE;
 /*!40000 ALTER TABLE `track` DISABLE KEYS */;
-INSERT INTO `track` VALUES (2,0,'Swedish Fish \"Track\"','<p>\r\n	Entire track dedicated to the wonders of Swedish Fish.</p>','<p>\r\n	Swedish Fish. How much can you love a candy? Come explore with us and share your stories of addition, love, loss, and redemption with this, the finest of candies.</p>','e01223','2010-10-07 20:27:38','2010-10-08 11:29:31',0,0,0),(3,6,'Track Two','<p>\r\n	This is another track.</p>','<p>\r\n	More testing. I see a lot of this in my future.</p>','335fb0','2010-10-07 20:33:11','2010-10-07 20:33:11',0,0,0),(4,5,'Main Track','<p>\r\n	The main track</p>','<p>\r\n	This is the main track</p>','3269ba','2010-10-10 10:08:26',NULL,0,NULL,0),(5,5,'Second Track','<p>\r\n	Another track</p>','<p>\r\n	Another Track for testing!</p>','b002b0','2010-10-11 18:19:41',NULL,0,NULL,0);
+INSERT INTO `track` VALUES (2,0,'Swedish Fish \"Track\"','<p>\r\n	Entire track dedicated to the wonders of Swedish Fish.</p>','<p>\r\n	Swedish Fish. How much can you love a candy? Come explore with us and share your stories of addition, love, loss, and redemption with this, the finest of candies.</p>','e01223','2010-10-07 20:27:38','2010-10-08 11:29:31',0,0,0),(3,6,'Track Two','<p>\r\n	This is another track.</p>','<p>\r\n	More testing. I see a lot of this in my future.</p>','335fb0','2010-10-07 20:33:11','2010-10-07 20:33:11',0,0,0),(4,5,'Main Track','<p>\r\n	The main track</p>','<p>\r\n	This is the main track</p>','3269ba','2010-10-10 10:08:26',NULL,0,NULL,0),(5,5,'Second Track','<p>\r\n	Another track</p>','<p>\r\n	Another Track for testing!</p>','b002b0','2010-10-11 18:19:41',NULL,0,NULL,0),(6,7,'Main Conference Track','<p>\r\n	The main conference track</p>','<p>\r\n	Main conference track</p>','d100d1','2010-11-02 22:10:02',NULL,0,NULL,0),(7,7,'Unconference','<p>\r\n	Unconference track</p>','<p>\r\n	Unconference track</p>','2100c7','2010-11-02 22:10:29',NULL,0,NULL,0);
 /*!40000 ALTER TABLE `track` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -371,21 +545,20 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
   `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
-  `password` char(64) DEFAULT NULL,
-  `password_salt` char(35) DEFAULT NULL,
-  `first_name` varchar(100) DEFAULT NULL,
-  `last_name` varchar(100) DEFAULT NULL,
-  `oauth_provider` varchar(10) DEFAULT NULL,
-  `oauth_uid` text,
+  `email` varchar(255) DEFAULT NULL,
+  `name` varchar(500) DEFAULT NULL,
+  `oauth_provider` varchar(10) NOT NULL,
+  `oauth_uid` text NOT NULL,
+  `oauth_profile_link` varchar(500) NOT NULL,
+  `is_registered` tinyint(3) unsigned NOT NULL,
   `is_admin` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `dt_created` datetime NOT NULL,
   `dt_updated` datetime DEFAULT NULL,
-  `created_by` int(10) unsigned DEFAULT NULL,
+  `created_by` int(10) unsigned NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `active` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -394,6 +567,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (5,'matt@mattwoodward.com','Matt Woodward','facebook','563317007','http://www.facebook.com/matt.woodward3',0,1,'2010-11-11 06:43:14','2010-11-14 13:35:59',5,5,0),(6,'mpwoodward@gmail.com','Matt Woodward','twitter','mpwoodward','http://www.twitter.com/mpwoodward',0,0,'2010-11-11 06:43:39','2010-11-14 13:36:16',6,5,0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -406,4 +580,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-10-13 16:54:57
+-- Dump completed on 2010-11-19  7:55:53
