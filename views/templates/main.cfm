@@ -9,6 +9,7 @@
 		<script type="text/javascript" src="/js/jquery-1.4.2.min.js"></script>
 		<link type="text/css" href="/css/smoothness/jquery-ui-1.8.5.custom.css" rel="stylesheet" />
 		<script type="text/javascript" src="/js/jquery-ui-1.8.5.custom.min.js"></script>
+		<script type="text/javascript" src="http://connect.facebook.net/en_US/all.js##xfbml=1"></script>
 	<cfif event.getArg("includeTimePicker", false)>
 		<script type="text/javascript" src="/js/timepicker.mod.js"></script>
 	</cfif>
@@ -39,34 +40,35 @@
 						<a href="http://feeds.feedburner.com/OpenCfSummit" target="_blank" title="Grab our blog's RSS feed"><img src="/library/img/icon_rss-feed.png" border="0" width="16" height="16" alt="Grab our blog's RSS feed" /></a>
 					</div> <!-- /socialLinks -->
 				    <ul>
-						<li><p><a href="##">Attend</a></p></li>
-						<li><p><a href="##">Schedule</a></p></li>
-						<li><p><a href="##">Speakers</a></p></li>
-						<li><p><a href="##">Partners</a></p></li>
-						<li><p><a href="##">Promote</a></p></li>
-						<li><p><a href="##">Blog</a></p></li>
-						<li><p id="noBorder"><a href="##">Contact</a></p></li>
+						<li><p><a href="http://opencfsummit.org/index.cfm/attend/" target="_blank">Attend</a></p></li>
+						<li><p><a href="http://opencfsummit.org/index.cfm/schedule/" target="_blank">Schedule</a></p></li>
+						<li><p><a href="http://opencfsummit.org/index.cfm/speakers/" target="_blank">Speakers</a></p></li>
+						<li><p><a href="http://opencfsummit.org/index.cfm/partners/" target="_blank">Partners</a></p></li>
+						<li><p><a href="http://opencfsummit.org/index.cfm/promote/" target="_blank">Promote</a></p></li>
+						<li><p><a href="http://blog.opencfsummit.org" target="_blank">Blog</a></p></li>
+						<li><p id="noBorder"><a href="http://opencfsummit.org/index.cfm/contact/" target="_blank">Contact</a></p></li>
 				    </ul>
 				</div> <!-- /mainnav -->
-				<div id="logo"><h5><a href="/">openCF Summit : Open development using ColdFusion (CFML)</a></h5></div>
+				<div id="logo"><h5><a href="http://opencfsummit.org">openCF Summit : Open development using ColdFusion (CFML)</a></h5></div>
 			</div> <!-- /header -->
 			<div id="banner"><!--- rotating banner image --->
-				<p>February 21-23, 2010<br/>Dallas, TX</p>
+				<p>February 21-23, 2011<br/>Dallas, TX</p>
 			</div> <!-- /banner -->
 			<div id="content">
 				<div id="copy"><!--- main content section --->
 					#event.getArg('content')#
 				</div> <!-- /copy -->
 				<div id="leftcol"><!--- left column --->
+					<div id="userinfo">
 					<cfif StructKeyExists(session, "user")>
 						<cfif session.user.getOauthProvider() == "Facebook">
-							<img src="#session.user.getUserInfo().picture#" /><br />
+							<img src="#session.user.getUserInfo().picture#" /><img src="/images/facebook_icon_small.jpg" width="16" height="16" /><br />
 							<span class="smaller">
 								<a href="#session.user.getOauthProfileLink()#" target="_blank">#session.user.getUserInfo().name#</a><br />
 								<!---<a href="#BuildUrl('profile')#">Edit Profile</a>&nbsp;|&nbsp;---><a href="#BuildUrl('logout', 'facebookLogout=true')#">Logout</a>
 							</span>
 						<cfelseif session.user.getOauthProvider() == "Twitter">
-							<img src="#session.user.getUserInfo().profile_image_url#" /><br />
+							<img src="#session.user.getUserInfo().profile_image_url#" /><img src="/images/twitter_logo_small.png" width="16" height="16" /><br />
 							<span class="smaller">
 								#session.user.getUserInfo().name#<br />
 								(<a href="#session.user.getOauthProfileLink()#" target="_blank">@#session.user.getUserInfo().screen_name#</a>)<br />
@@ -108,6 +110,7 @@
 							<a href="#BuildUrl('logout')#"><img src="/images/twitter_logout.png" width="136" height="23" border="0" alt="Logout From Twitter" title="Logout From Twitter" /></a>
 						</cfif>
 					</cfif>
+					</div>
 					
 					<p><strong><a href="#BuildUrl('proposals')#">Proposals</a></strong></p>
 					<cfif StructKeyExists(session, "user")>
@@ -155,9 +158,46 @@
 							<li><a href="#BuildUrl('admin.comments')#">Comments</a></li>
 						</ul>
 					</cfif>
-				</div>
+					<script src="http://widgets.twimg.com/j/2/widget.js"></script>
+					<script>
+						new TWTR.Widget({
+						  version: 2,
+						  type: 'search',
+						  search: '#getProperty("twitterWidgetSettings").searchTerm#',
+						  interval: 6000,
+						  title: '#getProperty("twitterWidgetSettings").title#',
+						  subject: '#getProperty("twitterWidgetSettings").subject#',
+						  width: #getProperty('twitterWidgetSettings').width#,
+						  height: #getProperty('twitterWidgetSettings').height#,
+						  theme: {
+						    shell: {
+						      background: '##8ec1da',
+						      color: '##ffffff'
+						    },
+						    tweets: {
+						      background: '##ffffff',
+						      color: '##444444',
+						      links: '##1985b5'
+						    }
+						  },
+						  features: {
+						    scrollbar: false,
+						    loop: true,
+						    live: true,
+						    hashtags: true,
+						    timestamp: true,
+						    avatars: true,
+						    toptweets: true,
+						    behavior: 'default'
+						  }
+						}).render().start();
+					</script>
+					<br />
+					<fb:activity width="184" height="240" recommendations="false"></fb:activity>
+				</div> <!-- /leftcol -->
 			</div> <!-- /content -->
 			<div id="footer">
+				&copy; #Year(Now())# OpenCF Summit
 			</div> <!-- /footer -->
 		</div> <!-- /fixed960 -->
 	</body>

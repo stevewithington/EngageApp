@@ -15,9 +15,10 @@
 						or arguments.eventContext.getCurrentEvent().getArg('eventID') eq 0)>
 			<cfset arguments.eventContext.getCurrentEvent().setArg('eventID', 0) />
 		<cfelse>
-			<cfif arguments.eventContext.getCurrentEvent().isArgDefined("eventID")>
+			<cfif arguments.eventContext.getCurrentEvent().isArgDefined("eventID") 
+					and arguments.eventContext.getCurrentEvent().getArg("eventID") neq 0>
 				<cfset session.eventID = arguments.eventContext.getCurrentEvent().getArg('eventID') />
-			<cfelseif StructKeyExists(session, "eventID")>
+			<cfelseif StructKeyExists(session, "eventID") and session.eventID neq 0>
 				<cfset arguments.eventContext.getCurrentEvent().setArg("eventID", session.eventID) />
 			<cfelse>
 				<cfset session.eventID = getEventService().getLatestEventID() />

@@ -56,6 +56,37 @@
 		</cftry>
 	</cffunction>
 	
+	<cffunction name="removeProposalVote" access="public" output="false" returntype="void">
+		<cfargument name="event" type="MachII.framework.Event" required="true" />
+		
+		<cfset var message = StructNew() />
+		<cfset var errors = StructNew() />
+
+		<!--- make sure the user is removing the vote using their user ID --->
+		<cfif arguments.event.getArg('userID') != session.user.getUserID()>
+			<cfset redirectEvent("fail", "", true) />
+		</cfif>
+		
+		<cfset message.text = "Your vote was removed." />
+		<cfset message.class = "success" />
+		
+		<cftry>
+			<cfset getProposalService().removeVote(arguments.event.getArg("proposalID"), 
+														session.user.getUserID()) />
+			<cfset arguments.event.setArg("message", message) />
+			<cfset redirectEvent("success", "", true) />
+			
+			<cfcatch type="any">
+				<cfset errors.systemError = CFCATCH.Message & " - " & CFCATCH.Detail />
+				<cfset message.text = "A system error occurred:" />
+				<cfset message.class = "error" />
+				<cfset arguments.event.setArg("errors", errors) />
+				<cfset arguments.event.setArg("message", message) />
+				<cfset redirectEvent("fail", "", true) />
+			</cfcatch>
+		</cftry>
+	</cffunction>
+	
 	<cffunction name="getUserVotes" access="public" output="false" returntype="string">
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
 		

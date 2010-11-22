@@ -56,6 +56,13 @@
 		<cfset getProposalGateway().addVote(arguments.proposalID, arguments.userID) />
 	</cffunction>
 		
+	<cffunction name="removeVote" access="public" output="false" returntype="void">
+		<cfargument name="proposalID" type="numeric" required="true" />
+		<cfargument name="userID" type="numeric" required="true" />
+		
+		<cfset getProposalGateway().removeVote(arguments.proposalID, arguments.userID) />
+	</cffunction>
+		
 	<cffunction name="getProposalUserID" access="public" output="false" returntype="numeric">
 		<cfargument name="proposalID" type="numeric" required="true" />
 		
@@ -67,8 +74,10 @@
 		
 		<cfset var proposal = getProposalBean() />
 		
-		<cfset proposal.setProposalID(arguments.proposalID) />
-		<cfset getProposalGateway().fetch(proposal) />
+		<cfif IsNumeric(arguments.proposalID)>
+			<cfset proposal.setProposalID(arguments.proposalID) />
+			<cfset getProposalGateway().fetch(proposal) />
+		</cfif>
 		
 		<cfreturn proposal />
 	</cffunction>

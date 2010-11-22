@@ -20,7 +20,7 @@
 <cfif users.RecordCount eq 0>
 	<p><strong>No users!</strong></p>
 <cfelse>
-	<table id="usersTable" class="tablesorter" border="0" cellpadding="0" cellspacing="1">
+	<table id="usersTable" class="tablesorter" width="600">
 		<thead>
 			<tr>
 				<th>Email</th>

@@ -3,6 +3,10 @@
 	<cfset CopyToScope("${event.proposal},${event.proposalStatuses},${event.comments},${event.userVotes}") />
 </cfsilent>
 <cfoutput>
+<div id="fblikediv">
+	<fb:like href="#getProperty('siteURL')##BuildCurrentURL()#" show_faces="false"></fb:like>
+</div>
+
 <h3>#proposal.getTitle()#</h3>
 
 <h4>SPEAKER: #proposal.getSpeakerName()#</h4>
@@ -75,8 +79,8 @@
 				<a href="#BuildUrl('voteForProposal', 'proposalID=#proposal.getProposalID()#|userID=#session.user.getUserID()#')#"><img src="/images/icons/thumb_up.png" border="0" width="16" height="16" alt="Vote for Proposal" title="Vote for Proposal" /></a>&nbsp;
 				<a href="#BuildUrl('voteForProposal', 'proposalID=#proposal.getProposalID()#|userID=#session.user.getUserID()#')#">Vote for This Proposal</a>
 			<cfelse>
-				<img src="/images/icons/tick.png" width="16" height="16" alt="You voted for this proposal" title="You voted for this proposal" />&nbsp;
-				You voted for this proposal
+				<a href="#BuildUrl('removeProposalVote', 'proposalID=#proposal.getProposalID()#|userID=#session.user.getUserID()#')#"><img src="/images/icons/tick.png" border="0" width="16" height="16" alt="You voted for this proposal. Click to remove your vote." title="You voted for this proposal. Click to remove your vote." /></a>&nbsp;
+				<a href="#BuildUrl('removeProposalVote', 'proposalID=#proposal.getProposalID()#|userID=#session.user.getUserID()#')#">You voted for this proposal (click to remove)</a>
 			</cfif>
 		</td>
 	</cfif>

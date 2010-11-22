@@ -184,8 +184,22 @@ body > #fixed960 {
 	display: block;
 	overflow: hidden;
 	padding-top: 16px;
-	text-align: center;
-	}
+	padding-left:6px;
+	margin-bottom:10px;
+}
+	
+#leftcol #userinfo {
+	display:block;
+	border: 2px solid #dedede;
+	padding:4px;
+	margin-bottom:10px
+}
+
+#leftcol ul {
+	margin-left:10px;
+	margin-bottom:10px;
+}
+	
 #leftcol #partners p {
 	padding: 20px 0 12px 0;
 	font: bold 11pt/12pt Arial, Helvetica, sans-serif;
@@ -226,6 +240,12 @@ body > #fixed960 {
 	margin: 0 0 4px 24px;
 	padding: 0;
 	}
+
+#fblikediv {
+	border-bottom: 1px solid #dedede;
+	padding-bottom:4px;
+	margin-bottom:8px;
+}
 
 /* Footer styles */
 #footer {

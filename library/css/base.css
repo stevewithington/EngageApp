@@ -119,10 +119,10 @@ legend {
   padding-bottom: .5em; 
 }
 
-table { /* tables still need 'cellspacing="0"' in the markup */
+/*table { /* tables still need 'cellspacing="0"' in the markup */
   border-collapse: collapse;
   border-spacing: 0;
-}
+}*/
 
 caption { /* caption and summary are very important for tabular data but because caption is nearly impossible to style across browsers many authors do not use it or use display:none to "hide" it (which is almost the same as not using it). so to prevent such workaround, I am positioning this element off-screen */
   position: absolute;

@@ -9,6 +9,7 @@
 		<property name="dsn" value="engage" />
 		<!-- site URL -->
 		<property name="siteURL" value="http://engage.local" />
+		<property name="shortSiteURL" value="http://bit.ly/a3jwue" />
 		<!-- public events -->
 		<property name="publicEvents" value="login,postLogin,twitterLoginCallback,main,logout,proposals,proposal,topicSuggestions,topicSuggestion,bugs" />
 		<!-- social media app ids -->
@@ -28,6 +29,16 @@
 				<key name="accessTokenURL" value="https://api.twitter.com/oauth/access_token" />
 				<key name="authorizeURL" value="https://api.twitter.com/oauth/authorize" />
 				<key name="oauthCallbackURL" value="http://engage.local/index.cfm?event=twitterLoginCallback" />
+			</struct>
+		</property>
+		<!-- twitter widget parameters -->
+		<property name="twitterWidgetSettings">
+			<struct>
+				<key name="searchTerm" value="OpenCF Summit" />
+				<key name="title" value="OpenCF Summit Tweets" />
+				<key name="subject" value="" />
+				<key name="width" value="184" />
+				<key name="height" value="240" />
 			</struct>
 		</property>
 	</properties>

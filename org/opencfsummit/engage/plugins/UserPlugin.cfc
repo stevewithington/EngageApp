@@ -21,7 +21,12 @@
 					ListFind(getProperty("publicEvents"), nextEvent.getName()) == 0) {
 				StructDelete(session, "user", false);
 				arguments.eventContext.clearEventQueue();
-				arguments.eventContext.redirectEvent('login');
+				arguments.eventContext.redirectEvent('main');
+			}
+
+			if (StructKeyExists(session, "user") && not session.user.getIsAdmin() && listFirst(nextEvent.getName(),".") eq "admin") { 
+				arguments.eventContext.clearEventQueue();
+				arguments.eventContext.redirectEvent('main');
 			}
 		</cfscript>
 	</cffunction>

@@ -199,6 +199,12 @@
 			<notify listener="proposalListener" method="voteForProposal" />
 		</event-handler>
 		
+		<event-handler event="removeProposalVote" access="public">
+			<event-mapping event="success" mapping="proposals" />
+			<event-mapping event="fail" mapping="proposals" />
+			<notify listener="proposalListener" method="removeProposalVote" />
+		</event-handler>
+		
 		<event-handler event="proposal" access="public">
 			<event-arg name="includeCKEditor" value="true" />
 			<notify listener="commentListener" method="getComments" resultArg="comments" />
@@ -404,6 +410,12 @@
 			<event-mapping event="success" mapping="topicSuggestions" />
 			<event-mapping event="fail" mapping="topicSuggestions" />
 			<notify listener="topicSuggestionListener" method="voteForTopicSuggestion" />
+		</event-handler>
+		
+		<event-handler event="removeTopicSuggestionVote" access="public">
+			<event-mapping event="success" mapping="topicSuggestions" />
+			<event-mapping event="fail" mapping="topicSuggestions" />
+			<notify listener="topicSuggestionListener" method="removeTopicSuggestionVote" />
 		</event-handler>
 		
 		<event-handler event="topicSuggestionFavorites" access="public">

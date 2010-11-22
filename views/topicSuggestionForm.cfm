@@ -23,7 +23,7 @@
 
 <form:form actionEvent="processTopicSuggestionForm" bind="topicSuggestion">
 <h4>About this presentation</h4>
-<table width="100%" border="0">
+<table width="680" border="0">
 	<tr>
 		<td align="right">Topic</td>
 		<td><form:input path="topic" size="50" maxlength="500" /></td>
@@ -36,13 +36,6 @@
 			<form:textarea class="ckeditor" path="description" cols="80" rows="10" />
 		</td>
 	</tr>
-	<cfif session.user.getIsAdmin()>
-	<tr>
-		<td align="right" valign="top">Categories</td>
-		<td>category select here
-		</td>
-	</tr>
-	</cfif>
 	<tr>
 		<td align="right">Suggested Speaker</td>
 		<td><form:input path="suggestedSpeaker" size="50" maxlength="500" /></td>

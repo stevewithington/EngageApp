@@ -30,8 +30,10 @@
 		
 		<cfset var topicSuggestion = getTopicSuggestionBean() />
 		
-		<cfset topicSuggestion.setTopicSuggestionID(arguments.topicSuggestionID) />
-		<cfset getTopicSuggestionGateway().fetch(topicSuggestion) />
+		<cfif IsNumeric(arguments.topicSuggestionID)>
+			<cfset topicSuggestion.setTopicSuggestionID(arguments.topicSuggestionID) />
+			<cfset getTopicSuggestionGateway().fetch(topicSuggestion) />
+		</cfif>
 		
 		<cfreturn topicSuggestion />
 	</cffunction>
@@ -54,6 +56,13 @@
 		<cfargument name="userID" type="numeric" required="true" />
 		
 		<cfset getTopicSuggestionGateway().addVote(arguments.topicSuggestionID, arguments.userID) />
+	</cffunction>
+	
+	<cffunction name="removeVote" access="public" output="false" returntype="void">
+		<cfargument name="topicSuggestionID" type="numeric" required="true" />
+		<cfargument name="userID" type="numeric" required="true" />
+		
+		<cfset getTopicSuggestionGateway().removeVote(arguments.topicSuggestionID, arguments.userID) />
 	</cffunction>
 	
 	<cffunction name="saveTopicSuggestion" access="public" output="false" returntype="void">

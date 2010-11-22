@@ -8,6 +8,10 @@
 	});	
 </script>
 
+<div id="fblikediv">
+	<fb:like href="#getProperty('siteURL')##BuildCurrentURL()#" show_faces="false"></fb:like>
+</div>
+
 <h3>Proposals</h3>
 
 <cfif event.isArgDefined('message')>
@@ -57,7 +61,7 @@
 								<img src="/images/icons/thumb_up.png" border="0" width="16" height="16" alt="Vote For This Proposal!" title="Vote For This Proposal!" />
 							</a>
 						<cfelse>
-							<img src="/images/icons/tick.png" width="16" height="16" alt="You voted for this proposal" title="You voted for this proposal" />
+							<a href="#BuildUrl('removeProposalVote', 'proposalID=#proposals.proposal_id#|userID=#session.user.getUserID()#')#"><img src="/images/icons/tick.png" border="0" width="16" height="16" alt="You voted for this proposal. Click to remove your vote." title="You voted for this proposal. Click to remove your vote." /></a>
 						</cfif>
 					</td>
 				</cfif>

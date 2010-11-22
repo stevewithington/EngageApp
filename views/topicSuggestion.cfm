@@ -3,6 +3,11 @@
 	<cfset CopyToScope("${event.topicSuggestion},${event.userVotes},${event.comments}") />
 </cfsilent>
 <cfoutput>
+
+<div id="fblikediv">
+	<fb:like href="#getProperty('siteURL')##BuildCurrentURL()#" show_faces="false"></fb:like>
+</div>
+
 <h3>#topicSuggestion.getTopic()#</h3>
 
 <h4>SUGGESTED BY: #topicSuggestion.getSuggestedBy()#</h4>
@@ -38,8 +43,8 @@
 				<a href="#BuildUrl('voteForTopicSuggestion', 'topicSuggestionID=#topicSuggestion.getTopicSuggestionID()#|userID=#session.user.getUserID()#')#"><img src="/images/icons/thumb_up.png" border="0" width="16" height="16" alt="Vote for Topic Suggestion" title="Vote for Topic Suggestion" /></a>&nbsp;
 				<a href="#BuildUrl('voteForTopicSuggestion', 'topicSuggestionID=#topicSuggestion.getTopicSuggestionID()#|userID=#session.user.getUserID()#')#">Vote for This Topic Suggestion</a>
 			<cfelse>
-				<img src="/images/icons/tick.png" width="16" height="16" alt="You voted for this topic" title="You voted for this topic" />&nbsp;
-				You voted for this topic
+				<a href="#BuildUrl('removeTopicSuggestionVote', 'topicSuggestionID=#topicSuggestion.getTopicSuggestionID()#|userID=#session.user.getUserID()#')#"><img src="/images/icons/tick.png" border="0" width="16" height="16" alt="You voted for this topic. Click to remove your vote." title="You voted for this topic. Click to remove your vote." /></a>&nbsp;
+				<a href="#BuildUrl('removeTopicSuggestionVote', 'topicSuggestionID=#topicSuggestion.getTopicSuggestionID()#|userID=#session.user.getUserID()#')#">You voted for this topic (click to remove vote)</a>
 			</cfif>
 		</td>
 	</cfif>

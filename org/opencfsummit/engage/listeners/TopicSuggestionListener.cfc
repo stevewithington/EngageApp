@@ -50,6 +50,37 @@
 		</cftry>
 	</cffunction>
 	
+	<cffunction name="removeTopicSuggestionVote" access="public" output="false" returntype="void">
+		<cfargument name="event" type="MachII.framework.Event" required="true" />
+		
+		<cfset var message = StructNew() />
+		<cfset var errors = StructNew() />
+
+		<!--- make sure the removing vote using their user ID --->
+		<cfif arguments.event.getArg('userID') != session.user.getUserID()>
+			<cfset redirectEvent("fail", "", true) />
+		</cfif>
+		
+		<cfset message.text = "Your vote was removed." />
+		<cfset message.class = "success" />
+		
+		<cftry>
+			<cfset getTopicSuggestionService().removeVote(arguments.event.getArg("topicSuggestionID"), 
+															session.user.getUserID()) />
+			<cfset arguments.event.setArg("message", message) />
+			<cfset redirectEvent("success", "", true) />
+			
+			<cfcatch type="any">
+				<cfset errors.systemError = CFCATCH.Message & " - " & CFCATCH.Detail />
+				<cfset message.text = "A system error occurred:" />
+				<cfset message.class = "error" />
+				<cfset arguments.event.setArg("errors", errors) />
+				<cfset arguments.event.setArg("message", message) />
+				<cfset redirectEvent("fail", "", true) />
+			</cfcatch>
+		</cftry>
+	</cffunction>
+	
 	<cffunction name="processTopicSuggestionForm" access="public" output="false" returntype="void">
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
 		
@@ -111,6 +142,26 @@
 				<cfset redirectEvent("fail", "", true) />
 			</cfcatch>
 		</cftry>
+	</cffunction>
+	
+	<cffunction name="setupTwitter" access="private" output="false" returntype="any">
+		<cfset var twitter = CreateObject("java", "twitter4j.Twitter").init() />
+		<cfset var accessToken = CreateObject("java", "twitter4j.http.AccessToken").init(session.user.getUserInfo().oAuthToken,session.user.getUserInfo().oAuthTokenSecret) />
+		<cfset twitter.setOAuthConsumer(getProperty('twitterKeys').consumerKey, getProperty('twitterKeys').consumerSecret) />
+		<cfset twitter.setOAuthAccessToken(accessToken) />
+		<cfreturn twitter />
+	</cffunction>
+
+	<cffunction name="setupFB" access="private" output="false" returntype="any">
+		<cfset var cookiePairs = ListToArray(cookie["fbs_#getProperty('facebookKeys').applicationID#"], "&") />
+		<cfset var cookieVals = StructNew() />
+		<cfset var temp = 0 />
+			
+		<cfloop array="#cookiePairs#" index="temp">
+			<cfset cookieVals[ListFirst(temp, "=")] = ListLast(temp, "=") />
+		</cfloop>
+		
+		<cfreturn cookieVals />
 	</cffunction>
 
 </cfcomponent>

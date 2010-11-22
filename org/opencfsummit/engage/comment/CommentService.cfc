@@ -30,7 +30,7 @@
 		
 		<cfset var comment = getCommentBean() />
 		
-		<cfif arguments.commentID != 0>
+		<cfif IsNumeric(arguments.commentID) && arguments.commentID != 0>
 			<cfset comment.setCommentID(arguments.commentID) />
 			<cfset getCommentGateway().fetch(comment) />
 		</cfif>

@@ -109,6 +109,19 @@
 		</cfquery>
 	</cffunction>
 	
+	<cffunction name="removeVote" access="public" output="false" returntype="void">
+		<cfargument name="proposalID" type="numeric" required="true" />
+		<cfargument name="userID" type="numeric" required="true" />
+		
+		<cfset var removeVote = 0 />
+		
+		<cfquery name="removeVote" datasource="#getDSN()#">
+			DELETE FROM proposal_vote 
+			WHERE 	proposal_id = <cfqueryparam value="#arguments.proposalID#" cfsqltype="cf_sql_integer" /> 
+			AND 	user_id = <cfqueryparam value="#arguments.userID#" cfsqltype="cf_sql_integer" />
+		</cfquery>
+	</cffunction>
+	
 	<cffunction name="getUserVotes" access="public" output="false" returntype="query">
 		<cfargument name="userID" type="numeric" required="true" />
 		

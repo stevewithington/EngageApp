@@ -49,7 +49,10 @@
 			<cfcookie name="userInfo" value="Facebook|#userInfo.id#">
 			
 			<cfscript>
-				userInfo.picture = DeserializeJSON(facebookPicture.FileContent).picture;
+				if (isJSON(facebookPicture.FileContent) and structKeyExists(DeserializeJSON(facebookPicture.FileContent),"picture")) {
+					userInfo.picture = DeserializeJSON(facebookPicture.FileContent).picture;
+				}
+				
 				user.setOauthProvider("Facebook");
 				user.setOauthUID(userInfo.id);
 				user.setOauthProfileLink(userInfo.link);
@@ -97,6 +100,8 @@
 		<cfhttp url="https://api.twitter.com/1/users/show.json?screen_name=#accessToken.getScreenName()#" method="get" />
 		
 		<cfset userInfo = DeserializeJSON(CFHTTP.FileContent) />
+		<cfset userInfo.oAuthToken = accessToken.getToken() />
+		<cfset userInfo.oAuthTokenSecret = accessToken.getTokenSecret() />
 		
 		<cfcookie name="userInfo" value="Twitter|#userInfo.screen_name#" />
 		
@@ -178,6 +183,6 @@
 		<cfset StructDelete(session, "user", false) />
 		<cfcookie name="userInfo" expires="NOW" />
 		
-		<cfset redirectEvent('login', '', true) />
+		<cfset redirectEvent('main', '', true) />
 	</cffunction>
 </cfcomponent>

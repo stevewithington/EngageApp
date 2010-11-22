@@ -29,7 +29,7 @@
 
 <form:form actionEvent="processProposalForm" bind="proposal">
 <h4>About this presentation</h4>
-<table width="100%" border="0">
+<table width="680" border="0">
 	<cfif session.user.getIsAdmin()>
 	<tr>
 		<td align="right">Status</td>
