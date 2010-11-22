@@ -48,7 +48,7 @@
 			</cfif>
 		</td>
 	</cfif>
-	<cfif StructKeyExists(session, "user") && (session.user.getUserID() == topicSuggestion.getCreatedBy() || session.user.getIsAdmin())>
+	<cfif StructKeyExists(session, "user") && (session.user.getUserID() eq topicSuggestion.getCreatedBy() || session.user.getIsAdmin())>
 		<td>
 			<a href="#BuildUrl('topicSuggestionForm', 'topicSuggestionID=#topicSuggestion.getTopicSuggestionID()#')#"><img src="/images/icons/page_edit.png" border="0" width="16" height="16" alt="Edit Topic Suggestion" title="Edit Topic Suggestion" /></a>&nbsp;
 			<a href="#BuildUrl('topicSuggestionForm', 'topicSuggestionID=#topicSuggestion.getTopicSuggestionID()#')#">Edit Topic Suggestion</a>

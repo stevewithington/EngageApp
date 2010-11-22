@@ -36,7 +36,7 @@
 		
 		<cfset var user = getUserBean() />
 		
-		<cfif arguments.userID != 0>
+		<cfif arguments.userID neq 0>
 			<cfset user.setUserID(arguments.userID) />
 		<cfelse>
 			<cfset user.setOauthProvider(arguments.oauthProvider) />

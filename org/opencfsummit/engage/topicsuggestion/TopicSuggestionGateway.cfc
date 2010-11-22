@@ -35,7 +35,7 @@
 			INNER JOIN user u 
 				ON ts.created_by = u.user_id 
 			WHERE 	ts.event_id = <cfqueryparam value="#arguments.eventID#" cfsqltype="cf_sql_integer" /> 
-			<cfif arguments.userID != 0>
+			<cfif arguments.userID neq 0>
 				AND 	ts.created_by = <cfqueryparam value="#arguments.userID#" cfsqltype="cf_sql_integer" /> 
 			</cfif>
 			ORDER BY ts.dt_created DESC

@@ -61,13 +61,13 @@
 				<div id="leftcol"><!--- left column --->
 					<div id="userinfo">
 					<cfif StructKeyExists(session, "user")>
-						<cfif session.user.getOauthProvider() == "Facebook">
+						<cfif session.user.getOauthProvider() eq "Facebook">
 							<img src="#session.user.getUserInfo().picture#" /><img src="/images/facebook_icon_small.jpg" width="16" height="16" /><br />
 							<span class="smaller">
 								<a href="#session.user.getOauthProfileLink()#" target="_blank">#session.user.getUserInfo().name#</a><br />
 								<!---<a href="#BuildUrl('profile')#">Edit Profile</a>&nbsp;|&nbsp;---><a href="#BuildUrl('logout', 'facebookLogout=true')#">Logout</a>
 							</span>
-						<cfelseif session.user.getOauthProvider() == "Twitter">
+						<cfelseif session.user.getOauthProvider() eq "Twitter">
 							<img src="#session.user.getUserInfo().profile_image_url#" /><img src="/images/twitter_logo_small.png" width="16" height="16" /><br />
 							<span class="smaller">
 								#session.user.getUserInfo().name#<br />
@@ -104,7 +104,7 @@
 							}());
 						</script>
 						<br />
-						<cfif !StructKeyExists(session, "user") || session.user.getOauthProvider() != "Twitter">
+						<cfif !StructKeyExists(session, "user") || session.user.getOauthProvider() neq "Twitter">
 							<a href="#BuildUrl('postLogin', 'loginMethod=Twitter')#"><img src="/images/twitter_login.png" width="146" height="23" border="0" alt="Login With Twitter" title="Login With Twitter" /></a>
 						<cfelse>
 							<a href="#BuildUrl('logout')#"><img src="/images/twitter_logout.png" width="136" height="23" border="0" alt="Logout From Twitter" title="Logout From Twitter" /></a>
@@ -139,7 +139,7 @@
 						<p><strong>Administer</strong></p>
 						<ul>
 							<li><a href="#BuildUrl('admin.events')#">Events</a></li>
-						<cfif event.getArg('eventID', 0) != 0>
+						<cfif event.getArg('eventID', 0) neq 0>
 							<li><a href="#BuildUrl('admin.event', 'id=#event.getArg('eventID')#')#">This Event</li>
 							<ul>
 								<li><a href="#BuildUrl('admin.sessions')#">Sessions</a></li>

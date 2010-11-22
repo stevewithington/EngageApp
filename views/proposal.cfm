@@ -64,8 +64,8 @@
 
 <p>#DateFormat(proposal.getDtCreated(), 'm/d/yyyy')# #TimeFormat(proposal.getDtCreated(), 'h:mm TT')#</p>
 
-<cfif StructKeyExists(session, "user") && (session.user.getUserID() == proposal.getUserID() 
-		|| (session.user.getIsAdmin() && proposal.getNoteToOrganizers() != ""))>
+<cfif StructKeyExists(session, "user") && (session.user.getUserID() eq proposal.getUserID() 
+		|| (session.user.getIsAdmin() && proposal.getNoteToOrganizers() neq ""))>
 	<h4>Private Note to Organizers</h4>
 
 	<p>#proposal.getNoteToOrganizers()#</p>
@@ -84,7 +84,7 @@
 			</cfif>
 		</td>
 	</cfif>
-	<cfif StructKeyExists(session, "user") && (session.user.getUserID() == proposal.getUserID() || session.user.getIsAdmin())>
+	<cfif StructKeyExists(session, "user") && (session.user.getUserID() eq proposal.getUserID() || session.user.getIsAdmin())>
 		<td>
 			<a href="#BuildUrl('proposalForm', 'proposalID=#proposal.getProposalID()#')#"><img src="/images/icons/page_edit.png" border="0" width="16" height="16" alt="Edit Proposal" title="Edit Proposal" /></a>&nbsp;
 			<a href="#BuildUrl('proposalForm', 'proposalID=#proposal.getProposalID()#')#">Edit Proposal</a>

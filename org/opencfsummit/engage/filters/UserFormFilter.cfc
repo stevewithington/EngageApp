@@ -13,7 +13,7 @@
 		
 		<cfset var proceed = false />
 		
-		<cfif (arguments.event.getArg('userID', 0) == 0 && StructKeyExists(session, "user") && session.user.getIsAdmin()) || 
+		<cfif (arguments.event.getArg('userID', 0) eq 0 && StructKeyExists(session, "user") && session.user.getIsAdmin()) || 
 				(StructKeyExists(session, "user") && (session.user.getUserID() == arguments.event.getArg("userID") || session.user.getIsAdmin()))>
 			<cfset proceed = true />
 		<cfelse>

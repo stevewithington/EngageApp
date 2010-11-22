@@ -40,11 +40,11 @@
 		<cfset message.text = "The comment was saved." />
 		<cfset message.class = "success" />
 		
-		<cfif arguments.event.getArg("itemType") == "Proposal">
+		<cfif arguments.event.getArg("itemType") eq "Proposal">
 			<cfset successEvent = "proposal" />
 			<cfset failEvent = "proposal" />
 			<cfset arguments.event.setArg("proposalID", arguments.event.getArg("itemID")) />
-		<cfelseif arguments.event.getArg("itemType") == "Topic Suggestion">
+		<cfelseif arguments.event.getArg("itemType") eq "Topic Suggestion">
 			<cfset successEvent = "topicSuggestion" />
 			<cfset failEvent = "topicSuggestion" />
 			<cfset arguments.event.setArg("topicSuggestionID", arguments.event.getArg("itemID")) />

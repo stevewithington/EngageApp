@@ -43,7 +43,7 @@
 		<cfset var updatedBy = 0 />
 		<cfset var dtUpdated = CreateDateTime(1900, 1, 1, 0, 0, 0) />
 		
-		<cfif arguments.comment.getCommentID() != 0>
+		<cfif arguments.comment.getCommentID() neq 0>
 			<cfquery name="getComment" datasource="#getDSN()#">
 				SELECT 	comment_id, item_id, item_type, comment, 
 						dt_created, dt_updated, created_by, updated_by, active 
@@ -52,11 +52,11 @@
 			</cfquery>
 			
 			<cfif getComment.RecordCount gt 0>
-				<cfif getComment.updatedBy != "">
+				<cfif getComment.updatedBy neq "">
 					<cfset updatedBy = getComment.updated_by />
 				</cfif>
 				
-				<cfif getComment.dt_updated != "">
+				<cfif getComment.dt_updated neq "">
 					<cfset dtUpdated = getComment.dtUpdated />
 				</cfif>
 				
@@ -72,7 +72,7 @@
 		
 		<cfset var saveComment = 0 />
 		
-		<cfif arguments.comment.getCommentID() == 0>
+		<cfif arguments.comment.getCommentID() eq 0>
 			<cfquery name="saveComment" datasource="#getDSN()#">
 				INSERT INTO comment (
 					item_id, item_type, comment, dt_created, created_by, active
@@ -104,7 +104,7 @@
 		
 		<cfset var deleteComment = 0 />
 		
-		<cfif arguments.comment.getCommentID() != 0>
+		<cfif arguments.comment.getCommentID() neq 0>
 			<cfquery name="deleteComment" datasource="#getDSN()#">
 				DELETE FROM comment 
 				WHERE comment_id = <cfqueryparam value="#arguments.comment.getCommentID()#" cfsqltype="cf_sql_integer" />

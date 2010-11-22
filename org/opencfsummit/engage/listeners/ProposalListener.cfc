@@ -12,7 +12,7 @@
 		
 		<cfset var userID = 0 />
 		
-		<cfif arguments.event.getArg('userID', 0) != 0>
+		<cfif arguments.event.getArg('userID', 0) neq 0>
 			<cfset userID = session.user.getUserID() />
 		</cfif>
 		
@@ -32,7 +32,7 @@
 		<cfset var errors = StructNew() />
 
 		<!--- make sure the user is voting using their user ID --->
-		<cfif arguments.event.getArg('userID') != session.user.getUserID()>
+		<cfif arguments.event.getArg('userID') neq session.user.getUserID()>
 			<cfset redirectEvent("fail", "", true) />
 		</cfif>
 		
@@ -63,7 +63,7 @@
 		<cfset var errors = StructNew() />
 
 		<!--- make sure the user is removing the vote using their user ID --->
-		<cfif arguments.event.getArg('userID') != session.user.getUserID()>
+		<cfif arguments.event.getArg('userID') neq session.user.getUserID()>
 			<cfset redirectEvent("fail", "", true) />
 		</cfif>
 		
@@ -107,23 +107,23 @@
 		<cfset var message = StructNew() />
 		<cfset var uploadResults = 0 />
 		
-		<cfif arguments.event.isArgDefined('agreedToTerms') && arguments.event.getArg('agreedToTerms') != "">
+		<cfif arguments.event.isArgDefined('agreedToTerms') && arguments.event.getArg('agreedToTerms') neq "">
 			<cfset proposal.setAgreedToTerms(true) />
 		<cfelse>
 			<cfset proposal.setAgreedToTerms(false) />
 		</cfif>
 		
-		<cfif proposal.getUserID() == 0>
+		<cfif proposal.getUserID() eq 0>
 			<cfset proposal.setUserID(session.user.getUserID()) />
 		</cfif>
 		
-		<cfif proposal.getProposalID() == 0>
+		<cfif proposal.getProposalID() eq 0>
 			<cfset proposal.setCreatedBy(session.user.getUserID()) />
 		<cfelse>
 			<cfset proposal.setUpdatedBy(session.user.getUserID()) />
 		</cfif>
 		
-		<cfif session.user.getEmail() == "">
+		<cfif session.user.getEmail() eq "">
 			<cfset session.user.setEmail(proposal.getContactEmail()) />
 			<cfset getUserService().saveUser(session.user) />
 		</cfif>

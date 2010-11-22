@@ -2,7 +2,7 @@
 		displayname="LookupService" 
 		output="false">
 
-	<cffunction name="init" access="public" output="false" returntype="void">
+	<cffunction name="init" access="public" output="false" returntype="LookupService">
 		<cfreturn this />
 	</cffunction>
 	

@@ -26,7 +26,7 @@
 		<cfset var errors = StructNew() />
 
 		<!--- make sure the user is voting using their user ID --->
-		<cfif arguments.event.getArg('userID') != session.user.getUserID()>
+		<cfif arguments.event.getArg('userID') neq session.user.getUserID()>
 			<cfset redirectEvent("fail", "", true) />
 		</cfif>
 		
@@ -57,7 +57,7 @@
 		<cfset var errors = StructNew() />
 
 		<!--- make sure the removing vote using their user ID --->
-		<cfif arguments.event.getArg('userID') != session.user.getUserID()>
+		<cfif arguments.event.getArg('userID') neq session.user.getUserID()>
 			<cfset redirectEvent("fail", "", true) />
 		</cfif>
 		

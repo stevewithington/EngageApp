@@ -4,12 +4,12 @@
 	
 	<cfset agreedToTermsChecked = proposal.getAgreedToTerms() />
 	
-	<cfif proposal.getProposalID() == 0>
+	<cfif proposal.getProposalID() eq 0>
 		<cfset proposal.setContactEmail(session.user.getEmail()) />
 	</cfif>
 </cfsilent>
 <cfoutput>
-<cfif proposal.getProposalID() == 0>
+<cfif proposal.getProposalID() eq 0>
 <h3>Create New Proposal</h3>
 <cfelse>
 <h3>Edit Proposal - #proposal.getTitle()#</h3>

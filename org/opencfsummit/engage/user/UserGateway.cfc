@@ -70,11 +70,11 @@
 		</cfquery>
 		
 		<cfif getUser.RecordCount neq 0>
-			<cfif getUser.dt_updated != "">
+			<cfif getUser.dt_updated neq "">
 				<cfset dtUpdated = getUser.dt_updated />
 			</cfif>
 			
-			<cfif getUser.updated_by != "">
+			<cfif getUser.updated_by neq "">
 				<cfset updatedBy = getUser.updated_by />
 			</cfif>
 			

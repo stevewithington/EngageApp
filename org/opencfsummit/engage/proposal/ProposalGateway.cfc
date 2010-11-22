@@ -49,11 +49,11 @@
 			INNER JOIN proposal_status s 
 				ON p.status_id = s.status_id 
 			WHERE 	p.event_id = <cfqueryparam value="#arguments.eventID#" cfsqltype="cf_sql_integer" /> 
-			<cfif arguments.userID != 0>
+			<cfif arguments.userID neq 0>
 				AND p.user_id = <cfqueryparam value="#arguments.userID#" cfsqltype="cf_sql_integer" /> 
 			</cfif>
-			<cfif arguments.proposalIDs != "">
-				AND p.proposal_id IN (<cfqueryparam value="#proposalIDs#" type="cf_sql_integer" list="true" />)
+			<cfif arguments.proposalIDs neq "">
+				AND p.proposal_id IN (<cfqueryparam value="#proposalIDs#" cfsqltype="cf_sql_integer" list="true" />)
 			</cfif>
 			ORDER BY p.dt_created DESC
 		</cfquery>
@@ -71,12 +71,12 @@
 		<cfquery name="getProposalIDs" datasource="#getDSN()#">
 			SELECT 	proposal_id 
 			FROM 	proposal_vote 
-			WHERE 	user_id = <cfqueryparam value="#arguments.userID#" type="cf_sql_integer" />
+			WHERE 	user_id = <cfqueryparam value="#arguments.userID#" cfsqltype="cf_sql_integer" />
 		</cfquery>
 		
-		<cfset proposalIDs = QueryColumnList(getProposalIDs, "proposal_id") />
+		<cfset proposalIDs = ValueList(getProposalIDs.proposal_id) />
 		
-		<cfreturn getProposals(eventID = arguments.eventID, proposalIDs = QueryColumnList(getProposalIDs, "proposal_id")) />
+		<cfreturn getProposals(eventID = arguments.eventID, proposalIDs = ValueList(getProposalIDs.proposal_id)) />
 	</cffunction>
 
 	<cffunction name="getComments" access="public" output="false" returntype="query">
@@ -223,7 +223,7 @@
 			</cfquery>
 			
 			<cfif getTags.RecordCount gt 0>
-				<cfset tags = QueryColumnList(getTags, "tag", ",") />
+				<cfset tags = ValueList(getTags.tag, ",") />
 			</cfif>
 			
 			<cfif getProposal.RecordCount gt 0>

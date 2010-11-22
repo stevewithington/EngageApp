@@ -43,7 +43,7 @@
 		<cfset var votesList = "" />
 		
 		<cfif votes.RecordCount gt 0>
-			<cfset votesList = QueryColumnList(votes, "proposal_id") />
+			<cfset votesList = ValueList(votes.proposal_id) />
 		</cfif>
 		
 		<cfreturn votesList />

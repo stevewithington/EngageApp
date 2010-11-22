@@ -51,7 +51,7 @@
 			</script>
 		</td>
 		<td>
-			<cfif !StructKeyExists(session, "user") || session.user.getOauthProvider() != "Twitter">
+			<cfif !StructKeyExists(session, "user") || session.user.getOauthProvider() neq "Twitter">
 				<a href="#BuildUrl('postLogin', 'loginMethod=Twitter')#"><img src="/images/twitter_login.png" width="146" height="23" border="0" alt="Login With Twitter" title="Login With Twitter" /></a>
 			<cfelse>
 				<a href="#BuildUrl('logout')#"><img src="/images/twitter_logout.png" width="136" height="23" border="0" alt="Logout From Twitter" title="Logout From Twitter" /></a>
