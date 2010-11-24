@@ -92,6 +92,9 @@
 		<property name="sessionTypeGateway"><ref bean="sessionTypeGateway" /></property>
 	</bean>
 	
+	<!-- SOCIAL -->
+	<bean id="socialService" class="org.opencfsummit.engage.social.SocialService" />
+	
 	<!-- TOPIC SUGGESTION -->
 	<bean id="topicSuggestionGateway" class="org.opencfsummit.engage.topicsuggestion.TopicSuggestionGateway">
 		<property name="dsn"><value>${dsn}</value></property>

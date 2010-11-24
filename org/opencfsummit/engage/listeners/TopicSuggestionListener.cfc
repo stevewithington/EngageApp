@@ -144,24 +144,4 @@
 		</cftry>
 	</cffunction>
 	
-	<cffunction name="setupTwitter" access="private" output="false" returntype="any">
-		<cfset var twitter = CreateObject("java", "twitter4j.Twitter").init() />
-		<cfset var accessToken = CreateObject("java", "twitter4j.http.AccessToken").init(session.user.getUserInfo().oAuthToken,session.user.getUserInfo().oAuthTokenSecret) />
-		<cfset twitter.setOAuthConsumer(getProperty('twitterKeys').consumerKey, getProperty('twitterKeys').consumerSecret) />
-		<cfset twitter.setOAuthAccessToken(accessToken) />
-		<cfreturn twitter />
-	</cffunction>
-
-	<cffunction name="setupFB" access="private" output="false" returntype="any">
-		<cfset var cookiePairs = ListToArray(cookie["fbs_#getProperty('facebookKeys').applicationID#"], "&") />
-		<cfset var cookieVals = StructNew() />
-		<cfset var temp = 0 />
-			
-		<cfloop array="#cookiePairs#" index="temp">
-			<cfset cookieVals[ListFirst(temp, "=")] = ListLast(temp, "=") />
-		</cfloop>
-		
-		<cfreturn cookieVals />
-	</cffunction>
-
 </cfcomponent>

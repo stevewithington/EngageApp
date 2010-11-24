@@ -53,6 +53,7 @@
 		<listener name="sessionListener" type="org.opencfsummit.engage.listeners.SessionListener" />
 		<listener name="sessionTypeListener" type="org.opencfsummit.engage.listeners.SessionTypeListener" />
 		<listener name="scheduleItemListener" type="org.opencfsummit.engage.listeners.ScheduleItemListener" />
+		<listener name="socialListener" type="org.opencfsummit.engage.listeners.SocialListener" />
 		<listener name="topicSuggestionListener" type="org.opencfsummit.engage.listeners.TopicSuggestionListener" />
 		<listener name="trackListener" type="org.opencfsummit.engage.listeners.TrackListener" />
 		<listener name="userListener" type="org.opencfsummit.engage.listeners.UserListener" />
@@ -385,6 +386,15 @@
 			<event-bean name="sessionType" type="org.opencfsummit.engage.sessiontype.SessionType" />
 			<notify listener="sessionTypeListener" method="deleteSessionType" />
 		</event-handler>
+		
+		<!-- social -->
+		<event-handler event="tweet" access="public">
+			<notify listener="socialListener" method="tweet" />
+		</event-handler>
+		
+		<event-handler event="postToFacebookWall" access="public">
+			<notify listener="socialListener" method="postToFacebookWall" />
+		</event-handler>
 
 		<!-- topic suggestion management -->
 		<event-handler event="topicSuggestions" access="public">
@@ -440,7 +450,7 @@
 			<event-bean name="topicSuggestion" type="org.opencfsummit.engage.topicsuggestion.TopicSuggestion" />
 			<notify listener="topicSuggestionListener" method="processTopicSuggestionForm" />
 		</event-handler>
-		
+
 		<event-hander event="deleteTopicSuggestion" access="public">
 			<event-mapping event="success" mapping="topicSuggestions" />
 			<event-mapping event="fail" mapping="topicSuggestions" />

@@ -40,6 +40,7 @@
 			</cfhttp>
 			
 			<cfset userInfo = DeserializeJSON(facebookInfo.FileContent) />
+			<cfset userInfo.accessToken = cookieVals['access_token'] />
 			
 			<cfhttp url="https://graph.facebook.com/#ListLast(userInfo.link, '/')#?fields=picture" result="facebookPicture">
 				<cfhttpparam type="url" name="access_token" value="#cookieVals['access_token']#" />
@@ -100,8 +101,7 @@
 		<cfhttp url="https://api.twitter.com/1/users/show.json?screen_name=#accessToken.getScreenName()#" method="get" />
 		
 		<cfset userInfo = DeserializeJSON(CFHTTP.FileContent) />
-		<cfset userInfo.oAuthToken = accessToken.getToken() />
-		<cfset userInfo.oAuthTokenSecret = accessToken.getTokenSecret() />
+		<cfset userInfo.accessToken = accessToken />
 		
 		<cfcookie name="userInfo" value="Twitter|#userInfo.screen_name#" />
 		
