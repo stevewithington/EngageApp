@@ -1,4 +1,5 @@
 <cfsilent>
+	<cfimport prefix="form" taglib="/MachII/customtags/form" />
 	<cfset CopyToScope("${event.theEvent}")>
 </cfsilent>
 <cfoutput>
@@ -8,6 +9,41 @@
 	Thanks for submitting <a href="#BuildUrl('proposal', 'proposalID=#event.getArg('proposalID')#')#">your proposal</a> 
 	to #theEvent.getTitle()#!
 </p>
+
+<cfif session.user.getOauthProvider() eq "Twitter">
+	<cfset buttonLabel = "Tweet It!" />
+	<cfset postEvent = "tweet" />
+<cfelse>
+	<cfset buttonLabel = "Add a Wall Post!" />
+	<cfset postEvent = "postToFacebookWall" />
+</cfif>
+<cfif event.isArgDefined("proposal")>
+	<cfset tweetText = "I just submitted [] for #getProperty('eventName')# #getProperty('eventYear')#. #getProperty('shortSiteURL')#" />
+	<cfset shortTopic = event.getArg('proposal').getTitle() />
+	<cfif session.user.getOauthProvider() eq "Twitter">
+		<cfset label = "Why not Tweet it?" />
+		<cfset shortTopic = left(event.getArg('proposal').getTitle(),142 - len(tweetText)) />
+	<cfelse>
+		<cfset label = "Why not add a wall post?" />
+		<cfset tweetText = replace(tweetText,getProperty('shortSiteURL'),getProperty('siteURL')) />
+		<cfset shortTopic = """" & shortTopic & """" />
+	</cfif>
+	<cfset tweetText = replace(tweetText,"[]",shortTopic) />
+<cfelse>						
+	<cfset tweetText = "I just voted for my favorite session proposals for #getProperty('eventName')# #getProperty('eventYear')#. Why not cast your votes now? #getProperty('siteURL')#" />
+	<cfif session.user.getOauthProvider() eq "Twitter">
+		<cfset label = "Why not Tweet about it and encourage others to vote too?" />
+	<cfelse>
+		<cfset label = "Why not add a wall post and encourage others to vote too?" />
+	</cfif>
+</cfif>
+<form:form actionEvent="#postEvent#">
+	<br />
+	#label#<br />
+	<form:textarea name="tweetText" rows="3" cols="70" value="#tweetText#" /><br />
+	<form:button name="submit" value="#buttonLabel#" />
+	<form:hidden name="nextEvent" value="proposals" />
+</form:form>
 
 <h3>Next Steps</h3>
 
