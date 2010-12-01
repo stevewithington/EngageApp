@@ -8,16 +8,18 @@
 	<fb:like href="#getProperty('siteURL')##BuildCurrentURL()#" show_faces="false"></fb:like>
 </div>
 
-<h3>#topicSuggestion.getTopic()#</h3>
-
-<h4>SUGGESTED BY: #topicSuggestion.getSuggestedBy()#</h4>
-
 <cfif event.isArgDefined('message')>
 	<cfset message = event.getArg('message') />
 	<div id="message" class="#message.class#">
 		#message.text#
 	</div>
 </cfif>
+
+<h3>#topicSuggestion.getTopic()#</h3>
+
+<h4>Suggested By</h4>
+
+<p>#topicSuggestion.getSuggestedBy()#</p>
 
 <h4>Description</h4>
 
@@ -66,17 +68,22 @@
 </table>
 
 <cfif StructKeyExists(session, "user")>
+<br />
 #event.getArg('commentForm', '')#
+<br />
 </cfif>
 
 <cfif comments.RecordCount gt 0>
 	<h4>Comments</h4>
 	
+	<br />
+	
 	<cfloop query="comments">
+	<div class="commentDiv">
 		<p><strong><a href="#comments.commenter_profile_link#">#comments.commenter_name#</a> said ...</strong>&nbsp;
 		(#DateFormat(comments.dt_created, 'm/d/yyyy')# #TimeFormat(comments.dt_created, 'h:mm TT')#)</p>
 		<p>#comments.comment#</p>
-		<hr noshade="true" />
+	</div>
 	</cfloop>
 </cfif>
 </cfoutput>

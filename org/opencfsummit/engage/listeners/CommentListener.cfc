@@ -62,7 +62,12 @@
 				<cfset arguments.event.setArg("message", message) />
 				<cfset arguments.event.setArg("commentID", comment.getCommentID()) />
 				<cfset arguments.event.removeArg("comment") />
-				<cfset redirectEvent(successEvent, "", true) />
+				
+				<cfif arguments.event.getArg("itemType") eq "Proposal">
+					<cfset redirectEvent(successEvent, "proposalID", true) />
+				<cfelseif arguments.event.getArg("itemType") eq "Topic Suggestion">
+					<cfset redirectEvent(successEvent, "topicSuggestionID", true) />
+				</cfif>
 				
 				<cfcatch type="any">
 					<cfset errors.systemError = CFCATCH.Message & " - " & CFCATCH.Detail />

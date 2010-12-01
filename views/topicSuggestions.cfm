@@ -74,23 +74,22 @@
 		<a href="#BuildUrl('topicSuggestionForm')#">Suggest a Topic</a>
 	</p>
 <cfelse>
-	<p><em><a href="#BuildUrl('login')#">Log in</a> to submit suggestions, comment, and vote!</em></p>
+	<p><em>Log in to submit suggestions, comment, and vote!</em></p>
 </cfif>
 
 <cfif topicSuggestions.RecordCount eq 0>
 	<p><strong>No topic suggestions!</strong></p>
 <cfelse>
-	<table id="topicSuggestionsTable" class="tablesorter" border="0" cellpadding="0" cellspacing="1">
+	<table id="topicSuggestionsTable" class="tablesorter" border="0" cellpadding="0" cellspacing="1" style="width:730px">
 		<thead>
 			<tr>
 				<th>Topic</th>
-				<th>Description</th>
-				<th>Suggested Speaker</th>
-				<th>Suggested By</th>
-				<th>Suggested On</th>
-				<th>Votes</th>
+				<th width="130">Suggested Speaker</th>
+				<th width="120">Suggested By</th>
+				<th width="120">Suggested On</th>
+				<th width="60">Votes</th>
 			<cfif StructKeyExists(session, "user")>
-				<th>Vote</th>
+				<th width="50">Vote</th>
 			</cfif>
 			</tr>
 		</thead>
@@ -102,13 +101,12 @@
 							#topicSuggestions.topic#
 						</a>
 					</td>
-					<td>#topicSuggestions.description#</td>
 					<td>#topicSuggestions.suggested_speaker#</td>
 					<td>#topicSuggestions.suggested_by#</td>
 					<td>#DateFormat(topicSuggestions.dt_created, "mm/dd/yyyy")# #TimeFormat(topicSuggestions.dt_created, "hh:mm TT")#</td>
-					<td width="50">#topicSuggestions.votes#</td>
+					<td>#topicSuggestions.votes#</td>
 				<cfif StructKeyExists(session, "user")>
-					<td width="40">
+					<td>
 						<cfif !ListFind(userVotes, topicSuggestions.topic_suggestion_id)>
 							<a href="#BuildURL('voteForTopicSuggestion', 'topicSuggestionID=#topicSuggestions.topic_suggestion_id#|userID=#session.user.getUserID()#')#">
 								<img src="/images/icons/thumb_up.png" border="0" width="16" height="16" alt="Vote For This Topic!" title="Vote For This Topic!" />

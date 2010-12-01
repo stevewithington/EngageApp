@@ -6,6 +6,12 @@
 		<title>OpenCF Summit - Engage</title>
 		<link rel="stylesheet" type="text/css" href="/library/css/base.css">
 		<link rel="stylesheet" type="text/css" href="/library/css/siteStyle.css">
+	<cfif event.getName() eq "proposals">
+		<link rel="alternate" type="application/rss+xml" href="#getProperty('siteURL')#/proposals.rss" />
+	</cfif>
+	<cfif event.getName() eq "topicSuggestions">
+		<link rel="alternate" type="application/rss+xml" href="#getProperty('siteURL')#/topicsuggestions.rss" />
+	</cfif>
 		<script type="text/javascript" src="/js/jquery-1.4.2.min.js"></script>
 		<link type="text/css" href="/css/smoothness/jquery-ui-1.8.5.custom.css" rel="stylesheet" />
 		<script type="text/javascript" src="/js/jquery-ui-1.8.5.custom.min.js"></script>
@@ -51,9 +57,7 @@
 				</div> <!-- /mainnav -->
 				<div id="logo"><h5><a href="http://opencfsummit.org">openCF Summit : Open development using ColdFusion (CFML)</a></h5></div>
 			</div> <!-- /header -->
-			<div id="banner"><!--- rotating banner image --->
-				<p>February 21-23, 2011<br/>Dallas, TX</p>
-			</div> <!-- /banner -->
+			<div id="banner"></div> <!-- /banner -->
 			<div id="content">
 				<div id="copy"><!--- main content section --->
 					#event.getArg('content')#
@@ -63,15 +67,15 @@
 					<cfif StructKeyExists(session, "user")>
 						<cfif session.user.getOauthProvider() eq "Facebook">
 							<img src="#session.user.getUserInfo().picture#" /><img src="/images/facebook_icon_small.jpg" width="16" height="16" /><br />
-							<span class="smaller">
 								<a href="#session.user.getOauthProfileLink()#" target="_blank">#session.user.getUserInfo().name#</a><br />
+							<span class="smaller">
 								<!---<a href="#BuildUrl('profile')#">Edit Profile</a>&nbsp;|&nbsp;---><a href="#BuildUrl('logout', 'facebookLogout=true')#">Logout</a>
 							</span>
 						<cfelseif session.user.getOauthProvider() eq "Twitter">
 							<img src="#session.user.getUserInfo().profile_image_url#" /><img src="/images/twitter_logo_small.png" width="16" height="16" /><br />
-							<span class="smaller">
 								#session.user.getUserInfo().name#<br />
 								(<a href="#session.user.getOauthProfileLink()#" target="_blank">@#session.user.getUserInfo().screen_name#</a>)<br />
+							<span class="smaller">
 								<!---<a href="#BuildUrl('profile')#">Edit Profile</a>&nbsp;|&nbsp;---><a href="#BuildUrl('logout')#">Logout</a>
 							</span>
 						</cfif>
@@ -120,11 +124,11 @@
 						</ul>
 					<cfelse>
 						<ul>
-							<li><a href="#BuildUrl('login')#">Login to submit, comment on, and vote on proposals!</a></li>
+							<li>Log in to submit, comment on, and vote on proposals!</li>
 						</ul>
 					</cfif>
 					
-					<p><strong><a href="#BuildUrl('topicSuggestions')#">Topic Suggestions</strong></p>
+					<p><strong><a href="#BuildUrl('topicSuggestions')#">Topic Suggestions</a></strong></p>
 					<cfif StructKeyExists(session, "user")>
 						<ul>
 							<li><a href="#BuildUrl('topicSuggestionForm')#">Submit a Topic Suggestion</a></li>
@@ -132,7 +136,7 @@
 						</ul>
 					<cfelse>
 						<ul>
-							<li><a href="#BuildUrl('login')#">Login to submit, comment on, and vote on topic suggestions!</a></li>
+							<li>Log in to submit, comment on, and vote on topic suggestions!</li>
 						</ul>
 					</cfif>
 					<cfif StructKeyExists(session, "user") && session.user.getIsAdmin()>

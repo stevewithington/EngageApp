@@ -66,26 +66,23 @@
 		<a href="#BuildUrl('proposalForm')#">Add Proposal</a>
 	</p>
 <cfelse>
-	<p><em><a href="#BuildUrl('login')#">Log in</a> to submit suggestions, comment, and vote!</em></p>
+	<p><em>Log in to submit suggestions, comment, and vote!</em></p>
 </cfif>
 
 <cfif proposals.RecordCount eq 0>
 	<p><strong>No proposals!</strong></p>
 <cfelse>
-	<cfif !StructKeyExists(session, "user")>
-	<p><em><a href="#BuildUrl('login')#">Log in</a> to submit proposals, comment, and vote!</em></p>
-	</cfif>
-	<table id="proposalsTable" class="tablesorter" border="0" cellpadding="0" cellspacing="1">
+	<table id="proposalsTable" class="tablesorter" border="0" cellpadding="0" cellspacing="1" style="width:730px">
 		<thead>
 			<tr>
 				<th>Title</th>
-				<th>Status</th>
-				<th>Track</th>
-				<th>Submitted</th>
-				<th>Speaker</th>
-				<th>Votes</th>
+				<th width="60">Status</th>
+				<th width="80">Track</th>
+				<th width="120">Submitted</th>
+				<th width="120">Speaker</th>
+				<th width="60">Votes</th>
 			<cfif StructKeyExists(session, "user")>
-				<th>Vote</th>
+				<th width="50">Vote</th>
 			</cfif>
 			</tr>
 		</thead>
@@ -101,9 +98,9 @@
 							#proposals.speaker_name#
 						</a>
 					</td>
-					<td width="50">#proposals.votes#</td>
+					<td>#proposals.votes#</td>
 				<cfif StructKeyExists(session, "user")>
-					<td width="40">
+					<td>
 						<cfif !ListFind(userVotes, proposals.proposal_id)>
 							<a href="#BuildURL('voteForProposal', 'proposalID=#proposals.proposal_id#|userID=#session.user.getUserID()#')#">
 								<img src="/images/icons/thumb_up.png" border="0" width="16" height="16" alt="Vote For This Proposal!" title="Vote For This Proposal!" />

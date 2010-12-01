@@ -7,20 +7,28 @@
     <whitespacecomp>false</whitespacecomp>
     <nativelibdir>/WEB-INF/bin</nativelibdir>
     <missingtemplatehandler></missingtemplatehandler>
-    <lastfile>/home/mwoodward/apache-tomcat-6.0.26/webapps/engage/WEB-INF/bluedragon/bluedragon.xml.bak.1</lastfile>
+    <lastfile>/home/mwoodward/tomcat/webapps/opencfsummitware/WEB-INF/bluedragon/bluedragon.xml.bak.1</lastfile>
     <errorhandler></errorhandler>
-    <buffersize>0</buffersize>
+    <password>0p3ncF5vmm!7</password>
     <tempdirectory>/WEB-INF/bluedragon/work/temp</tempdirectory>
-    <password>admin</password>
-    <defaultcharset>utf-8</defaultcharset>
-    <lastupdated>12/Oct/2010 09:22.59</lastupdated>
-    <allowedips></allowedips>
+    <buffersize>0</buffersize>
     <deniedips></deniedips>
+    <allowedips></allowedips>
+    <lastupdated>28/Nov/2010 09:28.21</lastupdated>
+    <defaultcharset>utf-8</defaultcharset>
   </system>
   <file>
     <maxfiles>1000</maxfiles>
     <trustcache>false</trustcache>
   </file>
+  <cfcollection>
+    <collection name=".svn">
+      <name>.svn</name>
+      <storebody>false</storebody>
+      <path>/home/mwoodward/apache-tomcat-7.0.4/webapps/opencfsummitware/WEB-INF/bluedragon/work/cfcollection</path>
+      <language>English</language>
+    </collection>
+  </cfcollection>
   <javacustomtags>
     <classes>/WEB-INF/classes</classes>
     <mapping name="cfx_javabluedragonhello">
@@ -35,85 +43,13 @@
       <function>ProcessTagRequest</function>
       <keeploaded>true</keeploaded>
       <name>cfx_nativebluedragonhello</name>
-      <displayname>CFX_NativeBlueDragonHello</displayname>
       <module>/WEB-INF/customtags/BlueDragonHello.dll</module>
+      <displayname>CFX_NativeBlueDragonHello</displayname>
       <description>A simple C++ CFX tag example</description>
     </mapping>
   </nativecustomtags>
   <cfquery>
     <cache>true</cache>
-    <dbdrivers>
-      <driver name="other">
-        <datasourceconfigpage>other.cfm</datasourceconfigpage>
-        <version></version>
-        <name>other</name>
-        <driverdescription>Other JDBC Driver</driverdescription>
-        <drivername></drivername>
-        <jdbctype></jdbctype>
-        <provider></provider>
-        <defaultport></defaultport>
-      </driver>
-      <driver name="microsoft sql server (jtds)">
-        <datasourceconfigpage>sqlserver-jtds.cfm</datasourceconfigpage>
-        <version>1.2.5</version>
-        <name>microsoft sql server (jtds)</name>
-        <driverdescription>Microsoft SQL Server (jTDS)</driverdescription>
-        <drivername>net.sourceforge.jtds.jdbc.Driver</drivername>
-        <jdbctype>4</jdbctype>
-        <provider>jTDS</provider>
-        <defaultport>1433</defaultport>
-      </driver>
-      <driver name="microsoft sql server (microsoft)">
-        <datasourceconfigpage>sqlserver-ms.cfm</datasourceconfigpage>
-        <version>2.0</version>
-        <name>microsoft sql server (microsoft)</name>
-        <driverdescription>Microsoft SQL Server (Microsoft)</driverdescription>
-        <drivername>com.microsoft.sqlserver.jdbc.SQLServerDriver</drivername>
-        <jdbctype>4</jdbctype>
-        <provider>Microsoft</provider>
-        <defaultport>1433</defaultport>
-      </driver>
-      <driver name="h2 embedded (h2)">
-        <datasourceconfigpage>h2-embedded.cfm</datasourceconfigpage>
-        <version>1.2.134</version>
-        <name>h2 embedded (h2)</name>
-        <driverdescription>H2 Embedded (H2)</driverdescription>
-        <drivername>org.h2.Driver</drivername>
-        <jdbctype>4</jdbctype>
-        <provider>H2</provider>
-        <defaultport></defaultport>
-      </driver>
-      <driver name="oracle (oracle)">
-        <datasourceconfigpage>oracle.cfm</datasourceconfigpage>
-        <version>10.2.0.4</version>
-        <name>oracle (oracle)</name>
-        <driverdescription>Oracle (Oracle)</driverdescription>
-        <drivername>oracle.jdbc.OracleDriver</drivername>
-        <jdbctype>4</jdbctype>
-        <provider>Oracle</provider>
-        <defaultport>1521</defaultport>
-      </driver>
-      <driver name="mysql 4/5">
-        <datasourceconfigpage>mysql5.cfm</datasourceconfigpage>
-        <version>5.1.12</version>
-        <name>mysql 4/5</name>
-        <driverdescription>MySQL 4/5 (MySQL)</driverdescription>
-        <drivername>com.mysql.jdbc.Driver</drivername>
-        <jdbctype>4</jdbctype>
-        <provider>MySQL</provider>
-        <defaultport>3306</defaultport>
-      </driver>
-      <driver name="postgresql (postgresql)">
-        <datasourceconfigpage>postgresql.cfm</datasourceconfigpage>
-        <version>8.4-701</version>
-        <name>postgresql (postgresql)</name>
-        <driverdescription>PostgreSQL (PostgreSQL)</driverdescription>
-        <drivername>org.postgresql.Driver</drivername>
-        <jdbctype>4</jdbctype>
-        <provider>PostgreSQL</provider>
-        <defaultport>5432</defaultport>
-      </driver>
-    </dbdrivers>
     <datasource name="engage">
       <displayname>engage</displayname>
       <password>E5SRlTqfhdEFzcqd</password>
@@ -132,20 +68,92 @@
       <databasename>engage</databasename>
       <description></description>
       <connectstring></connectstring>
-      <initstring></initstring>
       <logintimeout>120</logintimeout>
+      <initstring></initstring>
       <hoststring>jdbc:mysql://localhost:3306/engage?cacheResultSetMetadata=false&amp;autoReconnect=true</hoststring>
       <maxconnections>24</maxconnections>
       <name>engage</name>
     </datasource>
+    <dbdrivers>
+      <driver name="microsoft sql server (jtds)">
+        <datasourceconfigpage>sqlserver-jtds.cfm</datasourceconfigpage>
+        <version>1.2.5</version>
+        <name>microsoft sql server (jtds)</name>
+        <drivername>net.sourceforge.jtds.jdbc.Driver</drivername>
+        <driverdescription>Microsoft SQL Server (jTDS)</driverdescription>
+        <jdbctype>4</jdbctype>
+        <provider>jTDS</provider>
+        <defaultport>1433</defaultport>
+      </driver>
+      <driver name="other">
+        <datasourceconfigpage>other.cfm</datasourceconfigpage>
+        <version></version>
+        <name>other</name>
+        <drivername></drivername>
+        <driverdescription>Other JDBC Driver</driverdescription>
+        <jdbctype></jdbctype>
+        <provider></provider>
+        <defaultport></defaultport>
+      </driver>
+      <driver name="microsoft sql server (microsoft)">
+        <datasourceconfigpage>sqlserver-ms.cfm</datasourceconfigpage>
+        <version>2.0</version>
+        <name>microsoft sql server (microsoft)</name>
+        <drivername>com.microsoft.sqlserver.jdbc.SQLServerDriver</drivername>
+        <driverdescription>Microsoft SQL Server (Microsoft)</driverdescription>
+        <jdbctype>4</jdbctype>
+        <provider>Microsoft</provider>
+        <defaultport>1433</defaultport>
+      </driver>
+      <driver name="h2 embedded (h2)">
+        <datasourceconfigpage>h2-embedded.cfm</datasourceconfigpage>
+        <version>1.2.134</version>
+        <name>h2 embedded (h2)</name>
+        <drivername>org.h2.Driver</drivername>
+        <driverdescription>H2 Embedded (H2)</driverdescription>
+        <jdbctype>4</jdbctype>
+        <provider>H2</provider>
+        <defaultport></defaultport>
+      </driver>
+      <driver name="oracle (oracle)">
+        <datasourceconfigpage>oracle.cfm</datasourceconfigpage>
+        <version>10.2.0.4</version>
+        <name>oracle (oracle)</name>
+        <drivername>oracle.jdbc.OracleDriver</drivername>
+        <driverdescription>Oracle (Oracle)</driverdescription>
+        <jdbctype>4</jdbctype>
+        <provider>Oracle</provider>
+        <defaultport>1521</defaultport>
+      </driver>
+      <driver name="mysql 4/5">
+        <datasourceconfigpage>mysql5.cfm</datasourceconfigpage>
+        <version>5.1.12</version>
+        <name>mysql 4/5</name>
+        <drivername>com.mysql.jdbc.Driver</drivername>
+        <driverdescription>MySQL 4/5 (MySQL)</driverdescription>
+        <jdbctype>4</jdbctype>
+        <provider>MySQL</provider>
+        <defaultport>3306</defaultport>
+      </driver>
+      <driver name="postgresql (postgresql)">
+        <datasourceconfigpage>postgresql.cfm</datasourceconfigpage>
+        <version>8.4-701</version>
+        <name>postgresql (postgresql)</name>
+        <drivername>org.postgresql.Driver</drivername>
+        <driverdescription>PostgreSQL (PostgreSQL)</driverdescription>
+        <jdbctype>4</jdbctype>
+        <provider>PostgreSQL</provider>
+        <defaultport>5432</defaultport>
+      </driver>
+    </dbdrivers>
   </cfquery>
   <openbdadminapi>
     <version>1.4</version>
-    <lastupdated>04/Oct/2010 15:29:21</lastupdated>
+    <lastupdated>14/Nov/2010 08:03:26</lastupdated>
   </openbdadminapi>
   <cfapplication>
-    <clientstorage>cookie</clientstorage>
     <enabled>true</enabled>
+    <clientstorage>cookie</clientstorage>
     <sessiontimeout>#CreateTimeSpan(0,0,20,0)#</sessiontimeout>
     <applicationtimeout>#CreateTimeSpan(2,0,0,0)#</applicationtimeout>
     <j2eesession>false</j2eesession>
@@ -153,8 +161,8 @@
   <cfmail>
     <interval>240</interval>
     <smtpserver>127.0.0.1</smtpserver>
-    <smtpport>25</smtpport>
     <charset>UTF-8</charset>
+    <smtpport>25</smtpport>
   </cfmail>
   <cfmlcustomtags>
     <mapping name="cf">

@@ -48,17 +48,18 @@
 <h3>Next Steps</h3>
 
 <p>
-	You'll hear back from us after #DateFormat(theEvent.getProposalDeadline(), "mmmm d")#, when proposal submissions close.
+	You'll hear back from us no later than #DateFormat(theEvent.getProposalDeadline(), "mmmm d")#, when proposal submissions close.
 </p>
 
 <h4>Register!</h4>
 
-<p>Make sure to register for OpenCF Summit, and tell all your friends and colleagues to do the same!</p>
+<p>Make sure to <a href="http://www.brownpapertickets.com/event/137534" target="_blank">register for OpenCF Summit</a>, and tell all your friends and colleagues to do the same!</p>
 
-<h4>Get to Garland</h4>
+<h4>Get to Dallas</h4>
 
-<p>Check out the <a href="http://www.opencfsummit.org/index.cfm/attend">attend page</a> for useful travel information.</p>
+<p>Check out the <a href="http://www.opencfsummit.org/index.cfm/attend" target="_blank">attend page</a> for useful travel information.</p>
 
+<!---
 <h4>Web Badges</h4>
 
 <p>
@@ -66,7 +67,5 @@
 	associated with the image you want below and paste it on your website. Grab one now, or check out the 
 	<a href="#BuildUrl('webBadges')#">web badges page</a> any time.
 </p>
-
-<h1>WEB BADGE IMAGE AND COPY/PASTE HTML HERE</h1>
-
+--->
 </cfoutput>

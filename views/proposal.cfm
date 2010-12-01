@@ -102,17 +102,22 @@
 </table>
 
 <cfif StructKeyExists(session, "user")>
+<br />
 #event.getArg('commentForm', '')#
+<br />
 </cfif>
 
 <cfif comments.RecordCount gt 0>
 	<h4>Comments</h4>
 	
+	<br />
+	
 	<cfloop query="comments">
+	<div class="commentDiv">
 		<p><strong><a href="#comments.commenter_profile_link#">#comments.commenter_name#</a> said ...</strong>&nbsp;
 		(#DateFormat(comments.dt_created, 'm/d/yyyy')# #TimeFormat(comments.dt_created, 'h:mm TT')#)</p>
 		<p>#comments.comment#</p>
-		<hr noshade="true" />
+	</div>
 	</cfloop>
 </cfif>
 </cfoutput>

@@ -161,6 +161,16 @@ body > #fixed960 {
 	background-color: #718baa;
 	text-align: right;
 	}
+	
+#banner {
+    background: url("/library/img/background_banner.jpg") no-repeat scroll 0 0 transparent;
+    clear: left;
+    font-size: 1px;
+    height: 120px;
+    text-indent: -99999px;
+    width: 960px;
+}
+
 #banner p {
 	padding: 66px 20px 0 0;
 	font: bold 12pt/14pt Arial, Helvetica, sans-serif;
@@ -214,8 +224,9 @@ body > #fixed960 {
 	padding-bottom: 20px;
 	}
 #copy h3 {
-	font: bold 1.1em/1.2em Arial, Helvetica, sans-serif;
+	font: bold 1.4em/1.5em Arial, Helvetica, sans-serif;
 	padding-top: 12px;
+	padding-bottom: 12px;
 	}
 #copy h3 a {
 	color: #992E20;
@@ -224,7 +235,7 @@ body > #fixed960 {
 	color: #992E20;
 	text-decoration: underline;
 	}
-#copy h4 {font-weight: normal;}
+#copy h4 {font-weight: bold;}
 
 #copy p {
 	font: 1em/1.45em "Trebuchet MS", Verdana, Geneva, Arial, Helvetica, sans-serif;
@@ -263,3 +274,13 @@ body > #fixed960 {
 	text-decoration: underline;
 	color: #999;
 	}
+
+	
+.commentDiv {
+	border-bottom: 2px solid #dedede;
+}
+
+.smaller {
+	font-size:10px;
+}
+	
